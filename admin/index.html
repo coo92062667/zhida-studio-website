@@ -913,7 +913,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── App Entry ─────────────────────────────────────────────────
-function enterApp() {
+async function enterApp() {
   $('app').classList.add('show');
   $('hdr-username').textContent = S.username;
   $('sys-user').textContent     = S.username;
@@ -925,9 +925,30 @@ function enterApp() {
   initTabs();
   initModal();
   initApiConfig();
+  if (!S.api) {
+    // 自動從本機伺服器取得 ngrok URL
+    try {
+      const r = await fetch('http://localhost:8000/api/server-info', {
+        headers: { 'ngrok-skip-browser-warning': 'true' },
+        signal: AbortSignal.timeout(3000),
+      });
+      if (r.ok) {
+        const data = await r.json();
+        if (data.url) {
+          saveApiUrl(data.url);
+          toast('✅ 已自動偵測伺服器網址');
+        } else {
+          showServerSetup();
+        }
+      } else {
+        showServerSetup();
+      }
+    } catch {
+      showServerSetup();
+    }
+  }
   updateServerDisplay();
   loadTab('overview');
-  if (!S.api) showServerSetup();
 }
 
 // ── Tabs ──────────────────────────────────────────────────────

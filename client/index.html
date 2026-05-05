@@ -834,8 +834,8 @@ async function autoDetectServerUrl() {
   if (S.api && S.api !== DEFAULT_API) return; // already customized
   const SKIP_HDR = { 'ngrok-skip-browser-warning': 'true' };
   const candidates = [
+    'http://localhost:8000',    // local（優先嘗試）
     'https://zhidastudio.com',  // future cloud
-    'http://localhost:8000',    // local
   ];
   for (const base of candidates) {
     try {

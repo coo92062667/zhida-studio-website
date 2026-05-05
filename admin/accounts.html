@@ -383,9 +383,25 @@ let   apiBase  = localStorage.getItem('admin_api')  || '';
 if (!token || Date.now() / 1000 >= exp) {
   location.replace('./login.html');
 }
-if (!apiBase) {
-  alert('找不到伺服器網址，請重新登入並填寫 ngrok 網址。');
-  location.replace('./login.html');
+
+// 自動偵測伺服器網址（不需手動輸入）
+async function ensureApiBase() {
+  if (apiBase) return true;
+  try {
+    const r = await fetch('http://localhost:8000/api/server-info', {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (r.ok) {
+      const data = await r.json();
+      if (data.url) {
+        apiBase = data.url;
+        localStorage.setItem('admin_api', apiBase);
+        return true;
+      }
+    }
+  } catch {}
+  return false;
 }
 
 document.getElementById('hdr-user').textContent   = username;
@@ -446,7 +462,18 @@ let _clients = [];
 
 async function loadAccounts(retries = 2) {
   const tbody = document.getElementById('tbl-body');
-  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--muted)">載入中…</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="8"><div class="loading-row"><div class="spinner"></div><span>載入中…</span></div></td></tr>`;
+  // 確保有伺服器網址
+  if (!apiBase) {
+    const ok = await ensureApiBase();
+    if (!ok) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--red)">
+        找不到伺服器網址<br><small style="color:var(--muted)">請確認本機伺服器已啟動（port 8000）</small><br>
+        <button onclick="loadAccounts()" style="margin-top:12px;padding:8px 18px;background:var(--navy);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px">重試</button>
+      </td></tr>`;
+      return;
+    }
+  }
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const res = await api('/api/admin/accounts');

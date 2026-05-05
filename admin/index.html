@@ -925,30 +925,44 @@ async function enterApp() {
   initTabs();
   initModal();
   initApiConfig();
-  if (!S.api) {
-    // 自動從本機伺服器取得 ngrok URL
-    try {
-      const r = await fetch('http://localhost:8000/api/server-info', {
-        headers: { 'ngrok-skip-browser-warning': 'true' },
-        signal: AbortSignal.timeout(3000),
-      });
-      if (r.ok) {
-        const data = await r.json();
-        if (data.url) {
-          saveApiUrl(data.url);
-          toast('✅ 已自動偵測伺服器網址');
-        } else {
-          showServerSetup();
-        }
-      } else {
-        showServerSetup();
-      }
-    } catch {
-      showServerSetup();
-    }
-  }
+  // 自動取得最新 ngrok URL（無論是否已有舊網址）
+  await _autoRefreshApiUrl();
   updateServerDisplay();
   loadTab('overview');
+}
+
+async function _autoRefreshApiUrl() {
+  // Step 1: 若無 URL，先嘗試自動偵測
+  if (!S.api) {
+    const detected = await _fetchServerInfo();
+    if (!detected) showServerSetup();
+    return;
+  }
+  // Step 2: 有舊 URL，探測是否仍可用
+  try {
+    const r = await fetch(S.api + '/api/health', {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (r.ok) { setSrvDotOk(true); return; }
+  } catch {}
+  // Step 3: 舊 URL 失效，嘗試從 localhost 取最新網址
+  const refreshed = await _fetchServerInfo();
+  if (refreshed) toast('🔄 伺服器網址已自動更新');
+}
+
+async function _fetchServerInfo() {
+  try {
+    const r = await fetch('http://localhost:8000/api/server-info', {
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+      signal: AbortSignal.timeout(3000),
+    });
+    if (r.ok) {
+      const data = await r.json();
+      if (data.url) { saveApiUrl(data.url); return true; }
+    }
+  } catch {}
+  return false;
 }
 
 // ── Tabs ──────────────────────────────────────────────────────

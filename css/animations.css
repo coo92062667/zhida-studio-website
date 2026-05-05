@@ -1,47 +1,89 @@
-@keyframes rippleOut {
-  to { transform:translate(-50%,-50%) scale(4); opacity:0; }
-}
+/* ═══════════════════════════════
+   智答工作室 — Keyframes v4
+   ═══════════════════════════════ */
 
-@keyframes spin { to { transform:rotate(360deg); } }
+@keyframes rippleOut {
+  to { transform: translate(-50%,-50%) scale(4); opacity: 0; }
+}
 
 @keyframes logoPulse {
-  0%,100%{ box-shadow:0 4px 14px rgba(255,107,53,0.4), 0 0 0 0 rgba(255,107,53,0.25); }
-  50%    { box-shadow:0 4px 14px rgba(255,107,53,0.4), 0 0 0 9px rgba(255,107,53,0); }
+  0%,100% { box-shadow: 0 4px 14px rgba(255,107,53,.35), 0 0 0 0 rgba(255,107,53,.2); }
+  50%     { box-shadow: 0 4px 14px rgba(255,107,53,.35), 0 0 0 10px rgba(255,107,53,0); }
 }
 
-@keyframes floatB {
-  0%,100%{ transform:translate(0,0) scale(1); }
-  33%    { transform:translate(22px,-22px) scale(1.04); }
-  66%    { transform:translate(-14px,12px) scale(0.97); }
+@keyframes pls {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,107,53,.6); }
+  50%     { box-shadow: 0 0 0 8px rgba(255,107,53,0); }
 }
 
-@keyframes ringRotate { to { transform:rotate(360deg); } }
-
-@keyframes pls { 0%,100%{box-shadow:0 0 0 0 rgba(255,107,53,0.6)} 50%{box-shadow:0 0 0 8px rgba(255,107,53,0)} }
-
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes fadeUp   { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: none; } }
+@keyframes fadeDown { from { opacity:0; transform: translateY(-16px); } to { opacity:1; transform: none; } }
 
 @keyframes ctaPulse {
-  0%,100%{ box-shadow:0 4px 20px rgba(255,107,53,0.4), 0 0 0 0 rgba(255,107,53,0.2); }
-  50%    { box-shadow:0 4px 32px rgba(255,107,53,0.6), 0 0 0 14px rgba(255,107,53,0); }
+  0%,100% { box-shadow: 0 6px 24px rgba(255,107,53,.40), 0 0 0 0 rgba(255,107,53,.2); }
+  50%     { box-shadow: 0 6px 32px rgba(255,107,53,.55), 0 0 0 14px rgba(255,107,53,0); }
 }
 
-@keyframes arrowB { 0%,100%{transform:rotate(45deg) translate(0,0); opacity:0.5} 50%{transform:rotate(45deg) translate(5px,5px); opacity:1} }
+/* Phone widget floating */
+@keyframes phoneFloat {
+  0%,100% { transform: perspective(800px) rotateY(-8deg) rotateX(4deg) translateY(0); }
+  50%     { transform: perspective(800px) rotateY(-6deg) rotateX(2deg) translateY(-16px); }
+}
 
-@keyframes fadeUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
-@keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:none} }
+/* Floating geometry shapes */
+@keyframes geoFloat1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(24px,-20px) scale(1.04); }
+  66%     { transform: translate(-16px,14px) scale(.97); }
+}
+@keyframes geoFloat2 {
+  0%,100% { transform: rotate(25deg) translate(0,0); }
+  50%     { transform: rotate(30deg) translate(18px,-14px); }
+}
+@keyframes geoFloat3 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%     { transform: translate(-12px,10px) scale(1.06); }
+}
 
-@keyframes shimmerCard { to { transform:translateX(200%); } }
+/* Floating info cards */
+@keyframes fcard1 {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50%     { transform: translateY(-10px) rotate(-1deg); }
+}
+@keyframes fcard2 {
+  0%,100% { transform: translateY(0) rotate(2deg); }
+  50%     { transform: translateY(10px) rotate(3deg); }
+}
 
-/* ── prefers-reduced-motion ── */
+/* Chat bubble entrance */
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(10px) scale(.95); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Typing indicator bounce */
+@keyframes typingBounce {
+  0%,80%,100% { transform: translateY(0); opacity: .6; }
+  40%         { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Glowing border on featured pricing card */
+@keyframes glowBorder {
+  0%,100% { box-shadow: 0 0 0 1px rgba(255,107,53,.12), 0 24px 60px rgba(255,107,53,.10); }
+  50%     { box-shadow: 0 0 0 2px rgba(255,107,53,.30), 0 24px 60px rgba(255,107,53,.18), 0 0 40px rgba(255,107,53,.12); }
+}
+
+/* CTA section glow pulse */
+@keyframes ctaGlowPulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: .6; }
+  50%     { transform: translate(-50%,-50%) scale(1.25); opacity: 1; }
+}
+
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration:        0.01ms !important;
-    animation-iteration-count: 1      !important;
-    transition-duration:       0.01ms !important;
-    scroll-behavior:           auto   !important;
+    animation-duration:        .01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:       .01ms !important;
   }
-  .hero-blob, .hero-ring, .hero-dots { animation: none !important; transform: none !important; }
-  #particle-canvas { display: none !important; }
-  .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1 !important; transform: none !important; }
 }

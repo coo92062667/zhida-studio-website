@@ -1,270 +1,243 @@
-﻿<!DOCTYPE html>
-<html lang="zh-TW" data-theme="dark">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>智答工作室 Zhida Studio — 科技也可以有人情味</title>
+  <title>智答工作室 Zhida Studio — 讓 AI 客服有溫度</title>
 
-  <!-- ── SEO ── -->
-  <meta name="description" content="智答工作室 Zhida Studio｜專為 IG 電商品牌打造的 AI 智能客服平台，24小時自動回覆、有溫度不冰冷、免費試用7天">
+  <!-- SEO -->
+  <meta name="description" content="智答工作室｜專為 IG 電商品牌打造的 AI 智能客服，24小時自動回覆、有溫度不冰冷、免費試用7天">
   <meta name="keywords" content="IG自動回覆,AI客服,Instagram機器人,電商客服,智答工作室,Zhida Studio">
   <meta name="author" content="智答工作室 Zhida Studio">
   <link rel="canonical" href="https://zhidastudio.com">
 
-  <!-- ── Open Graph ── -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="智答工作室 Zhida Studio｜AI 智能客服">
   <meta property="og:description" content="讓你的 IG 客服像真人店員一樣懂客人，24小時不間斷，免費試用7天">
   <meta property="og:image" content="https://zhidastudio.com/images/og-image.jpg">
   <meta property="og:url" content="https://zhidastudio.com">
-  <meta property="og:site_name" content="智答工作室 Zhida Studio">
   <meta property="og:locale" content="zh_TW">
 
-  <!-- ── Twitter Card ── -->
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="智答工作室 Zhida Studio｜AI 智能客服">
+  <meta name="twitter:title" content="智答工作室｜AI 智能客服">
   <meta name="twitter:description" content="讓你的 IG 客服像真人店員一樣懂客人，24小時不間斷">
-  <meta name="twitter:image" content="https://zhidastudio.com/images/og-image.jpg">
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/animations.css">
-
-  <!-- ── 關鍵 CSS（內嵌避免 FOUC） ── -->
-  <style>
-    /* FAQ accordion */
-    #faq { padding: 80px 0; }
-    .faq-wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
-    .faq-item {
-      border-bottom: 1px solid rgba(255,255,255,0.09);
-      overflow: hidden;
-    }
-    [data-theme="light"] .faq-item { border-bottom-color: rgba(26,43,74,0.12); }
-    .faq-q {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 0; cursor: pointer;
-      font-size: 1rem; font-weight: 600;
-      color: var(--heading); gap: 16px;
-      user-select: none; -webkit-tap-highlight-color: transparent;
-    }
-    .faq-q:hover { color: var(--orange); }
-    .faq-arrow {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 1.5px solid currentColor; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; transition: transform 0.28s, color 0.2s;
-    }
-    .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--orange); }
-    .faq-a {
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.35s ease, padding 0.28s ease;
-      font-size: 0.93rem; line-height: 1.75;
-      color: var(--body-text); padding: 0 0 0 0;
-    }
-    .faq-a-inner { padding-bottom: 18px; }
-    .faq-item.open .faq-a { max-height: 220px; }
-
-    /* Mobile bottom CTA bar */
-    #mob-cta-bar {
-      display: none;
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
-      padding: 10px 16px 16px;
-      background: linear-gradient(0deg, rgba(13,27,53,0.98) 70%, transparent);
-      backdrop-filter: blur(8px);
-    }
-    #mob-cta-bar a {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--orange); color: #fff;
-      border-radius: 50px; padding: 14px 24px;
-      font-size: 1rem; font-weight: 700; letter-spacing: 0.02em;
-      text-decoration: none;
-      box-shadow: 0 4px 24px rgba(255,107,53,0.45);
-      animation: ctaPulse 2.8s ease-in-out infinite;
-    }
-    [data-theme="light"] #mob-cta-bar {
-      background: linear-gradient(0deg, rgba(250,248,245,0.98) 70%, transparent);
-    }
-    [data-theme="light"] #mob-cta-bar a { box-shadow: 0 4px 20px rgba(255,107,53,0.35); }
-    @media (max-width: 768px) {
-      #mob-cta-bar { display: block; }
-      body { padding-bottom: 72px; }
-    }
-
-    /* Floating CTA button */
-    #float-cta {
-      position: fixed; bottom: 88px; right: 22px; z-index: 85;
-      opacity: 0; transform: scale(0.7) translateY(12px);
-      transition: opacity 0.3s, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-      pointer-events: none;
-    }
-    #float-cta.show { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
-    #float-cta a {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--orange); color: #fff;
-      padding: 12px 20px; border-radius: 50px;
-      font-size: 0.88rem; font-weight: 700;
-      text-decoration: none; white-space: nowrap;
-      box-shadow: 0 6px 28px rgba(255,107,53,0.5);
-    }
-    @media (max-width: 768px) { #float-cta { bottom: 80px; right: 14px; } }
-
-    /* Form success */
-    .form-success {
-      display: none; text-align: center; padding: 40px 24px;
-      font-size: 1.1rem; font-weight: 600; color: var(--heading);
-      animation: fadeUp 0.5s ease both;
-    }
-    .form-success.show { display: block; }
-    .form-success-icon { font-size: 3rem; margin-bottom: 16px; }
-    .form-success-sub { font-size: 0.9rem; color: var(--body-text); margin-top: 8px; font-weight: 400; }
-
-    /* prefers-reduced-motion */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-      .hero-blob, .hero-ring, .hero-dots { animation: none !important; }
-      #particle-canvas { display: none; }
-    }
-  </style>
 </head>
 <body>
 
-<!-- Fixed full-page particle canvas -->
-<canvas id="particle-canvas"></canvas>
+<!-- ── Custom cursor ── -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
-
+<!-- ── Scroll progress ── -->
 <div id="scroll-progress"></div>
-<button id="theme-toggle" aria-label="Toggle theme">🌙</button>
 
-<div id="page-loader">
-  <div class="loader-ring"></div>
-  <div class="loader-logo">Zhida</div>
-</div>
-
-<div id="mobile-menu">
-  <a href="#hero"      onclick="closeMobile()">首頁</a>
-  <a href="#features"  onclick="closeMobile()">服務介紹</a>
-  <a href="story.html" onclick="closeMobile()">品牌故事</a>
-  <a href="#pricing"   onclick="closeMobile()">收費方案</a>
-  <a href="#contact"   onclick="closeMobile()" class="mob-cta">聯絡我們</a>
-</div>
-
+<!-- ══ NAVBAR ══ -->
 <header id="navbar">
-  <div class="nav-logo">
+  <a href="#" class="nav-logo">
     <div class="logo-mark">智</div>
-    <div>
-      <div class="logo-text">智答工作室</div>
-      <div class="logo-sub">ZHIDA STUDIO</div>
+    <div class="logo-text-wrap">
+      <span class="logo-text">智答工作室</span>
+      <span class="logo-sub">ZHIDA STUDIO</span>
     </div>
-  </div>
+  </a>
+
   <nav>
     <ul>
-      <li><a href="#hero">首頁</a></li>
-      <li><a href="#features">服務介紹</a></li>
-      <li><a href="story.html">品牌故事</a></li>
-      <li><a href="#pricing">收費方案</a></li>
-      <li><a href="#contact" class="nav-cta">聯絡我們</a></li>
+      <li><a href="#pain">痛點</a></li>
+      <li><a href="#features">功能</a></li>
+      <li><a href="#stats">成效</a></li>
+      <li><a href="#pricing">方案</a></li>
+      <li><a href="#faq">FAQ</a></li>
     </ul>
   </nav>
-  <a href="login.html" class="nav-login">登入</a>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
+
+  <div class="nav-actions">
+    <a href="login.html" class="nav-login">登入</a>
+    <a href="#pricing" class="nav-cta">免費試用 →</a>
   </div>
+
+  <!-- Hamburger -->
+  <button class="hamburger" id="hamburger" aria-label="選單" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- Mobile menu -->
+<div id="mobile-menu">
+  <a href="#pain"     onclick="closeMobile()">痛點</a>
+  <a href="#features" onclick="closeMobile()">功能</a>
+  <a href="#stats"    onclick="closeMobile()">成效</a>
+  <a href="#pricing"  onclick="closeMobile()">方案</a>
+  <a href="#faq"      onclick="closeMobile()">FAQ</a>
+  <a href="#pricing"  onclick="closeMobile()" class="mob-cta">免費試用 →</a>
+</div>
 
 <!-- ══ HERO ══ -->
 <section id="hero">
+  <!-- Decorative geometry -->
+  <div class="geo geo-1"></div>
+  <div class="geo geo-2"></div>
+  <div class="geo geo-3"></div>
+  <div class="geo geo-4"></div>
   <div class="hero-dots"></div>
-  <div class="hero-blob blob-1"></div>
-  <div class="hero-blob blob-2"></div>
-  <div class="hero-blob blob-3"></div>
 
-  <!-- Rotating geometric rings -->
-  <div class="hero-rings">
-    <div class="hero-ring"><div class="ring-dot"></div></div>
-    <div class="hero-ring"><div class="ring-dot"></div></div>
-    <div class="hero-ring"><div class="ring-dot"></div></div>
-    <div class="hero-ring"><div class="ring-dot"></div></div>
-  </div>
-
-  <div class="hero-content">
-    <div class="hero-badge"><span class="pulse"></span> AI 客服解決方案 · 2026</div>
-    <h1 class="hero-title">
-      科技也可以有<br><span class="accent"><span id="tw-text"></span><span class="tw-cursor"></span></span>
-    </h1>
-    <p class="hero-sub">
-      智答工作室 Zhida Studio 為品牌打造有溫度的 AI 客服機器人，
-      24 小時即時回應、理解情緒、記住每位客戶——讓您的 Instagram 變成業績引擎。
-    </p>
-    <div class="hero-actions">
-      <div class="mag-wrap">
-        <a href="#contact" class="btn-primary">
-          免費體驗 7 天
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+  <div class="hero-inner">
+    <!-- Left: Copy -->
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="pulse"></span>
+        AI 客服新世代
       </div>
-      <div class="mag-wrap">
-        <a href="story.html" class="btn-outline">了解我們的故事</a>
+
+      <h1 class="hero-title">
+        讓 IG 客服<br>
+        <span class="grad">自動回覆</span><br>
+        卻有<span class="mint">溫度感</span>
+      </h1>
+
+      <p class="hero-sub">
+        智答工作室把你的品牌知識裝進 AI，讓每一則 DM
+        都像有溫度的真人店員在回答，24 小時不缺席。
+      </p>
+
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">免費試用 7 天 →</a>
+        <a href="#pain"    class="btn-ghost">了解更多</a>
+      </div>
+
+      <div class="hero-stats">
+        <div>
+          <div class="hstat-val"><span class="counter" data-target="98">0</span><span>%</span></div>
+          <div class="hstat-lbl">訊息回覆率</div>
+        </div>
+        <div>
+          <div class="hstat-val">3<span>秒</span></div>
+          <div class="hstat-lbl">平均回應時間</div>
+        </div>
+        <div>
+          <div class="hstat-val"><span class="counter" data-target="40">0</span><span>+</span></div>
+          <div class="hstat-lbl">合作品牌</div>
+        </div>
       </div>
     </div>
-    <div class="hero-stats">
-      <div class="hs-item">
-        <div class="hs-value">持續成長中</div>
-        <div class="hs-label">服務品牌</div>
-      </div>
-      <div class="hs-item">
-        <div class="hs-value">高回覆率</div>
-        <div class="hs-label">回覆準確率</div>
-      </div>
-      <div class="hs-item">
-        <div class="hs-value">快速上線</div>
-        <div class="hs-label">平均上線</div>
+
+    <!-- Right: 3D Phone Widget -->
+    <div class="hero-right">
+      <div class="phone-scene">
+        <div class="phone-widget">
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-header">
+                <div class="ph-avatar">🤖</div>
+                <div>
+                  <div class="ph-name">智答助理</div>
+                  <div class="ph-status">● 線上中</div>
+                </div>
+              </div>
+              <div class="ph-msgs">
+                <div class="ph-bubble user">請問這款有素食版本嗎？</div>
+                <div class="ph-bubble ai">有的！原味口味完全植物性 🌱 附素食認證</div>
+                <div class="ph-bubble user">方便今天到貨嗎？</div>
+                <div class="ph-bubble typing">
+                  <div class="typing-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating info cards -->
+          <div class="phone-cards">
+            <div class="fcard fcard-1">
+              <div class="fcard-tick">⚡</div>
+              <div class="fcard-val">3秒</div>
+              <div class="fcard-lbl">平均回應</div>
+            </div>
+            <div class="fcard fcard-2">
+              <div class="fcard-tick">✅</div>
+              <div class="fcard-val">98%</div>
+              <div class="fcard-lbl">客戶滿意度</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="hero-scroll" onclick="scrollTo({top:window.innerHeight,behavior:'smooth'})">
-    <span>SCROLL</span>
-    <div class="scroll-arrow"></div>
   </div>
 </section>
 
 <!-- ══ PAIN POINTS ══ -->
 <section id="pain">
-  <div class="section-head">
-    <div class="section-tag reveal">痛點共鳴</div>
-    <h2 class="pain-intro reveal d1">你是不是也有<span class="q">這些困擾</span>？</h2>
-    <p class="section-sub reveal d2" style="text-align:center;margin:0 auto;">每一個場景，都是真實發生在品牌主身上的故事</p>
-  </div>
-  <div class="pain-grid">
-    <div class="pain-card reveal d1">
-      <div class="pain-emoji">🌙</div>
-      <div class="pain-scenario">深夜訊息場景</div>
-      <p class="pain-quote">「凌晨兩點有客人問價格、問規格，但我已經睡了三個小時…醒來看到訊息時，客人早就跑去買別人家的了。」</p>
-      <div class="pain-resolve">AI 24 小時即時回覆，不錯過任何一筆訂單</div>
+  <div class="pain-layout">
+    <!-- Left: chat demo -->
+    <div class="pain-chat fade-left">
+      <div class="chat-label">客戶 DM 你</div>
+      <div class="chat-row">
+        <div class="chat-avatar customer">👩</div>
+        <div class="chat-bubble customer">有貨嗎？今天可以到嗎？💕</div>
+      </div>
+      <div class="chat-row">
+        <div class="chat-avatar customer">👩</div>
+        <div class="chat-bubble customer">素食可以吃嗎</div>
+      </div>
+
+      <div class="chat-label" style="margin-top:12px;">沒有 AI 時...</div>
+      <div class="chat-row right">
+        <div class="chat-bubble ai" style="background:#9898B0;">（3小時後）好的請問你要哪款</div>
+        <div class="chat-avatar ai">😮‍💨</div>
+      </div>
+
+      <div class="chat-label" style="margin-top:20px; color: #00D4AA;">有智答 AI 後 ✨</div>
+      <div class="chat-row right">
+        <div class="chat-bubble ai mint">有貨！原味是素食認證款 🌱 今天下午3點前下單可以今日到貨，要幫您保留一份嗎？</div>
+        <div class="chat-avatar ai">🤖</div>
+      </div>
+      <div class="chat-time">剛剛 · 3秒內自動回覆</div>
     </div>
-    <div class="pain-card reveal d2">
-      <div class="pain-emoji">🔄</div>
-      <div class="pain-scenario">重複問題消耗</div>
-      <p class="pain-quote">「每天都在回一樣的問題：多少錢、幾天到、可以換貨嗎？我有更重要的事要做，但這些問題永遠回不完…」</p>
-      <div class="pain-resolve">AI 自動回覆 80% 重複詢問，還你時間做重要的事</div>
-    </div>
-    <div class="pain-card reveal d3">
-      <div class="pain-emoji">🤖</div>
-      <div class="pain-scenario">機器感問題</div>
-      <p class="pain-quote">「用過其他 AI 客服，客人一下就感覺到是機器人在回，說話像讀說明書，反而讓客人更不信任我們品牌…」</p>
-      <div class="pain-resolve">深度品牌語氣客製，讓 AI 說出你的風格</div>
-    </div>
-    <div class="pain-card reveal d4">
-      <div class="pain-emoji">📉</div>
-      <div class="pain-scenario">轉換率低落</div>
-      <p class="pain-quote">「IG 追蹤者越來越多，DM 也越來越多，但轉換成實際購買的比例卻沒有提升，不知道哪個環節出了問題…」</p>
-      <div class="pain-resolve">需求分析儀表板，找出每個流失環節的真實原因</div>
+
+    <!-- Right: pain points copy -->
+    <div class="fade-right">
+      <div class="section-eyebrow">你也有這些困擾嗎</div>
+      <h2 class="section-title">客服壓力吃掉你多少時間？</h2>
+      <p class="section-sub" style="margin-bottom:40px;">
+        每天重複一樣的問題、一邊出貨一邊回 DM、深夜客戶問完沒有回覆就不買了…
+        這些痛點，智答 AI 全部幫你解決。
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,107,53,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">😫</div>
+          <div>
+            <div style="font-weight:700;color:var(--heading);font-size:.95rem;margin-bottom:4px;">重複問題消耗精力</div>
+            <div style="font-size:13.5px;color:var(--body);line-height:1.7;">「有貨嗎」「怎麼訂購」「什麼時候到」每天重複 N 遍</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,107,53,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🌙</div>
+          <div>
+            <div style="font-weight:700;color:var(--heading);font-size:.95rem;margin-bottom:4px;">深夜訊息流失訂單</div>
+            <div style="font-size:13.5px;color:var(--body);line-height:1.7;">客戶在你睡著時問了一句，沒回就直接買別家</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,107,53,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🤖</div>
+          <div>
+            <div style="font-weight:700;color:var(--heading);font-size:.95rem;margin-bottom:4px;">機器人感讓人卻步</div>
+            <div style="font-size:13.5px;color:var(--body);line-height:1.7;">市面 AI 回答制式冰冷，反而傷害品牌溫度</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -272,59 +245,47 @@
 <!-- ══ FEATURES ══ -->
 <section id="features">
   <div class="section-head">
-    <div class="section-tag reveal">服務介紹</div>
-    <h2 class="section-title reveal d1">專為 Instagram 品牌打造</h2>
-    <p class="section-sub reveal d2">每一個功能，都是為了讓您的客戶感受到被重視</p>
+    <div class="section-eyebrow fade-up">核心功能</div>
+    <h2 class="section-title fade-up d1">不只是「自動回覆」</h2>
+    <p class="section-sub fade-up d2">從品牌知識到對話語氣，每個細節都可以客製化</p>
   </div>
-  <div class="features-grid">
-    <div class="feature-card reveal d1">
-      <div class="feature-icon">🤖</div>
-      <h3>AI 智慧客服</h3>
-      <p>搭載 GPT-4o 語言模型，深度理解客戶意圖，以品牌專屬口吻自然對話，回覆品質媲美真人客服。</p>
-    </div>
-    <div class="feature-card reveal d2">
-      <div class="feature-icon">⚡</div>
-      <h3>24 小時即時回覆</h3>
-      <p>節假日、深夜零盲點。客戶每則訊息在 3 秒內獲得回應，不讓任何一筆潛在訂單流失。</p>
-    </div>
-    <div class="feature-card reveal d3">
-      <div class="feature-icon">💬</div>
-      <h3>情緒識別對話記憶</h3>
-      <p>記住同一位客戶說過的話，感知對話情緒，主動調整語氣——讓每次互動都像老朋友。</p>
-    </div>
-    <div class="feature-card reveal d4">
-      <div class="feature-icon">🎨</div>
-      <h3>品牌完全客製化</h3>
-      <p>從品牌名稱、語氣、知識庫到視覺呈現，完全依照您的品牌個性量身訂做，獨一無二。</p>
-    </div>
-  </div>
-</section>
 
-<!-- ══ PROCESS ══ -->
-<section id="process">
-  <div class="section-head">
-    <div class="section-tag reveal">快速上線</div>
-    <h2 class="section-title reveal d1">三步驟，AI 客服即刻就位</h2>
-    <p class="section-sub reveal d2">最快 3 個工作天，無需技術背景，我們全程協助</p>
-  </div>
-  <div class="process-steps">
-    <div class="process-step reveal-left d1">
-      <div class="step-num"><div><div class="num">01</div><div class="label">STEP</div></div></div>
-      <div class="step-icon">📝</div>
-      <h3>告訴我們你的品牌</h3>
-      <p>填寫一份簡單問卷，描述你的品牌個性、常見問題與服務特色——5 分鐘搞定，其他交給我們。</p>
+  <div class="features-grid">
+    <div class="feat-card large fade-up">
+      <div class="feat-tag">品牌知識庫</div>
+      <div class="feat-icon">🧠</div>
+      <h3>深度學習你的品牌</h3>
+      <p>把產品資訊、常見問答、品牌故事全部餵給 AI，讓它真正「懂」你的品牌，回答出只有你的店員才知道的答案。</p>
     </div>
-    <div class="process-step reveal d2">
-      <div class="step-num"><div><div class="num">02</div><div class="label">STEP</div></div></div>
-      <div class="step-icon">🤖</div>
-      <h3>我們幫你設定 AI</h3>
-      <p>專業團隊根據你的品牌建立專屬知識庫，調整 AI 語氣與回覆風格，讓 AI 說出你的品牌靈魂。</p>
+
+    <div class="feat-card fade-up d1">
+      <div class="feat-icon">⚡</div>
+      <h3>3 秒內自動回覆</h3>
+      <p>任何時段都能即時回應，凌晨三點的客戶也不例外。</p>
     </div>
-    <div class="process-step reveal-right d3">
-      <div class="step-num"><div><div class="num">03</div><div class="label">STEP</div></div></div>
-      <div class="step-icon">🚀</div>
-      <h3>開始自動回覆</h3>
-      <p>7 天免費體驗，立即上線。AI 24 小時替你回覆 IG 訊息，你只需要享受省下來的時間和成長的業績。</p>
+
+    <div class="feat-card fade-up d2">
+      <div class="feat-icon">💬</div>
+      <h3>有溫度的語氣</h3>
+      <p>AI 學習你的品牌說話風格，不再是冰冷模板。</p>
+    </div>
+
+    <div class="feat-card fade-up d1">
+      <div class="feat-icon">📊</div>
+      <h3>對話數據儀表板</h3>
+      <p>查看熱門問題、高峰時段、轉換率，持續優化客服品質。</p>
+    </div>
+
+    <div class="feat-card fade-up d2">
+      <div class="feat-icon">🔒</div>
+      <h3>安全邊界設定</h3>
+      <p>設定禁區話題與回應限制，AI 不會越界回答不該說的內容。</p>
+    </div>
+
+    <div class="feat-card fade-up d3">
+      <div class="feat-icon">🚀</div>
+      <h3>一天內上線</h3>
+      <p>填寫品牌資料 → 上傳知識庫 → 開始測試，最快當天完成部署。</p>
     </div>
   </div>
 </section>
@@ -332,130 +293,114 @@
 <!-- ══ STATS ══ -->
 <section id="stats">
   <div class="stats-grid">
-    <div class="stat-item reveal d1">
-      <div class="stat-value">持續成長中</div>
-      <div class="stat-label">服務品牌數</div>
-      <div class="stat-divider"></div>
+    <div class="stat-item fade-scale">
+      <div class="stat-num"><span class="counter" data-target="98">0</span><span class="stat-suffix">%</span></div>
+      <div class="stat-lbl">客戶滿意度</div>
+      <div class="stat-bar"></div>
     </div>
-    <div class="stat-item reveal d2">
-      <div class="stat-value">高回覆率</div>
-      <div class="stat-label">回覆準確率</div>
-      <div class="stat-divider"></div>
+    <div class="stat-item fade-scale d1">
+      <div class="stat-num"><span class="counter" data-target="3">0</span><span class="stat-suffix">秒</span></div>
+      <div class="stat-lbl">平均回應時間</div>
+      <div class="stat-bar"></div>
     </div>
-    <div class="stat-item reveal d3">
-      <div class="stat-value">⭐ 4.9 / 5</div>
-      <div class="stat-label">平均客戶滿意度</div>
-      <div class="stat-divider"></div>
+    <div class="stat-item fade-scale d2">
+      <div class="stat-num"><span class="counter" data-target="40">0</span><span class="stat-suffix">+</span></div>
+      <div class="stat-lbl">合作品牌數</div>
+      <div class="stat-bar"></div>
     </div>
-    <div class="stat-item reveal d4">
-      <div class="stat-value">快速上線</div>
-      <div class="stat-label">平均上線天數</div>
-      <div class="stat-divider"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ TESTIMONIALS ══ -->
-<section id="testimonials">
-  <div class="section-head">
-    <div class="section-tag reveal">真實回饋</div>
-    <h2 class="section-title reveal d1">客戶這樣說</h2>
-    <p class="section-sub reveal d2">每一則評價，都是我們持續進步的動力</p>
-  </div>
-  <div class="testimonials-grid">
-    <div class="testimonial-card reveal d1">
-      <div class="quote-mark">"</div>
-      <div class="stars">★★★★★</div>
-      <blockquote>「導入 AI 客服後，我們的 IG DM 回覆率從 40% 提升到 100%！最讓我驚喜的是 AI 真的記得客戶說過的偏好，客戶都說感覺被重視。強烈推薦！」</blockquote>
-      <div class="testimonial-author">
-        <div class="author-avatar av-1">林</div>
-        <div>
-          <div class="author-name">林小姐</div>
-          <div class="author-role">健康食品品牌創辦人</div>
-          <div class="author-result">↑ 回覆率 40% → 100%</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card reveal d2">
-      <div class="quote-mark">"</div>
-      <div class="stars">★★★★★</div>
-      <blockquote>「原本擔心 AI 講話很機器感，結果完全不會！智答幫我們設定的口吻超級像我們品牌，連老客戶都說沒發現換成 AI，還以為是真人在回。」</blockquote>
-      <div class="testimonial-author">
-        <div class="author-avatar av-2">陳</div>
-        <div>
-          <div class="author-name">陳先生</div>
-          <div class="author-role">手工甜點工作室</div>
-          <div class="author-result">↑ 客服滿意度提升 35%</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial-card reveal d3">
-      <div class="quote-mark">"</div>
-      <div class="stars">★★★★★</div>
-      <blockquote>「三天就上線了，團隊全程協助很專業。現在我每天早上起來就看到 AI 幫我回覆了幾十則訊息，省了超多時間，業績也明顯成長。」</blockquote>
-      <div class="testimonial-author">
-        <div class="author-avatar av-3">王</div>
-        <div>
-          <div class="author-name">王小姐</div>
-          <div class="author-role">美妝電商品牌主理人</div>
-          <div class="author-result">↑ 月營業額成長 28%</div>
-        </div>
-      </div>
+    <div class="stat-item fade-scale d3">
+      <div class="stat-num"><span class="counter" data-target="24">0</span><span class="stat-suffix">hr</span></div>
+      <div class="stat-lbl">全天候不間斷服務</div>
+      <div class="stat-bar"></div>
     </div>
   </div>
 </section>
 
 <!-- ══ PRICING ══ -->
 <section id="pricing">
-  <div class="section-head">
-    <div class="section-tag reveal">收費方案</div>
-    <h2 class="section-title reveal d1">透明定價，按需選擇</h2>
-    <p class="section-sub reveal d2">所有方案均含 7 天免費體驗，不滿意全額退款</p>
-  </div>
-  <div class="pricing-grid">
-    <div class="pricing-card reveal d1">
-      <div class="pricing-tag">入門方案</div>
-      <div class="pricing-name">Starter</div>
-      <div class="pricing-price">$2,999</div>
-      <div class="pricing-period">/ 月，建置費 $5,999（一次性）</div>
-      <ul class="pricing-list">
-        <li>Instagram Webhook 串接</li>
-        <li>品牌知識庫建立（基礎版）</li>
-        <li>GPT-4o 對話引擎</li>
-        <li>24 小時自動回覆</li>
-        <li>月度成效報告</li>
-      </ul>
-      <button class="pricing-btn" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">免費體驗 7 天</button>
+  <div class="pricing-layout">
+    <!-- Left -->
+    <div class="fade-left">
+      <div class="section-eyebrow">方案選擇</div>
+      <h2 class="section-title">找到最適合你的方案</h2>
+      <p class="section-sub" style="margin-bottom:36px;">
+        從免費試用開始，不需要信用卡，7天內隨時取消。
+      </p>
+      <div class="pricing-perks">
+        <div class="perk"><div class="perk-icon">✓</div>7 天免費試用，不需信用卡</div>
+        <div class="perk"><div class="perk-icon">✓</div>專人協助建立品牌知識庫</div>
+        <div class="perk"><div class="perk-icon">✓</div>隨時升降方案，彈性靈活</div>
+        <div class="perk"><div class="perk-icon">✓</div>升級後立即生效，不中斷服務</div>
+      </div>
     </div>
-    <div class="pricing-card featured reveal d2">
-      <div class="pricing-tag">最受歡迎</div>
-      <div class="pricing-name">Growth</div>
-      <div class="pricing-price">$4,999</div>
-      <div class="pricing-period">/ 月，建置費 $8,999（一次性）</div>
-      <ul class="pricing-list">
-        <li>Starter 所有功能</li>
-        <li>對話記憶 + 情緒識別</li>
-        <li>需求分析儀表板</li>
-        <li>知識庫每月一次更新</li>
-        <li>優先客戶支援</li>
-        <li>每週數據週報</li>
-      </ul>
-      <button class="pricing-btn" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">免費體驗 7 天</button>
-    </div>
-    <div class="pricing-card reveal d3">
-      <div class="pricing-tag">企業方案</div>
-      <div class="pricing-name">Enterprise</div>
-      <div class="pricing-price">洽談</div>
-      <div class="pricing-period">客製化報價</div>
-      <ul class="pricing-list">
-        <li>Growth 所有功能</li>
-        <li>多帳號整合管理</li>
-        <li>電商系統 API 串接</li>
-        <li>專屬客戶成功經理</li>
-        <li>SLA 99.9% 保證</li>
-        <li>客製功能開發</li>
-      </ul>
-      <button class="pricing-btn" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">預約諮詢</button>
+
+    <!-- Right: tabs + cards -->
+    <div class="fade-right">
+      <div class="pricing-tabs">
+        <div class="ptab active" data-plan="free">免費試用</div>
+        <div class="ptab" data-plan="basic">基本版</div>
+        <div class="ptab" data-plan="pro">進階版</div>
+      </div>
+
+      <div class="pricing-panels">
+        <!-- Free -->
+        <div class="pricing-panel active" data-plan="free">
+          <div class="pricing-card">
+            <div class="pc-plan">免費試用</div>
+            <div class="pc-price"><span>NT$</span>0</div>
+            <div class="pc-period">7天免費，到期後再決定</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-list">
+              <li>AI 自動回覆（每日 50 則）</li>
+              <li>品牌知識庫建立（1個）</li>
+              <li>基本對話報表</li>
+              <li class="no">自訂 AI 語氣風格</li>
+              <li class="no">進階數據分析</li>
+              <li class="no">優先客服支援</li>
+            </ul>
+            <button class="pc-btn outline" onclick="window.location.href='login.html'">立即開始免費試用</button>
+          </div>
+        </div>
+
+        <!-- Basic -->
+        <div class="pricing-panel" data-plan="basic">
+          <div class="pricing-card featured">
+            <div class="pricing-badge">最熱門</div>
+            <div class="pc-plan">基本版</div>
+            <div class="pc-price"><span>NT$</span>1,990</div>
+            <div class="pc-period">/ 月，年付享 85 折</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-list">
+              <li>AI 自動回覆（每日 500 則）</li>
+              <li>品牌知識庫（3個）</li>
+              <li>自訂 AI 語氣風格</li>
+              <li>完整對話數據報表</li>
+              <li>Line / IG 雙平台支援</li>
+              <li class="no">優先技術支援</li>
+            </ul>
+            <button class="pc-btn" onclick="window.location.href='login.html'">選擇基本版 →</button>
+          </div>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-panel" data-plan="pro">
+          <div class="pricing-card">
+            <div class="pc-plan">進階版</div>
+            <div class="pc-price"><span>NT$</span>4,990</div>
+            <div class="pc-period">/ 月，年付享 85 折</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-list">
+              <li>AI 自動回覆（無限則）</li>
+              <li>品牌知識庫（無限個）</li>
+              <li>多平台同時整合</li>
+              <li>進階 AI 個性化訓練</li>
+              <li>即時數據儀表板 API</li>
+              <li>專屬客戶成功經理</li>
+            </ul>
+            <button class="pc-btn" onclick="window.location.href='login.html'">選擇進階版 →</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -463,124 +408,114 @@
 <!-- ══ FAQ ══ -->
 <section id="faq">
   <div class="section-head">
-    <div class="section-tag reveal">常見問題</div>
-    <h2 class="section-title reveal d1">你最想知道的事</h2>
-    <p class="section-sub reveal d2">沒看到你的問題？直接問我們，2 小時內回覆</p>
+    <div class="section-eyebrow fade-up">常見問題</div>
+    <h2 class="section-title fade-up d1">你可能想知道的事</h2>
   </div>
+
   <div class="faq-wrap">
-    <div class="faq-item">
+    <div class="faq-item fade-up">
       <div class="faq-q">
-        <span>需要寫程式嗎？</span>
-        <div class="faq-arrow">+</div>
+        <span>設定需要技術背景嗎？</span>
+        <span class="faq-arrow">+</span>
       </div>
-      <div class="faq-a"><div class="faq-a-inner">完全不需要！我們幫你設定好一切，3 分鐘上線。你只需要提供品牌資料，技術的事交給我們，不需要任何技術背景。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">
+        完全不需要！你只需要填寫品牌資料表單，智答工作室的顧問會協助你建立知識庫，
+        整個過程大約需要 1-2 小時，當天就能上線運行。
+      </div></div>
     </div>
-    <div class="faq-item">
+
+    <div class="faq-item fade-up d1">
       <div class="faq-q">
-        <span>AI 會說錯話嗎？</span>
-        <div class="faq-arrow">+</div>
+        <span>AI 回覆的準確度如何保證？</span>
+        <span class="faq-arrow">+</span>
       </div>
-      <div class="faq-a"><div class="faq-a-inner">AI 只根據你的品牌知識庫回答，不會亂說。遇到不確定或超出範圍的問題，系統會自動通知你介入處理，讓你隨時掌控客服品質。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">
+        AI 的回覆品質取決於知識庫的完整度。我們會協助你建立涵蓋所有常見問題的知識庫，
+        並在上線前進行多輪測試。對於不確定的問題，AI 會主動說「讓我幫您轉接真人確認」。
+      </div></div>
     </div>
-    <div class="faq-item">
+
+    <div class="faq-item fade-up d2">
       <div class="faq-q">
-        <span>試用期結束後會自動扣費嗎？</span>
-        <div class="faq-arrow">+</div>
+        <span>目前支援哪些平台？</span>
+        <span class="faq-arrow">+</span>
       </div>
-      <div class="faq-a"><div class="faq-a-inner">不會！試用期結束後我們會主動與你聯繫，由你決定是否繼續。沒有任何隱藏費用，也不需要綁定信用卡，完全零風險。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">
+        目前主要支援 Instagram DM，Line 官方帳號整合正在開發中，預計 2026 Q3 推出。
+        Facebook Messenger 支援也在規劃中。
+      </div></div>
     </div>
-    <div class="faq-item">
+
+    <div class="faq-item fade-up d3">
       <div class="faq-q">
-        <span>我的客戶資料安全嗎？</span>
-        <div class="faq-arrow">+</div>
+        <span>客戶資料和對話記錄安全嗎？</span>
+        <span class="faq-arrow">+</span>
       </div>
-      <div class="faq-a"><div class="faq-a-inner">所有資料加密儲存，嚴格遵守個資保護法，絕不外洩或用於訓練其他模型。你的客戶資料只屬於你。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">
+        所有資料均以加密方式儲存，對話記錄只有你有存取權限。我們遵守台灣個資法規定，
+        不會將你的客戶資料用於任何第三方用途。
+      </div></div>
     </div>
-    <div class="faq-item">
+
+    <div class="faq-item fade-up d4">
       <div class="faq-q">
-        <span>支援哪些平台？</span>
-        <div class="faq-arrow">+</div>
+        <span>如果 AI 回答錯誤怎麼辦？</span>
+        <span class="faq-arrow">+</span>
       </div>
-      <div class="faq-a"><div class="faq-a-inner">目前支援 Instagram DM 自動回覆。LINE 官方帳號和 WhatsApp Business 整合即將推出，歡迎提前預約，享有早鳥優惠。</div></div>
+      <div class="faq-a"><div class="faq-a-inner">
+        你可以在管理後台即時查看所有對話，發現問題時可以更新知識庫讓 AI 學習。
+        我們也提供每週品質報告，主動告知需要優化的回覆類型，持續提升準確率。
+      </div></div>
     </div>
   </div>
 </section>
 
-<!-- ══ CONTACT ══ -->
-<section id="contact">
-  <div class="contact-wrap">
-    <div class="contact-info reveal-left">
-      <div class="section-tag">開始合作</div>
-      <h3 class="section-title" style="font-size:1.9rem;">讓您的 Instagram<br>變成 24 小時業績引擎</h3>
-      <p>免費體驗 7 天，我們了解您的品牌需求後提供最適合的解決方案。</p>
-      <div class="contact-items">
-        <div class="contact-item">
-          <div class="ci-icon">✉️</div>
-          <div>
-            <div class="ci-label">電子郵件</div>
-            <div class="ci-value">coo92062667@gmail.com</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">📸</div>
-          <div>
-            <div class="ci-label">Instagram</div>
-            <div class="ci-value">@zhidastudio.com</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="ci-icon">🕐</div>
-          <div>
-            <div class="ci-label">回覆時間</div>
-            <div class="ci-value">平均 2 小時內回覆</div>
-          </div>
-        </div>
-      </div>
+<!-- ══ PROCESS ══ -->
+<section id="process">
+  <div class="section-head">
+    <div class="section-eyebrow fade-up">上線流程</div>
+    <h2 class="section-title fade-up d1">最快一天，讓 AI 幫你上班</h2>
+    <p class="section-sub fade-up d2">三個步驟，從零到 AI 客服全自動</p>
+  </div>
+
+  <div class="process-grid">
+    <div class="proc-step fade-up">
+      <span class="proc-num">01</span>
+      <div class="proc-icon">📋</div>
+      <h3>填寫品牌資料</h3>
+      <p>填寫產品資訊、常見問答、品牌語氣，我們的顧問協助整理成知識庫。</p>
     </div>
-    <div class="reveal-right">
-      <form class="contact-form" id="contact-form" onsubmit="submitForm(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="name">您的稱呼 *</label>
-            <input type="text" id="name" name="name" placeholder="王小明" required />
-          </div>
-          <div class="form-group">
-            <label for="brand">品牌／公司名稱 *</label>
-            <input type="text" id="brand" name="brand" placeholder="我的品牌" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="email">電子郵件 *</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" required />
-        </div>
-        <div class="form-group">
-          <label for="service">感興趣的服務</label>
-          <select id="service" name="service">
-            <option value="">請選擇...</option>
-            <option>Instagram AI 客服建置</option>
-            <option>品牌知識庫設定</option>
-            <option>對話記憶 + 需求分析</option>
-            <option>完整 AI 客服解決方案</option>
-            <option>其他需求</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="message">需求說明</label>
-          <textarea id="message" name="message" placeholder="請簡單描述您的品牌與希望 AI 能解決的問題..."></textarea>
-        </div>
-        <button type="submit" class="btn-submit" id="submit-btn">
-          <span id="btn-text">送出諮詢需求</span>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" id="btn-arrow">
-            <path d="M3 9h12M10 5l5 4-5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </form>
-      <div class="form-success" id="form-success">
-        <div class="form-success-icon">🎉</div>
-        <div>感謝您的諮詢！</div>
-        <div class="form-success-sub">我們已收到您的需求，將在 <strong>2 小時內</strong> 透過 Email 與您聯繫。<br>也歡迎直接私訊我們的 IG：<strong>@zhida.studio</strong></div>
-      </div>
+    <div class="proc-step fade-up d2">
+      <span class="proc-num">02</span>
+      <div class="proc-icon">🤖</div>
+      <h3>AI 訓練與測試</h3>
+      <p>智答 AI 學習你的品牌知識，上線前進行多輪對話測試，確保準確度。</p>
     </div>
+    <div class="proc-step fade-up d3">
+      <span class="proc-num">03</span>
+      <div class="proc-icon">🚀</div>
+      <h3>正式上線啟動</h3>
+      <p>連結 IG 帳號，啟動自動回覆，你的 AI 客服正式 24 小時上班！</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="section-eyebrow fade-up" style="color:rgba(255,107,53,.7);">開始使用</div>
+  <h2 class="section-title fade-up d1">準備好讓 AI 幫你接客服了嗎？</h2>
+  <p class="section-sub fade-up d2">
+    7 天免費試用，不需要信用卡，不需要技術背景。<br>
+    今天設定，明天就能讓 AI 幫你上班。
+  </p>
+  <div class="cta-actions fade-up d3">
+    <a href="login.html" class="btn-primary" style="font-size:16px;padding:17px 44px;">
+      免費試用 7 天 →
+    </a>
+    <a href="https://www.instagram.com/zhida.studio/" target="_blank" rel="noopener" class="btn-outline-white">
+      追蹤我們的 IG
+    </a>
   </div>
 </section>
 
@@ -588,61 +523,64 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
-        <div style="width:36px;height:36px;background:linear-gradient(135deg,var(--orange),#FF9A70);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#fff;">智</div>
-        <div class="logo-text">智答工作室 Zhida Studio</div>
-      </div>
-      <p>用有溫度的科技，為每個品牌的客戶關係賦予新的生命。讓 AI 替您說出最貼近人心的那句話。</p>
+      <a href="#" class="nav-logo" style="gap:10px;display:inline-flex;align-items:center;">
+        <div class="logo-mark">智</div>
+        <div class="logo-text-wrap">
+          <span class="logo-text" style="color:#fff;">智答工作室</span>
+          <span class="logo-sub">ZHIDA STUDIO</span>
+        </div>
+      </a>
+      <p>讓每一則 IG 訊息都有溫度，<br>AI 客服的新標準。</p>
       <div class="footer-social">
-        <div class="social-btn" title="Instagram">📸</div>
-        <div class="social-btn" title="Email">✉️</div>
-        <div class="social-btn" title="Line">💬</div>
+        <a href="https://www.instagram.com/zhida.studio/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">📷</a>
+        <a href="mailto:contact@zhidastudio.com" class="social-btn" aria-label="Email">✉️</a>
       </div>
     </div>
+
     <div class="footer-col">
-      <h4>服務</h4>
+      <h4>產品</h4>
       <ul>
-        <li><a href="#features">AI 客服建置</a></li>
-        <li><a href="#features">品牌客製化</a></li>
-        <li><a href="#features">需求分析儀表板</a></li>
-        <li><a href="#contact">免費體驗 7 天</a></li>
+        <li><a href="#features">核心功能</a></li>
+        <li><a href="#pricing">方案價格</a></li>
+        <li><a href="#process">上線流程</a></li>
+        <li><a href="#faq">常見問題</a></li>
       </ul>
     </div>
+
     <div class="footer-col">
-      <h4>資訊</h4>
+      <h4>公司</h4>
       <ul>
-        <li><a href="story.html">品牌故事</a></li>
-        <li><a href="privacy.html" target="_blank">隱私權政策</a></li>
-        <li><a href="terms.html" target="_blank">服務條款</a></li>
-        <li><a href="#contact">聯絡我們</a></li>
+        <li><a href="#">關於我們</a></li>
+        <li><a href="#">隱私政策</a></li>
+        <li><a href="#">服務條款</a></li>
+        <li><a href="mailto:contact@zhidastudio.com">聯絡我們</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>帳號</h4>
+      <ul>
+        <li><a href="login.html">登入</a></li>
+        <li><a href="#pricing">免費試用</a></li>
       </ul>
     </div>
   </div>
+
   <div class="footer-bottom">
-    <p>&copy; 2026 智答工作室 Zhida Studio. All rights reserved.</p>
+    <p>© 2026 智答工作室 Zhida Studio. All rights reserved.</p>
     <div style="display:flex;gap:20px;">
-      <a href="privacy.html" target="_blank">隱私權政策</a>
-      <a href="terms.html" target="_blank">服務條款</a>
+      <a href="#">隱私政策</a>
+      <a href="#">服務條款</a>
     </div>
   </div>
 </footer>
 
-<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="回到頂部">↑</button>
+<!-- Back to top -->
+<button id="back-top" aria-label="回到頂端">↑</button>
 
-<!-- Mobile bottom CTA bar -->
-<div id="mob-cta-bar">
-  <a href="#contact" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'});return false;">
-    🚀 免費試用 7 天
-  </a>
-</div>
+<!-- Scripts -->
+<script src="js/main.js" defer></script>
+<script src="js/cursor.js" defer></script>
 
-<!-- Floating CTA button (desktop) -->
-<div id="float-cta">
-  <a href="#contact" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'});return false;">
-    🚀 免費試用 7 天
-  </a>
-</div>
-
-<script src="js/main.js"></script>
 </body>
 </html>

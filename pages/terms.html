@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>服務條款 — 智答工作室 Zhida Studio</title>
+  <meta name="description" content="智答工作室服務條款 — 使用我們 AI 客服平台的相關規定與說明。">
+  <meta name="robots" content="noindex, follow">
+  <meta property="og:title" content="服務條款 — 智答工作室 Zhida Studio">
+  <meta property="og:url" content="https://zhidastudio.com/pages/terms.html">
+  <link rel="canonical" href="https://zhidastudio.com/pages/terms.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1A2B4A;
+      --orange: #FF6B35;
+      --orange2:#E85A25;
+      --white:  #FFFFFF;
+      --light:  #F4F7FB;
+      --text:   #2D3748;
+      --muted:  #718096;
+      --border: #E2E8F0;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0D1B35 0%, var(--navy) 60%, #1F3460 100%);
+      color: #fff;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(255,107,53,0.2);
+      border: 1px solid rgba(255,107,53,0.4);
+      color: #FF9A70;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: clamp(1.7rem, 4vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    header p { color: rgba(255,255,255,0.55); font-size: 14px; }
+    header .last-updated {
+      display: inline-block;
+      margin-top: 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      padding: 4px 16px;
+      font-size: 12px; color: rgba(255,255,255,0.5);
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Intro ── */
+    .intro-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 36px;
+      font-size: 14px; color: var(--muted);
+      line-height: 1.8;
+    }
+    .intro-card strong { color: var(--text); }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+    .toc h3 {
+      font-size: 13px; font-weight: 700;
+      color: var(--navy); letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .toc ol {
+      list-style: none; padding: 0;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 6px 24px;
+    }
+    .toc ol li { counter-increment: toc; }
+    .toc ol li a {
+      color: var(--muted); font-size: 13px; text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      transition: color 0.2s;
+    }
+    .toc ol li a::before {
+      content: counter(toc, decimal-leading-zero);
+      font-size: 11px; font-weight: 700;
+      color: var(--orange); min-width: 20px;
+    }
+    .toc ol { counter-reset: toc; }
+    .toc ol li a:hover { color: var(--orange); }
+
+    /* ── Section Card ── */
+    section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      margin-bottom: 20px;
+      scroll-margin-top: 24px;
+    }
+    section h2 {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 18px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--orange), #FF9A70);
+      font-size: 15px; flex-shrink: 0;
+    }
+    section p { margin-bottom: 12px; font-size: 14px; color: var(--text); }
+    section p:last-child { margin-bottom: 0; }
+    section h3 {
+      font-size: 14px; font-weight: 700; color: var(--navy);
+      margin: 20px 0 8px;
+    }
+    section h3:first-of-type { margin-top: 0; }
+
+    /* ── Lists ── */
+    ul.policy-list, ol.policy-list {
+      list-style: none; padding: 0; margin: 0;
+    }
+    ul.policy-list li, ol.policy-list li {
+      display: flex; gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px; color: var(--text);
+      counter-increment: plist;
+    }
+    ul.policy-list li:last-child, ol.policy-list li:last-child { border-bottom: none; }
+    ul.policy-list li .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--orange); flex-shrink: 0; margin-top: 8px;
+    }
+    ol.policy-list { counter-reset: plist; }
+    ol.policy-list li::before {
+      content: counter(plist) ".";
+      font-size: 12px; font-weight: 700;
+      color: var(--orange); min-width: 18px;
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    /* ── Highlight boxes ── */
+    .box {
+      border-radius: 8px; padding: 14px 18px;
+      font-size: 14px; margin-top: 14px;
+    }
+    .box-blue  { background: #EEF2FF; border: 1px solid #C7D2FE; color: #3730A3; }
+    .box-green { background: #F0FDF4; border: 1px solid #BBF7D0; color: #166534; }
+    .box-amber { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+    .box-red   { background: #FFF1F2; border: 1px solid #FECDD3; color: #9F1239; }
+    .box strong { font-weight: 700; }
+
+    /* ── Two-column table ── */
+    .balance-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px; margin-top: 12px;
+    }
+    .balance-table th {
+      background: #F3F4F6; color: var(--navy);
+      font-weight: 700; text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--border);
+    }
+    .balance-table th.col-provider { border-right: 2px solid var(--border); }
+    .balance-table td {
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .balance-table td.col-provider { border-right: 1px solid var(--border); }
+    .balance-table tr:last-child td { border-bottom: none; }
+    .balance-table tr:hover td { background: #FAFAFA; }
+
+    /* ── Definition list ── */
+    dl.def-list { font-size: 14px; }
+    dl.def-list dt {
+      font-weight: 700; color: var(--navy);
+      margin-top: 12px; margin-bottom: 2px;
+    }
+    dl.def-list dt:first-child { margin-top: 0; }
+    dl.def-list dd { color: var(--text); margin-left: 0; padding-left: 16px; border-left: 2px solid var(--border); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 12px; color: var(--muted);
+      border-top: 1px solid var(--border);
+      background: var(--white);
+    }
+    footer a { color: var(--orange); text-decoration: none; margin: 0 8px; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      section { padding: 24px 18px; }
+      .toc ol { grid-template-columns: 1fr; }
+    }
+
+    /* ── NAVBAR ── */
+    #site-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 16px 5%; display: flex; align-items: center; justify-content: space-between;
+      background: rgba(13,27,53,0.97); backdrop-filter: blur(16px);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo .logo-mark {
+      width: 36px; height: 36px; background: linear-gradient(135deg, #FF6B35, #FF9A70);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px; color: #fff;
+    }
+    .nav-logo .logo-text-wrap .lt { color: #fff; font-weight: 700; font-size: 15px; font-family: "Noto Sans TC",sans-serif; }
+    .nav-logo .logo-text-wrap .ls { color: rgba(255,255,255,0.35); font-size: 10px; letter-spacing: 0.1em; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500;
+      text-decoration: none; transition: color 0.25s; position: relative;
+      font-family: "Inter","Noto Sans TC",sans-serif;
+    }
+    .nav-links a::after { content:""; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:#FF6B35; transition:width 0.3s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta-btn {
+      background: #FF6B35; color: #fff !important; padding: 8px 20px;
+      border-radius: 999px; font-weight: 600 !important; font-size: 13px !important;
+    }
+    .nav-cta-btn::after { display: none !important; }
+    .nav-cta-btn:hover { box-shadow: 0 0 20px rgba(255,107,53,0.5) !important; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    #nav-mobile {
+      display: none; position: fixed; inset: 0; background: #060E1F;
+      z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+    }
+    #nav-mobile.open { display: flex; }
+    #nav-mobile a { color: #fff; font-size: 20px; text-decoration: none; }
+    #nav-mobile a:hover { color: #FF6B35; }
+    #nav-mobile .mob-cta { background: #FF6B35; padding: 12px 36px; border-radius: 999px; font-weight: 700; }
+    header { padding-top: 116px !important; }
+    @media (max-width: 680px) {
+      .nav-links, .nav-cta-btn { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-mobile">
+  <a href="index.html">首頁</a>
+  <a href="index.html#features">服務介紹</a>
+  <a href="story.html">品牌故事</a>
+  <a href="index.html#pricing">收費方案</a>
+  <a href="index.html#contact" class="mob-cta">聯絡我們</a>
+</div>
+
+<nav id="site-nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">智</div>
+    <div class="logo-text-wrap">
+      <div class="lt">智答工作室</div>
+      <div class="ls">ZHIDA STUDIO</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">首頁</a></li>
+    <li><a href="index.html#features">服務介紹</a></li>
+    <li><a href="story.html">品牌故事</a></li>
+    <li><a href="index.html#pricing">收費方案</a></li>
+    <li><a href="index.html#contact" class="nav-cta-btn">聯絡我們</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ══ Header ══════════════════════════════════════ -->
+<header>
+  <div class="badge">Terms of Service</div>
+  <h1>服務條款</h1>
+  <p>智答工作室 Zhida Studio &nbsp;·&nbsp; AI 客服服務合約</p>
+  <div class="last-updated">最後更新：2026 年 5 月 3 日 · 版本 1.0</div>
+</header>
+
+<!-- ══ Body ════════════════════════════════════════ -->
+<div class="container">
+
+  <!-- 前言 -->
+  <div class="intro-card">
+    感謝您選擇<strong>智答工作室 Zhida Studio</strong>（以下簡稱「本工作室」或「我們」）的 AI 客服服務。
+    本服務條款（以下簡稱「本條款」）為您（以下簡稱「客戶」）與本工作室之間就 AI 客服服務所訂立的具有法律效力的協議。
+    <strong>開始使用本服務即表示您已詳細閱讀、理解並同意接受本條款的所有內容。</strong>
+    如您不同意本條款，請勿使用本服務。
+  </div>
+
+  <!-- 目錄 -->
+  <div class="toc">
+    <h3>目錄</h3>
+    <ol>
+      <li><a href="#s1">總則與定義</a></li>
+      <li><a href="#s2">服務內容</a></li>
+      <li><a href="#s3">申請與開通流程</a></li>
+      <li><a href="#s4">費用、付款與退款</a></li>
+      <li><a href="#s5">雙方權利與義務</a></li>
+      <li><a href="#s6">智慧財產權</a></li>
+      <li><a href="#s7">保密義務</a></li>
+      <li><a href="#s8">服務可用性與免責聲明</a></li>
+      <li><a href="#s9">責任限制</a></li>
+      <li><a href="#s10">合約期間與終止</a></li>
+      <li><a href="#s11">爭議解決與準據法</a></li>
+      <li><a href="#s12">條款修訂</a></li>
+      <li><a href="#s13">其他規定</a></li>
+      <li><a href="#s14">聯絡資訊</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. 總則與定義 -->
+  <section id="s1">
+    <h2><span class="icon">📖</span>一、總則與定義</h2>
+    <p>本條款中使用的以下詞語，定義如下：</p>
+    <dl class="def-list">
+      <dt>「本工作室」/ 「服務提供方」</dt>
+      <dd>指智答工作室 Zhida Studio，提供 AI 客服系統建置、維護及相關技術服務的個人或商業主體。</dd>
+      <dt>「客戶」/ 「您」</dt>
+      <dd>指依本條款申請並使用本工作室服務的品牌主、企業、個人商家或法人機構。</dd>
+      <dt>「終端用戶」</dt>
+      <dd>指透過客戶 Instagram 帳號與 AI 客服機器人互動的消費者或訪客，其與本工作室不存在直接合約關係。</dd>
+      <dt>「AI 客服系統」/ 「本服務」</dt>
+      <dd>指本工作室為客戶建置、設定及維運的 Instagram AI 自動回覆客服機器人，包含知識庫設定、Webhook 服務及相關後台管理功能。</dd>
+      <dt>「知識庫」</dt>
+      <dd>指客戶提供給本工作室，用於訓練 AI 客服所需的產品資料、常見問題、品牌語氣等專屬資訊集合。</dd>
+      <dt>「服務費用」</dt>
+      <dd>指客戶依本條款及雙方協議應給付本工作室的建置費、月費或其他費用。</dd>
+    </dl>
+  </section>
+
+  <!-- 2. 服務內容 -->
+  <section id="s2">
+    <h2><span class="icon">🛠️</span>二、服務內容</h2>
+    <h3>2.1 服務範圍</h3>
+    <p>本工作室依客戶需求提供以下服務，具體項目以雙方簽訂的服務方案為準：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>Instagram Webhook 串接設定與 Meta 開發者平台申請協助</li>
+      <li><span class="dot"></span>品牌專屬知識庫建立與 AI 語氣客製化設定</li>
+      <li><span class="dot"></span>GPT 語言模型 API 串接與對話邏輯設定</li>
+      <li><span class="dot"></span>對話記憶與情緒偵測功能部署</li>
+      <li><span class="dot"></span>客戶需求分析數據統計儀表板</li>
+      <li><span class="dot"></span>系統上線後例行監控與基礎維護</li>
+      <li><span class="dot"></span>每月一次服務成效檢討報告（適用月費方案）</li>
+    </ul>
+    <h3>2.2 服務範圍外項目</h3>
+    <p>下列事項明確排除於本服務範圍之外，如有需求須另行報價：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>Instagram 帳號本身的申請、管理或廣告投放</li>
+      <li><span class="dot"></span>第三方平台（Meta、OpenAI）帳號費用</li>
+      <li><span class="dot"></span>AI 無法處理的客服案件之真人接手服務</li>
+      <li><span class="dot"></span>超出合約範圍的功能開發或系統整合</li>
+    </ul>
+    <div class="box box-blue">
+      ℹ️ <strong>第三方服務聲明：</strong>本服務依賴 Meta（Instagram）及 OpenAI 等第三方平台，本工作室對該等平台的政策調整、服務中斷或 API 變更不承擔責任，但將盡力於第一時間通知客戶並協助因應。
+    </div>
+  </section>
+
+  <!-- 3. 申請與開通 -->
+  <section id="s3">
+    <h2><span class="icon">📋</span>三、申請與開通流程</h2>
+    <h3>3.1 申請資格</h3>
+    <p>客戶申請本服務須符合以下條件：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>具有合法經營資格的品牌、企業或個人商家</li>
+      <li><span class="dot"></span>擁有有效的 Instagram 商業帳號或創作者帳號</li>
+      <li><span class="dot"></span>年滿 18 歲，或以公司名義申請</li>
+      <li><span class="dot"></span>同意並遵守 Meta 平台的使用規範</li>
+    </ul>
+    <h3>3.2 開通時程</h3>
+    <p>
+      本工作室承諾於收到客戶全額建置費並取得必要授權後，
+      <strong>正常情況下 3 個工作天內</strong>完成系統部署與測試。
+      如因客戶未能及時提供資料或第三方平台審核延遲，開通時程順延，不視為本工作室違約。
+    </p>
+    <h3>3.3 客戶應提供之資料</h3>
+    <ul class="policy-list">
+      <li><span class="dot"></span>品牌知識庫文件（產品資料、常見問題、品牌語氣說明）</li>
+      <li><span class="dot"></span>Instagram 帳號的 Meta 商業帳戶授權</li>
+      <li><span class="dot"></span>AI 客服角色設定說明（名稱、個性、禁止回覆事項）</li>
+    </ul>
+    <div class="box box-amber">
+      ⚠️ <strong>重要提醒：</strong>客戶所提供的知識庫資料之正確性、合法性及合規性，由客戶自行負責。本工作室不對知識庫內容的準確性作任何擔保。
+    </div>
+  </section>
+
+  <!-- 4. 費用與付款 -->
+  <section id="s4">
+    <h2><span class="icon">💳</span>四、費用、付款與退款政策</h2>
+    <h3>4.1 費用結構</h3>
+    <p>服務費用依客戶選擇的方案而定，分為以下類型，詳細金額以報價單為準：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span><strong>建置費（一次性）</strong>：涵蓋系統架設、知識庫設定、測試上線等初期工程費用</li>
+      <li><span class="dot"></span><strong>月費（按月計費）</strong>：涵蓋伺服器維運、API 呼叫費用分攤、例行維護及技術支援</li>
+      <li><span class="dot"></span><strong>加購費用</strong>：知識庫更新、功能擴充或超量 API 使用等額外服務</li>
+    </ul>
+    <h3>4.2 付款方式與期限</h3>
+    <ul class="policy-list">
+      <li><span class="dot"></span>建置費於簽約後 <strong>3 個工作天</strong>內全額預付</li>
+      <li><span class="dot"></span>月費於每月服務開始日前付清</li>
+      <li><span class="dot"></span>逾期付款超過 7 天，本工作室有權暫停服務，直至款項清償</li>
+      <li><span class="dot"></span>接受銀行轉帳、LINE Pay 或雙方另行約定的方式</li>
+    </ul>
+    <h3>4.3 退款政策</h3>
+    <div class="box box-amber">
+      ⚠️ <strong>請在申請前充分確認需求，因服務具高度客製化性質，退款條件如下：</strong>
+    </div>
+    <ul class="policy-list" style="margin-top:12px;">
+      <li><span class="dot"></span><strong>系統上線前取消</strong>：已收建置費退還 50%，用於補償已投入的規劃工時</li>
+      <li><span class="dot"></span><strong>系統上線後取消</strong>：建置費不予退還；已預付之月費，依未使用天數比例退還</li>
+      <li><span class="dot"></span><strong>因本工作室重大疏失導致服務完全無法使用</strong>：依實際情況協商退款或補償，最高以當月月費為限</li>
+      <li><span class="dot"></span><strong>第三方平台（Meta/OpenAI）政策變更導致服務中斷</strong>：不在退款範圍內，本工作室將協助客戶尋找替代方案</li>
+    </ul>
+  </section>
+
+  <!-- 5. 雙方權利義務 -->
+  <section id="s5">
+    <h2><span class="icon">⚖️</span>五、雙方權利與義務</h2>
+    <p>為確保合作關係公平透明，本條款明確列出雙方的核心承諾：</p>
+
+    <div class="table-wrap" style="overflow-x:auto; margin-top:16px;">
+      <table class="balance-table">
+        <thead>
+          <tr>
+            <th class="col-provider" style="width:50%">智答工作室 Zhida Studio 承諾</th>
+            <th>客戶義務</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-provider">依約定時程完成系統建置與上線</td>
+            <td>及時提供完整且正確的品牌知識庫資料</td>
+          </tr>
+          <tr>
+            <td class="col-provider">提供 AI 客服系統的例行監控與技術支援</td>
+            <td>依時繳付服務費用，不無故拖延</td>
+          </tr>
+          <tr>
+            <td class="col-provider">對客戶資料及終端用戶對話內容嚴格保密</td>
+            <td>不將本服務用於違法、詐欺或侵害他人權益之目的</td>
+          </tr>
+          <tr>
+            <td class="col-provider">於發現重大系統異常時，在 4 小時內通知客戶</td>
+            <td>確保 Instagram 帳號符合 Meta 平台規範，自行承擔違規責任</td>
+          </tr>
+          <tr>
+            <td class="col-provider">依合理範圍配合客戶提出的知識庫更新需求</td>
+            <td>不要求 AI 提供醫療建議、法律意見或其他超出服務範圍的內容</td>
+          </tr>
+          <tr>
+            <td class="col-provider">提供清晰的月度服務報告（月費方案）</td>
+            <td>不嘗試破解、逆向工程或非授權存取系統後台</td>
+          </tr>
+          <tr>
+            <td class="col-provider">在合約終止時，協助客戶移轉或匯出知識庫資料</td>
+            <td>對終端用戶的客訴或糾紛承擔最終處理責任</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.3 禁止行為</h3>
+    <p>客戶明確同意不得利用本服務從事下列行為，違者本工作室有權立即終止服務且不予退款：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>散布虛假資訊、詐騙消費者或進行不實行銷</li>
+      <li><span class="dot"></span>提供醫療診斷、藥物建議或任何受法規管制的專業建議</li>
+      <li><span class="dot"></span>歧視、騷擾或侵害終端用戶的合法權益</li>
+      <li><span class="dot"></span>違反《消費者保護法》、《公平交易法》或其他適用法規</li>
+      <li><span class="dot"></span>侵害第三人智慧財產權或個人資料</li>
+    </ul>
+  </section>
+
+  <!-- 6. 智慧財產權 -->
+  <section id="s6">
+    <h2><span class="icon">©️</span>六、智慧財產權</h2>
+    <h3>6.1 本工作室所有之權利</h3>
+    <p>
+      本服務所使用的系統架構、程式碼、工作流程設計、AI 提示詞工程方法及相關技術，其智慧財產權歸本工作室所有。
+      客戶取得的是使用授權，而非所有權移轉。合約終止後，客戶不得繼續使用本工作室的技術系統。
+    </p>
+    <h3>6.2 客戶所有之權利</h3>
+    <p>
+      客戶提供的品牌資料、知識庫內容、商標、圖像及其他素材，其智慧財產權仍歸客戶所有。
+      本工作室僅獲得在提供本服務範圍內使用該等資料的有限授權。
+    </p>
+    <h3>6.3 AI 生成內容</h3>
+    <p>
+      AI 客服系統所產生的回覆文字，視為基於客戶知識庫由系統代為生成，客戶對該等內容的合法性與準確性負最終責任。
+      本工作室不對 AI 生成內容主張著作權。
+    </p>
+    <div class="box box-green">
+      ✅ <strong>授權案例展示：</strong>本工作室保留在雙方同意的前提下，以客戶名稱及服務成果作為行銷案例展示的權利。如客戶不同意，請於合約中明確聲明。
+    </div>
+  </section>
+
+  <!-- 7. 保密 -->
+  <section id="s7">
+    <h2><span class="icon">🔐</span>七、保密義務</h2>
+    <h3>7.1 保密範圍</h3>
+    <p>雙方均有義務對以下資訊嚴格保密，未經對方書面同意不得向第三方披露：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>客戶的品牌策略、知識庫內容、商業數據及終端用戶對話記錄</li>
+      <li><span class="dot"></span>本工作室的技術架構、程式邏輯、定價策略及商業資訊</li>
+      <li><span class="dot"></span>雙方合作過程中知悉的任何非公開資訊</li>
+    </ul>
+    <h3>7.2 保密期限</h3>
+    <p>
+      保密義務自本條款生效起算，於合約終止後繼續有效 <strong>2 年</strong>。
+      但法律要求披露或資訊已進入公共領域者，不在此限。
+    </p>
+    <h3>7.3 例外情形</h3>
+    <p>下列情形不受保密義務約束：資訊已為公眾所知、資訊由第三方合法提供、依司法機關命令須披露。</p>
+  </section>
+
+  <!-- 8. 免責聲明 -->
+  <section id="s8">
+    <h2><span class="icon">⚠️</span>八、服務可用性與免責聲明</h2>
+    <h3>8.1 服務可用性目標</h3>
+    <p>
+      本工作室力求系統穩定運行，目標服務可用率為 <strong>99%（月計算，不含排程維護時段）</strong>。
+      但以下情況導致的服務中斷，本工作室不承擔責任：
+    </p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>Meta（Instagram）、OpenAI 等第三方平台的服務中斷、API 變更或政策調整</li>
+      <li><span class="dot"></span>不可抗力事件，包括天災、戰爭、政府命令、大規模網路攻擊等</li>
+      <li><span class="dot"></span>客戶 Instagram 帳號被 Meta 暫停或封鎖</li>
+      <li><span class="dot"></span>客戶提供的知識庫資料錯誤或過時導致的 AI 回覆偏差</li>
+    </ul>
+    <h3>8.2 AI 準確性聲明</h3>
+    <p>
+      AI 語言模型存在技術上的不確定性，可能偶發不準確、不完整或不符預期的回覆。
+      本工作室建議客戶定期檢視 AI 回覆品質，並保留真人客服介入處理複雜案件的機制。
+    </p>
+    <div class="box box-red">
+      🚫 <strong>重要免責：</strong>本工作室明確聲明，AI 客服系統<strong>不適合</strong>用於處理醫療諮詢、法律建議、財務規劃或任何攸關人身安全的緊急事項。客戶應自行在知識庫中設置相關限制。
+    </div>
+  </section>
+
+  <!-- 9. 責任限制 -->
+  <section id="s9">
+    <h2><span class="icon">🛡️</span>九、責任限制</h2>
+    <h3>9.1 損害賠償上限</h3>
+    <p>
+      在法律允許的最大範圍內，本工作室因提供本服務所生的損害賠償責任，
+      以<strong>客戶於事故發生當月已實際支付本工作室的服務費用</strong>為上限。
+    </p>
+    <h3>9.2 間接損害排除</h3>
+    <p>本工作室不對以下間接損害承擔責任，即便事先被告知可能發生此類損害：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>利潤損失、商機喪失或業績下滑</li>
+      <li><span class="dot"></span>品牌聲譽損害或客戶流失</li>
+      <li><span class="dot"></span>資料遺失或系統停機造成的間接損失</li>
+    </ul>
+    <h3>9.3 客戶對終端用戶的責任</h3>
+    <p>
+      客戶對其終端用戶（消費者）所承擔的法律責任，包括但不限於消費者保護法下的賠償義務，
+      由客戶自行承擔，本工作室不就此負連帶責任。
+    </p>
+    <div class="box box-blue">
+      ℹ️ 本責任限制條款反映雙方服務費用與風險之合理分配，並非免除本工作室因故意或重大過失所生之責任。
+    </div>
+  </section>
+
+  <!-- 10. 合約期間與終止 -->
+  <section id="s10">
+    <h2><span class="icon">📅</span>十、合約期間與終止</h2>
+    <h3>10.1 合約期間</h3>
+    <p>
+      本條款自客戶完成付款並開始使用服務時生效。月費方案以月為單位自動續約，
+      除非任一方依本條款規定終止合約。
+    </p>
+    <h3>10.2 客戶終止</h3>
+    <p>
+      客戶可於任何月費週期結束前 <strong>14 天</strong>以書面通知本工作室終止服務。
+      本工作室將於收到通知並確認後，於當期服務結束時停止計費。
+    </p>
+    <h3>10.3 本工作室終止</h3>
+    <p>發生以下情況，本工作室有權立即終止服務，恕不事先通知：</p>
+    <ul class="policy-list">
+      <li><span class="dot"></span>客戶違反本條款第五條禁止行為規定</li>
+      <li><span class="dot"></span>月費逾期 <strong>14 天</strong>未付且未與本工作室達成延期協議</li>
+      <li><span class="dot"></span>客戶從事違法行為或提供重大虛假資訊</li>
+      <li><span class="dot"></span>客戶的 Instagram 帳號因違反 Meta 政策遭永久停用</li>
+    </ul>
+    <h3>10.4 終止後事項</h3>
+    <ul class="policy-list">
+      <li><span class="dot"></span>本工作室將於合約終止後 <strong>30 天內</strong>協助客戶匯出知識庫資料</li>
+      <li><span class="dot"></span>30 天後，客戶相關資料將從伺服器永久刪除</li>
+      <li><span class="dot"></span>保密義務、智慧財產權條款及責任限制條款於合約終止後繼續有效</li>
+    </ul>
+  </section>
+
+  <!-- 11. 爭議解決 -->
+  <section id="s11">
+    <h2><span class="icon">⚖️</span>十一、爭議解決與準據法</h2>
+    <h3>11.1 友好協商</h3>
+    <p>
+      雙方同意，發生任何爭議時，應先以友好協商方式解決，
+      自一方提出書面通知起 <strong>30 天</strong>為協商期。
+    </p>
+    <h3>11.2 調解</h3>
+    <p>
+      協商未果，雙方同意提交財團法人中華民國消費者文教基金會或其他雙方認可的調解機構進行調解。
+    </p>
+    <h3>11.3 司法管轄</h3>
+    <p>
+      調解不成立時，雙方同意以<strong>臺灣臺北地方法院</strong>為第一審管轄法院，
+      並以<strong>中華民國法律</strong>為本條款之準據法。
+    </p>
+    <div class="box box-green">
+      ✅ 本工作室承諾尊重消費者保護相關法規，客戶亦可依《消費者保護法》第 43 條規定向主管機關申訴。
+    </div>
+  </section>
+
+  <!-- 12. 條款修訂 -->
+  <section id="s12">
+    <h2><span class="icon">🔄</span>十二、條款修訂</h2>
+    <p>
+      本工作室保留隨時修訂本條款的權利。重大變更（涉及費用結構、責任範圍或客戶義務）將於生效日前
+      <strong>14 天</strong>以電子郵件或服務通知方式告知客戶。
+    </p>
+    <p>
+      如客戶不同意修訂後的條款，可依第十條規定終止合約，恕不因此退還已繳費用。
+      於通知期滿後繼續使用服務，視為接受新版條款。
+    </p>
+  </section>
+
+  <!-- 13. 其他規定 -->
+  <section id="s13">
+    <h2><span class="icon">📌</span>十三、其他規定</h2>
+    <h3>13.1 完整協議</h3>
+    <p>本條款與雙方簽訂的報價單及服務方案說明共同構成完整協議，取代雙方先前的任何口頭或書面約定。</p>
+    <h3>13.2 可分割性</h3>
+    <p>若本條款任一條文經法院認定為無效或不可執行，其餘條文仍繼續有效。</p>
+    <h3>13.3 不棄權</h3>
+    <p>本工作室未行使本條款下任何權利，不視為放棄該等權利。</p>
+    <h3>13.4 通知方式</h3>
+    <p>本條款所稱書面通知，包括電子郵件。通知寄至對方最後登記之電子郵件地址，視為送達。</p>
+    <h3>13.5 語言版本</h3>
+    <p>本條款以繁體中文版本為正式版本。如有翻譯版本，以繁體中文為準。</p>
+  </section>
+
+  <!-- 14. 聯絡資訊 -->
+  <section id="s14">
+    <h2><span class="icon">✉️</span>十四、聯絡資訊</h2>
+    <p>如對本服務條款有任何疑問，或需要協商、投訴，請透過以下方式與我們聯繫：</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:18px;">
+      <div style="background:var(--light);border-radius:8px;padding:16px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">服務名稱</div>
+        <div style="font-size:14px;color:var(--navy);">智答工作室 Zhida Studio</div>
+      </div>
+      <div style="background:var(--light);border-radius:8px;padding:16px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">電子郵件</div>
+        <div style="font-size:14px;color:var(--navy);"><a href="mailto:coo92062667@gmail.com" style="color:var(--navy);">coo92062667@gmail.com</a></div>
+      </div>
+      <div style="background:var(--light);border-radius:8px;padding:16px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">Instagram</div>
+        <div style="font-size:14px;color:var(--navy);">@zhidastudio.com</div>
+      </div>
+      <div style="background:var(--light);border-radius:8px;padding:16px 18px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">回覆時效</div>
+        <div style="font-size:14px;color:var(--navy);">7 個工作天內</div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /.container -->
+
+<footer>
+  &copy; 2026 智答工作室 Zhida Studio &nbsp;·&nbsp; 本文件具有法律效力，依中華民國法律制訂
+  &nbsp;·&nbsp;
+  <a href="index.html">回首頁</a>
+  <a href="privacy.html">隱私權政策</a>
+  &nbsp;·&nbsp; 最後更新：2026 年 5 月 3 日
+</footer>
+
+</body>
+</html>

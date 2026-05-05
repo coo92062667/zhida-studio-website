@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>登入 · 智答工作室</title>
+<style>
+:root {
+  --navy:    #1A2B4A;
+  --navy2:   #0D1B35;
+  --orange:  #FF6B35;
+  --bg:      #F4F6FA;
+  --surface: #FFFFFF;
+  --muted:   #8898AA;
+  --border:  rgba(26,43,74,0.10);
+  --shadow:  0 8px 40px rgba(26,43,74,0.13);
+  --font:    "Inter","Noto Sans TC","PingFang TC",sans-serif;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family:var(--font); background:var(--navy2);
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; padding:24px;
+}
+a { text-decoration:none; color:inherit; }
+
+/* ── Background pattern ── */
+body::before {
+  content:""; position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(255,107,53,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 90%, rgba(26,43,74,0.6) 0%, transparent 60%);
+}
+
+.wrap { position:relative; z-index:1; width:100%; max-width:420px; }
+
+/* ── Logo ── */
+.logo-area {
+  text-align:center; margin-bottom:36px;
+}
+.logo-mark {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:62px; height:62px; background:var(--orange);
+  border-radius:18px; font-size:28px; font-weight:900; color:#fff;
+  box-shadow:0 8px 28px rgba(255,107,53,0.38); margin-bottom:14px;
+}
+.logo-name { font-size:22px; font-weight:800; color:#fff; letter-spacing:-0.3px; }
+.logo-sub  { font-size:12px; color:rgba(255,255,255,0.4); letter-spacing:0.1em; margin-top:3px; }
+
+/* ── Card container ── */
+.card {
+  background:var(--surface); border-radius:24px;
+  padding:36px 32px; box-shadow:var(--shadow);
+}
+.card-title {
+  font-size:18px; font-weight:800; color:var(--navy);
+  text-align:center; margin-bottom:6px;
+}
+.card-sub {
+  font-size:14px; color:var(--muted);
+  text-align:center; margin-bottom:28px;
+}
+
+/* ── Login options ── */
+.options { display:flex; flex-direction:column; gap:14px; }
+.opt-btn {
+  display:flex; align-items:center; gap:16px;
+  padding:18px 20px; border-radius:16px;
+  border:1.5px solid var(--border);
+  cursor:pointer; transition:border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  background:var(--surface); color:var(--navy);
+}
+.opt-btn:hover {
+  border-color:var(--orange);
+  box-shadow:0 4px 20px rgba(255,107,53,0.14);
+  transform:translateY(-2px);
+}
+.opt-icon {
+  width:48px; height:48px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; flex-shrink:0;
+}
+.opt-icon.client { background:rgba(255,107,53,0.10); }
+.opt-icon.admin  { background:rgba(26,43,74,0.08); }
+.opt-body { flex:1; text-align:left; }
+.opt-title { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:3px; }
+.opt-desc  { font-size:12px; color:var(--muted); }
+.opt-arrow { font-size:18px; color:var(--muted); flex-shrink:0; }
+.opt-btn:hover .opt-arrow { color:var(--orange); }
+
+/* ── Footer ── */
+.footer {
+  text-align:center; margin-top:22px;
+  font-size:12px; color:rgba(255,255,255,0.28);
+}
+.footer a { color:rgba(255,255,255,0.45); text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo-area">
+    <div class="logo-mark">智</div>
+    <div class="logo-name">智答工作室</div>
+    <div class="logo-sub">ZHIDA STUDIO</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">客戶登入</div>
+    <div class="card-sub">前往您的 AI 客服儀表板</div>
+
+    <div class="options">
+      <a class="opt-btn" href="client/index.html">
+        <div class="opt-icon client">🛍</div>
+        <div class="opt-body">
+          <div class="opt-title">進入儀表板</div>
+          <div class="opt-desc">查看 AI 客服數據、訊息與報表</div>
+        </div>
+        <div class="opt-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="index.html">← 返回官網</a>
+    &nbsp;·&nbsp; © 2026 智答工作室
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>智答工作室 · 客戶儀表板</title>
+<style>
+/* ── VARIABLES ─────────────────────────────────────────────── */
+:root {
+  --bg:         #FAF8F5;
+  --surface:    #FFFFFF;
+  --navy:       #1A2B4A;
+  --navy2:      #243350;
+  --navy3:      #0D1B35;
+  --orange:     #FF6B35;
+  --orange2:    #FF9A70;
+  --orange-bg:  rgba(255,107,53,0.10);
+  --green:      #22C55E;
+  --red:        #EF4444;
+  --border:     rgba(26,43,74,0.10);
+  --muted:      #8898AA;
+  --text:       #1A2B4A;
+  --text2:      #4A5568;
+  --radius:     14px;
+  --radius-sm:  8px;
+  --shadow:     0 2px 16px rgba(26,43,74,0.07);
+  --shadow-lg:  0 12px 48px rgba(26,43,74,0.16);
+  --nav-h:      66px;
+  --hdr-h:      54px;
+  --font:       "Inter","Noto Sans TC","PingFang TC",sans-serif;
+}
+
+/* ── RESET ─────────────────────────────────────────────────── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html,body { height:100%; }
+body {
+  font-family:var(--font); background:var(--bg);
+  color:var(--text); -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing:antialiased;
+}
+button { font-family:inherit; cursor:pointer; border:none; outline:none; background:none; }
+input,textarea { font-family:inherit; outline:none; }
+a { text-decoration:none; color:inherit; }
+
+/* ── ROOT LAYOUT ───────────────────────────────────────────── */
+#root {
+  max-width:430px; margin:0 auto;
+  height:100vh; display:flex; flex-direction:column;
+  background:var(--bg); position:relative;
+  overflow:hidden;
+}
+@media(min-width:480px){
+  #root { box-shadow:0 0 80px rgba(26,43,74,0.18); }
+}
+
+/* ════════════════════════════════════════════════════════════ */
+/* LOGIN                                                         */
+/* ════════════════════════════════════════════════════════════ */
+#login-screen {
+  position:fixed; inset:0; z-index:200;
+  background:var(--navy3);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+}
+.login-card {
+  background:var(--surface); border-radius:24px;
+  padding:36px 28px 28px; width:100%; max-width:380px;
+  box-shadow:var(--shadow-lg);
+}
+.login-logo { display:flex; align-items:center; gap:11px; margin-bottom:26px; }
+.login-logo-icon {
+  width:46px; height:46px; border-radius:13px;
+  background:var(--orange); display:flex; align-items:center;
+  justify-content:center; color:#fff; font-size:22px; font-weight:900; flex-shrink:0;
+}
+.login-logo-name { font-size:18px; font-weight:800; color:var(--navy); letter-spacing:-0.3px; }
+.login-logo-sub  { font-size:11px; color:var(--muted); margin-top:1px; }
+.login-title { font-size:22px; font-weight:800; color:var(--navy); margin-bottom:4px; }
+.login-sub   { font-size:14px; color:var(--muted); margin-bottom:24px; }
+.input-grp   { margin-bottom:13px; }
+.input-label { font-size:11px; font-weight:700; color:var(--navy2); text-transform:uppercase;
+               letter-spacing:0.06em; margin-bottom:5px; display:block; }
+.input-wrap  { position:relative; }
+.input-field {
+  width:100%; padding:12px 14px;
+  border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  font-size:15px; color:var(--text); background:var(--bg);
+  transition:border-color 0.2s, box-shadow 0.2s;
+}
+.input-wrap:has(.input-icon) .input-field { padding-right:42px; }
+.input-field:focus {
+  border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(255,107,53,0.12);
+}
+.input-icon {
+  position:absolute; right:13px; top:50%; transform:translateY(-50%);
+  color:var(--muted); font-size:16px; cursor:pointer; user-select:none;
+}
+.login-opts {
+  display:flex; align-items:center; justify-content:space-between;
+  margin:12px 0 20px;
+}
+.remember { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--text2); cursor:pointer; }
+.remember input[type=checkbox] { accent-color:var(--orange); width:15px; height:15px; }
+.forgot { font-size:13px; color:var(--orange); font-weight:600; }
+.btn-login {
+  width:100%; padding:14px;
+  background:var(--orange); color:#fff;
+  border-radius:var(--radius-sm); font-size:16px; font-weight:700;
+  letter-spacing:0.02em; transition:opacity 0.18s, transform 0.12s;
+}
+.btn-login:active { opacity:0.85; transform:scale(0.98); }
+.login-err {
+  min-height:18px; margin-top:10px; text-align:center;
+  font-size:13px; color:var(--red);
+}
+.api-cfg-toggle {
+  margin-top:16px; text-align:center; font-size:12px;
+  color:var(--muted); cursor:pointer; user-select:none;
+}
+.api-cfg { display:none; margin-top:8px; }
+.api-cfg.open { display:block; }
+.api-cfg input {
+  width:100%; padding:9px 12px;
+  border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  font-size:13px; background:var(--bg);
+}
+
+/* ── Auth tabs ── */
+.auth-tabs {
+  display:flex; border-radius:var(--radius-sm); overflow:hidden;
+  border:1.5px solid var(--border); margin-bottom:22px;
+}
+.auth-tab {
+  flex:1; padding:10px 0; text-align:center;
+  font-size:14px; font-weight:600; color:var(--muted);
+  background:var(--bg); cursor:pointer;
+  transition:background 0.18s, color 0.18s;
+}
+.auth-tab.active { background:var(--orange); color:#fff; }
+
+/* ════════════════════════════════════════════════════════════ */
+/* APP SHELL                                                     */
+/* ════════════════════════════════════════════════════════════ */
+#app { display:none; flex-direction:column; height:100vh; }
+#app.visible { display:flex; }
+
+/* ── Header ────────────────────────────────────────────────── */
+#app-hdr {
+  height:var(--hdr-h); flex-shrink:0;
+  background:var(--navy);
+  display:flex; align-items:center; padding:0 16px; gap:10px;
+  position:relative; z-index:40;
+}
+.hdr-logo {
+  font-size:12px; font-weight:800; color:rgba(255,255,255,0.35);
+  letter-spacing:0.08em; text-transform:uppercase; flex-shrink:0;
+}
+.hdr-client { flex:1; font-size:17px; font-weight:700; color:#fff; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hdr-ai {
+  display:flex; align-items:center; gap:5px;
+  font-size:12px; color:rgba(255,255,255,0.55); flex-shrink:0;
+}
+.status-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--green); animation:blink 2.4s ease-in-out infinite;
+}
+.status-dot.off { background:var(--red); animation:none; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.45} }
+
+/* ── Content ────────────────────────────────────────────────── */
+#app-content {
+  flex:1; overflow-y:auto; overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:var(--nav-h);
+}
+.tab-page { display:none; min-height:100%; }
+.tab-page.active { display:block; }
+
+/* ── Bottom Nav ─────────────────────────────────────────────── */
+#bot-nav {
+  height:var(--nav-h); flex-shrink:0;
+  background:var(--surface); border-top:1px solid var(--border);
+  display:flex; position:relative; z-index:40;
+}
+.nav-btn {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:3px;
+  font-size:10px; font-weight:600; color:var(--muted);
+  letter-spacing:0.03em; cursor:pointer;
+  transition:color 0.18s; position:relative;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-btn.active { color:var(--orange); }
+.nav-btn svg { width:22px; height:22px; stroke-width:1.9; }
+.nav-btn-logout { display:none; }
+.nav-badge {
+  position:absolute; top:5px; left:calc(50% + 2px);
+  background:var(--red); color:#fff; font-size:10px; font-weight:700;
+  border-radius:9px; padding:1px 5px; min-width:17px; text-align:center;
+  display:none; line-height:1.5;
+}
+.nav-badge.show { display:block; }
+
+/* ════════════════════════════════════════════════════════════ */
+/* SHARED COMPONENTS                                            */
+/* ════════════════════════════════════════════════════════════ */
+.card {
+  background:var(--surface); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:16px;
+  margin:12px 14px 0;
+}
+.card:last-of-type { margin-bottom:12px; }
+.card-title {
+  font-size:11px; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:0.09em; margin-bottom:12px;
+}
+.sec-hdr {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 14px 6px;
+}
+.sec-title { font-size:15px; font-weight:700; color:var(--navy); }
+.sec-sub { font-size:12px; color:var(--muted); }
+.loading-wrap { display:flex; justify-content:center; align-items:center; padding:48px 0; }
+.spinner { width:30px; height:30px; border:3px solid var(--border); border-top-color:var(--orange); border-radius:50%; animation:spin 0.75s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.empty-state { text-align:center; padding:52px 24px; color:var(--muted); }
+.empty-icon { font-size:44px; margin-bottom:10px; }
+.empty-text { font-size:14px; }
+
+/* ════════════════════════════════════════════════════════════ */
+/* TAB 1 — 訊息                                                 */
+/* ════════════════════════════════════════════════════════════ */
+.ai-bar {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.ai-bar-label { flex:1; font-size:14px; font-weight:600; color:var(--text); }
+.ai-bar-sub { font-size:12px; color:var(--muted); }
+
+/* iOS-style toggle */
+.ios-toggle { width:48px; height:27px; position:relative; flex-shrink:0; }
+.ios-toggle input { position:absolute; opacity:0; width:0; height:0; }
+.ios-track {
+  position:absolute; inset:0; border-radius:27px;
+  background:#CBD5E0; cursor:pointer; transition:background 0.22s;
+}
+.ios-toggle input:checked + .ios-track { background:var(--green); }
+.ios-thumb {
+  position:absolute; top:3px; left:3px;
+  width:21px; height:21px; border-radius:50%;
+  background:#fff; box-shadow:0 1px 4px rgba(0,0,0,0.22);
+  transition:transform 0.22s; pointer-events:none;
+}
+.ios-toggle input:checked ~ .ios-thumb { transform:translateX(21px); }
+
+.msg-list { list-style:none; }
+.msg-item {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 14px; background:var(--surface);
+  border-bottom:1px solid var(--border);
+  cursor:pointer; transition:background 0.12s;
+  -webkit-tap-highlight-color:transparent;
+}
+.msg-item:active { background:#F5F6FA; }
+.msg-avatar {
+  width:44px; height:44px; border-radius:50%; flex-shrink:0;
+  background:var(--orange-bg); color:var(--orange);
+  font-size:15px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+.msg-body { flex:1; min-width:0; }
+.msg-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px; }
+.msg-uid { font-size:14px; font-weight:600; color:var(--navy); }
+.msg-ts  { font-size:11px; color:var(--muted); flex-shrink:0; }
+.msg-prev { font-size:13px; color:var(--text2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.msg-unread { width:8px; height:8px; border-radius:50%; background:var(--orange); flex-shrink:0; }
+
+/* ── Conversation slide-up panel ── */
+.conv-panel {
+  position:fixed; inset:0; z-index:100;
+  display:flex; flex-direction:column;
+  transform:translateY(100%); transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);
+  background:var(--bg); max-width:430px; margin:0 auto;
+}
+.conv-panel.open { transform:translateY(0); }
+.conv-hdr {
+  height:var(--hdr-h); flex-shrink:0;
+  background:var(--navy); display:flex; align-items:center; gap:12px; padding:0 16px;
+}
+.conv-back { font-size:24px; color:#fff; cursor:pointer; line-height:1; padding:4px; }
+.conv-hdr-title { font-size:16px; font-weight:700; color:#fff; flex:1; }
+.conv-msgs {
+  flex:1; overflow-y:auto; padding:16px;
+  display:flex; flex-direction:column; gap:12px;
+  -webkit-overflow-scrolling:touch;
+}
+.bubble-wrap { display:flex; flex-direction:column; }
+.bubble-wrap.user { align-items:flex-end; }
+.bubble-wrap.bot  { align-items:flex-start; }
+.bubble-meta { font-size:10px; color:var(--muted); margin-bottom:3px; }
+.bubble {
+  max-width:82%; padding:10px 14px; border-radius:16px;
+  font-size:14px; line-height:1.6; word-break:break-word; white-space:pre-wrap;
+}
+.bubble.user { background:var(--orange); color:#fff; border-bottom-right-radius:3px; }
+.bubble.bot  { background:var(--surface); color:var(--text); border-bottom-left-radius:3px; box-shadow:0 1px 6px rgba(0,0,0,0.06); }
+.conv-input-row {
+  flex-shrink:0; padding:10px 12px;
+  background:var(--surface); border-top:1px solid var(--border);
+  display:flex; gap:8px; align-items:center;
+}
+.conv-input {
+  flex:1; padding:10px 14px; border:1.5px solid var(--border);
+  border-radius:22px; font-size:14px; background:var(--bg);
+  transition:border-color 0.18s;
+}
+.conv-input:focus { border-color:var(--orange); }
+.btn-send {
+  width:40px; height:40px; border-radius:50%; flex-shrink:0;
+  background:var(--orange); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; transition:opacity 0.15s;
+}
+.btn-send:active { opacity:0.78; }
+
+/* ════════════════════════════════════════════════════════════ */
+/* TAB 2 — 報表                                                 */
+/* ════════════════════════════════════════════════════════════ */
+.stat-row  { display:flex; gap:10px; }
+.stat-card { flex:1; background:var(--bg); border-radius:var(--radius-sm); padding:14px 8px; text-align:center; }
+.stat-num  { font-size:28px; font-weight:800; color:var(--navy); line-height:1; }
+.stat-lbl  { font-size:11px; color:var(--muted); margin-top:4px; }
+
+.bar-chart {
+  display:flex; align-items:flex-end; gap:5px;
+  height:80px; padding-top:4px;
+}
+.bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end; }
+.bar-fill { width:100%; border-radius:4px 4px 0 0; background:var(--orange); min-height:2px; transition:height 0.45s ease; }
+.bar-lbl  { font-size:9px; color:var(--muted); }
+
+.pie-wrap { display:flex; flex-wrap:wrap; gap:8px; }
+.pie-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text2); flex:1; min-width:120px; }
+.pie-dot  { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+.rpt-list { border-radius:var(--radius); overflow:hidden; }
+.rpt-item {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 14px; background:var(--surface);
+  border-bottom:1px solid var(--border); cursor:pointer;
+  transition:background 0.12s;
+}
+.rpt-item:last-child { border-bottom:none; }
+.rpt-item:active { background:#F5F6FA; }
+.rpt-name { font-size:14px; font-weight:600; color:var(--navy); }
+.rpt-meta { font-size:11px; color:var(--muted); margin-top:2px; }
+.btn-dl {
+  padding:6px 12px; border-radius:6px;
+  background:var(--orange-bg); color:var(--orange);
+  font-size:12px; font-weight:700; flex-shrink:0;
+  transition:background 0.15s;
+}
+.btn-dl:active { background:rgba(255,107,53,0.2); }
+.rpt-preview {
+  font-size:12px; font-family:"Consolas","Menlo",monospace;
+  background:#F0F2F5; border-radius:var(--radius-sm);
+  padding:12px; white-space:pre-wrap; max-height:150px;
+  overflow-y:auto; color:var(--text2); line-height:1.65;
+}
+
+/* ════════════════════════════════════════════════════════════ */
+/* TAB 3 — 知識庫                                               */
+/* ════════════════════════════════════════════════════════════ */
+.kb-meta { display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+.kb-badge {
+  padding:4px 12px; border-radius:20px;
+  background:var(--orange-bg); color:var(--orange);
+  font-size:12px; font-weight:700;
+}
+.kb-updated { font-size:12px; color:var(--muted); }
+.kb-preview {
+  font-size:13px; line-height:1.7; color:var(--text2);
+  background:#F0F2F5; border-radius:var(--radius-sm);
+  padding:14px; white-space:pre-wrap; max-height:200px; overflow-y:auto;
+}
+
+.upload-zone {
+  border:2px dashed var(--border); border-radius:var(--radius);
+  padding:30px 16px; text-align:center; cursor:pointer;
+  transition:border-color 0.2s, background 0.2s; position:relative;
+}
+.upload-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.upload-zone.drag { border-color:var(--orange); background:var(--orange-bg); }
+.upload-icon  { font-size:34px; margin-bottom:8px; }
+.upload-hint  { font-size:14px; color:var(--muted); }
+.upload-hint strong { color:var(--orange); }
+.upload-types { font-size:11px; color:var(--muted); margin-top:3px; }
+.upload-status { min-height:18px; margin-top:10px; font-size:13px; color:var(--muted); text-align:center; }
+
+.ver-list { display:flex; flex-direction:column; }
+.ver-item { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+.ver-item:last-child { border-bottom:none; }
+.ver-num { font-size:12px; font-weight:700; color:var(--orange); width:26px; flex-shrink:0; }
+.ver-name { font-size:13px; font-weight:600; color:var(--navy); }
+.ver-date { font-size:11px; color:var(--muted); margin-top:1px; }
+
+/* ════════════════════════════════════════════════════════════ */
+/* TAB 4 — 設定                                                 */
+/* ════════════════════════════════════════════════════════════ */
+.settings-card { background:var(--surface); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); margin:12px 14px 0; }
+.s-row {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px; border-bottom:1px solid var(--border);
+}
+.s-row:last-child { border-bottom:none; }
+.s-row.col { flex-direction:column; align-items:flex-start; gap:8px; }
+.s-lbl-main { font-size:15px; font-weight:600; color:var(--navy); }
+.s-lbl-sub  { font-size:12px; color:var(--muted); margin-top:2px; }
+.s-spacer   { flex:1; }
+.s-input {
+  border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  padding:8px 12px; font-size:14px; background:var(--bg);
+  width:150px; transition:border-color 0.18s;
+}
+.s-input:focus { border-color:var(--orange); box-shadow:0 0 0 3px rgba(255,107,53,0.10); }
+.tone-btns { display:flex; gap:6px; flex-wrap:wrap; }
+.tone-btn {
+  padding:7px 14px; border-radius:20px; font-size:13px; font-weight:600;
+  background:var(--bg); color:var(--muted); border:1.5px solid var(--border);
+  transition:all 0.18s; cursor:pointer;
+}
+.tone-btn.active { background:var(--orange); color:#fff; border-color:var(--orange); }
+.forbidden-ta {
+  width:100%; height:80px; padding:10px 12px; resize:none;
+  border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  font-size:13px; font-family:var(--font); line-height:1.6; background:var(--bg);
+  transition:border-color 0.18s;
+}
+.forbidden-ta:focus { border-color:var(--orange); }
+.btn-save {
+  padding:10px 22px; border-radius:var(--radius-sm);
+  background:var(--orange); color:#fff;
+  font-size:14px; font-weight:700; transition:opacity 0.15s;
+}
+.btn-save:active { opacity:0.8; }
+.btn-logout {
+  width:100%; padding:14px; border-radius:var(--radius-sm);
+  background:#FEF2F2; color:var(--red);
+  font-size:15px; font-weight:700; transition:background 0.15s;
+}
+.btn-logout:active { background:#FEE2E2; }
+
+/* ════════════════════════════════════════════════════════════ */
+/* TOAST / MODAL                                                */
+/* ════════════════════════════════════════════════════════════ */
+.toast {
+  position:fixed; bottom:calc(var(--nav-h) + 14px); left:50%;
+  transform:translateX(-50%) translateY(14px);
+  background:var(--navy); color:#fff;
+  padding:10px 20px; border-radius:20px;
+  font-size:13px; font-weight:600; white-space:nowrap;
+  opacity:0; pointer-events:none; z-index:300;
+  transition:opacity 0.25s, transform 0.25s;
+  max-width:calc(100% - 40px);
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+.overlay {
+  position:fixed; inset:0; z-index:200;
+  background:rgba(13,27,53,0.55);
+  display:flex; align-items:flex-end; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity 0.25s;
+}
+.overlay.open { opacity:1; pointer-events:auto; }
+.modal-sheet {
+  background:var(--surface); border-radius:20px 20px 0 0;
+  width:100%; max-width:430px; padding:0 0 24px;
+  max-height:80vh; display:flex; flex-direction:column;
+  transform:translateY(40px); transition:transform 0.28s cubic-bezier(0.32,0.72,0,1);
+}
+.overlay.open .modal-sheet { transform:translateY(0); }
+.modal-handle { width:36px; height:4px; border-radius:2px; background:var(--border); margin:12px auto 16px; flex-shrink:0; }
+.modal-title  { font-size:17px; font-weight:700; color:var(--navy); padding:0 20px 10px; flex-shrink:0; }
+.modal-body   {
+  flex:1; overflow-y:auto; padding:0 20px;
+  font-size:13px; font-family:"Consolas","Menlo",monospace;
+  color:var(--text2); line-height:1.7; white-space:pre-wrap; word-break:break-all;
+}
+.modal-footer { padding:16px 20px 0; flex-shrink:0; display:flex; gap:10px; }
+.btn-modal-close {
+  flex:1; padding:12px; border-radius:var(--radius-sm);
+  background:var(--bg); color:var(--navy);
+  font-size:14px; font-weight:600; transition:background 0.15s;
+}
+
+/* ═══ RESPONSIVE: DESKTOP SIDEBAR (≥768px) ══════════════════ */
+@media(min-width:768px) {
+  #root {
+    max-width:100%; box-shadow:none;
+    margin:0; background:var(--bg);
+  }
+  #login-screen { background:var(--navy3); }
+
+  #app.visible {
+    display:grid;
+    grid-template-rows:var(--hdr-h) 1fr;
+    grid-template-columns:240px 1fr;
+    grid-template-areas:"hdr hdr" "nav main";
+    height:100vh; overflow:hidden;
+  }
+  #app-hdr { grid-area:hdr; }
+
+  #bot-nav {
+    grid-area:nav;
+    flex-direction:column;
+    border-top:none; border-right:1px solid var(--border);
+    height:100%; overflow-y:auto;
+    align-items:stretch;
+    padding:16px 0; background:var(--surface);
+  }
+  .nav-btn {
+    flex:none; flex-direction:row;
+    gap:12px; padding:14px 22px;
+    justify-content:flex-start;
+    font-size:14px; letter-spacing:0;
+    border-radius:0;
+  }
+  .nav-btn.active { color:var(--orange); background:var(--orange-bg); }
+  .nav-btn svg { flex-shrink:0; }
+  .nav-badge {
+    position:static; transform:none;
+    left:auto; top:auto; margin-left:auto;
+  }
+  .nav-btn-logout {
+    display:flex !important;
+    margin-top:auto; color:var(--muted);
+    border-top:1px solid var(--border);
+  }
+  .nav-btn-logout:hover { color:var(--red); background:rgba(239,68,68,0.05); }
+
+  #app-content {
+    grid-area:main;
+    padding-bottom:0;
+    overflow-y:auto;
+  }
+
+  .tab-page { min-height:auto; }
+  .card { margin:12px 20px 0; }
+}
+</style>
+</head>
+<body>
+<div id="root">
+
+<!-- ════════════════════ LOGIN ════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">智</div>
+      <div>
+        <div class="login-logo-name">智答工作室</div>
+        <div class="login-logo-sub">Zhida Studio · 客戶儀表板</div>
+      </div>
+    </div>
+    <!-- Auth tabs -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">登入</div>
+      <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">免費註冊</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <div class="input-grp">
+        <label class="input-label" for="inp-id">客戶 ID</label>
+        <div class="input-wrap">
+          <input class="input-field" id="inp-id" type="text" placeholder="您的帳號" autocomplete="username">
+        </div>
+      </div>
+      <div class="input-grp">
+        <label class="input-label" for="inp-pw">密碼</label>
+        <div class="input-wrap">
+          <input class="input-field" id="inp-pw" type="password" placeholder="••••••••" autocomplete="current-password">
+          <span class="input-icon" id="pw-eye" title="顯示密碼">👁</span>
+        </div>
+      </div>
+      <div class="login-opts">
+        <label class="remember">
+          <input type="checkbox" id="chk-remember">
+          <span>記住我</span>
+        </label>
+      </div>
+      <button class="btn-login" id="btn-login">登入</button>
+      <div class="login-err" id="login-err"></div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-form" style="display:none">
+      <div class="input-grp">
+        <label class="input-label" for="reg-name">客戶名稱 <span style="color:var(--red)">*</span></label>
+        <div class="input-wrap">
+          <input class="input-field" id="reg-name" type="text" placeholder="例：鮮境生活">
+        </div>
+      </div>
+      <div class="input-grp">
+        <label class="input-label" for="reg-email">電子郵件 <span style="color:var(--red)">*</span></label>
+        <div class="input-wrap">
+          <input class="input-field" id="reg-email" type="email" placeholder="you@email.com">
+        </div>
+      </div>
+      <div class="input-grp">
+        <label class="input-label" for="reg-pw">密碼 <span style="color:var(--red)">*</span></label>
+        <div class="input-wrap">
+          <input class="input-field" id="reg-pw" type="password" placeholder="至少 6 個字元">
+          <span class="input-icon" id="reg-pw-eye" title="顯示密碼">👁</span>
+        </div>
+      </div>
+      <div class="input-grp">
+        <label class="input-label" for="reg-pw2">確認密碼 <span style="color:var(--red)">*</span></label>
+        <div class="input-wrap">
+          <input class="input-field" id="reg-pw2" type="password" placeholder="再輸入一次密碼">
+        </div>
+      </div>
+      <div class="input-grp">
+        <label class="input-label" for="reg-ig">IG 帳號名稱 <span style="color:var(--red)">*</span></label>
+        <div class="input-wrap">
+          <input class="input-field" id="reg-ig" type="text" placeholder="@your.brand">
+        </div>
+      </div>
+      <button class="btn-login" id="btn-register">建立帳號</button>
+      <div class="login-err" id="reg-err"></div>
+    </div>
+
+    <div class="api-cfg-toggle" id="api-toggle-btn">⚙ 進階：伺服器網址</div>
+    <div class="api-cfg" id="api-cfg">
+      <input id="inp-api" type="url" placeholder="http://localhost:8000">
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ MAIN APP ══════════════════════════════ -->
+<div id="app">
+
+  <header id="app-hdr">
+    <div class="hdr-logo">智答</div>
+    <div class="hdr-client" id="hdr-name">—</div>
+    <div class="hdr-ai">
+      <div class="status-dot" id="hdr-dot"></div>
+      <span id="hdr-ai-txt">AI 運行中</span>
+    </div>
+  </header>
+
+  <div id="app-content">
+
+    <!-- ── 訊息頁 ───────────────────────────────────────────── -->
+    <div class="tab-page active" id="page-messages">
+      <div class="ai-bar">
+        <div>
+          <div class="ai-bar-label">🤖 AI 自動回覆</div>
+        </div>
+        <div class="ai-bar-sub" id="ai-status-txt">開啟中</div>
+        <label class="ios-toggle">
+          <input type="checkbox" id="ai-toggle" checked>
+          <div class="ios-track"></div>
+          <div class="ios-thumb"></div>
+        </label>
+      </div>
+      <div class="sec-hdr">
+        <div class="sec-title">最近對話</div>
+        <div class="sec-sub" id="msg-count-lbl"></div>
+      </div>
+      <ul class="msg-list" id="msg-list">
+        <div class="loading-wrap"><div class="spinner"></div></div>
+      </ul>
+    </div>
+
+    <!-- ── 報表頁 ───────────────────────────────────────────── -->
+    <div class="tab-page" id="page-reports">
+      <div class="card" style="margin-top:14px;">
+        <div class="card-title">今日摘要</div>
+        <div class="stat-row">
+          <div class="stat-card"><div class="stat-num" id="s-msgs">—</div><div class="stat-lbl">訊息</div></div>
+          <div class="stat-card"><div class="stat-num" id="s-rep">—</div><div class="stat-lbl">AI 回覆</div></div>
+          <div class="stat-card"><div class="stat-num" id="s-fb">—</div><div class="stat-lbl">回饋</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">近 7 天訊息量</div>
+        <div class="bar-chart" id="bar-chart"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">回饋分類</div>
+        <div class="pie-wrap" id="pie-wrap"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:8px;">最新報表預覽</div>
+        <div class="rpt-preview" id="rpt-preview">（尚無報表）</div>
+        <button class="btn-dl" id="btn-dl-latest" style="width:100%;padding:11px;margin-top:10px;text-align:center;border-radius:var(--radius-sm);">⬇ 下載報表</button>
+      </div>
+      <div class="sec-hdr"><div class="sec-title">報表歷史</div></div>
+      <div class="rpt-list" id="rpt-list"></div>
+    </div>
+
+    <!-- ── 知識庫頁 ─────────────────────────────────────────── -->
+    <div class="tab-page" id="page-knowledge">
+      <div class="card">
+        <div class="card-title">目前知識庫</div>
+        <div class="kb-meta">
+          <div class="kb-badge" id="kb-fname">知識庫.md</div>
+          <div class="kb-updated" id="kb-updated">—</div>
+        </div>
+        <div class="kb-preview" id="kb-preview">（載入中）</div>
+      </div>
+      <div class="card">
+        <div class="card-title">更新知識庫</div>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="kb-file" accept=".md,.txt">
+          <div class="upload-icon">📄</div>
+          <div class="upload-hint">點擊或拖曳上傳<br><strong>支援 .md / .txt</strong></div>
+          <div class="upload-types">上傳後 AI 立即套用新版本</div>
+        </div>
+        <div class="upload-status" id="upload-status"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">版本記錄</div>
+        <div class="ver-list" id="ver-list"><div style="font-size:13px;color:var(--muted)">（載入中）</div></div>
+      </div>
+    </div>
+
+    <!-- ── 設定頁 ───────────────────────────────────────────── -->
+    <div class="tab-page" id="page-settings">
+      <div class="settings-card" style="margin-top:14px;">
+        <div class="s-row">
+          <div><div class="s-lbl-main">AI 助理名稱</div><div class="s-lbl-sub">顯示在回覆中的名字</div></div>
+          <div class="s-spacer"></div>
+          <input class="s-input" id="s-ai-name" type="text" placeholder="例：小助手">
+        </div>
+        <div class="s-row">
+          <div><div class="s-lbl-main">通知 Email</div><div class="s-lbl-sub">收到客訴時通知</div></div>
+          <div class="s-spacer"></div>
+          <input class="s-input" id="s-email" type="email" placeholder="you@email.com">
+        </div>
+        <div class="s-row col">
+          <div class="s-lbl-main">回覆語氣</div>
+          <div class="tone-btns" id="tone-btns">
+            <button class="tone-btn active" data-tone="親切">😊 親切</button>
+            <button class="tone-btn" data-tone="正式">💼 正式</button>
+            <button class="tone-btn" data-tone="精簡">⚡ 精簡</button>
+          </div>
+        </div>
+        <div class="s-row col">
+          <div class="s-lbl-main">禁用詞（每行一個）</div>
+          <textarea class="forbidden-ta" id="s-forbidden" placeholder="保證&#10;一定&#10;絕對"></textarea>
+        </div>
+        <div class="s-row" style="justify-content:flex-end;">
+          <button class="btn-save" id="btn-save">💾 儲存設定</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px;margin-bottom:20px;">
+        <button class="btn-logout" id="btn-logout">登出</button>
+      </div>
+    </div>
+
+  </div><!-- /app-content -->
+
+  <nav id="bot-nav">
+    <div class="nav-btn active" data-tab="messages">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>訊息</span>
+      <div class="nav-badge" id="nav-badge">0</div>
+    </div>
+    <div class="nav-btn" data-tab="reports">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>報表</span>
+    </div>
+    <div class="nav-btn" data-tab="knowledge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>知識庫</span>
+    </div>
+    <div class="nav-btn" data-tab="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>設定</span>
+    </div>
+    <!-- Desktop sidebar logout (hidden on mobile) -->
+    <div class="nav-btn nav-btn-logout" id="nav-logout-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span>登出</span>
+    </div>
+  </nav>
+
+</div><!-- /app -->
+
+<!-- Conversation slide-up panel -->
+<div class="conv-panel" id="conv-panel">
+  <div class="conv-hdr">
+    <span class="conv-back" id="conv-back">‹</span>
+    <div class="conv-hdr-title" id="conv-title">對話記錄</div>
+  </div>
+  <div class="conv-msgs" id="conv-msgs"></div>
+  <div class="conv-input-row">
+    <input class="conv-input" id="conv-input" type="text" placeholder="手動回覆…">
+    <button class="btn-send" id="conv-send">➤</button>
+  </div>
+</div>
+
+<!-- Modal sheet (reports preview) -->
+<div class="overlay" id="overlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title">報表</div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-modal-close" id="modal-close">關閉</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+</div><!-- /root -->
+
+<script>
+'use strict';
+// ── CONFIG ─────────────────────────────────────────────────────
+const DEFAULT_API = 'http://localhost:8000';
+
+// ── Auto-detect server URL ──────────────────────────────────────
+async function autoDetectServerUrl() {
+  if (S.api && S.api !== DEFAULT_API) return; // already customized
+  const SKIP_HDR = { 'ngrok-skip-browser-warning': 'true' };
+  const candidates = [
+    'https://zhidastudio.com',  // future cloud
+    'http://localhost:8000',    // local
+  ];
+  for (const base of candidates) {
+    try {
+      const r = await fetch(base + '/api/server-info',
+        { headers: SKIP_HDR, signal: AbortSignal.timeout(3000) });
+      if (r.ok) {
+        const data = await r.json();
+        if (data.url && data.url !== S.api) {
+          S.api = data.url;
+          S._autoDetected = true;
+          localStorage.setItem('zhida_api', S.api);
+          const inp = document.getElementById('inp-api');
+          if (inp) inp.value = S.api;
+          return;
+        }
+      }
+    } catch {}
+  }
+}
+
+// ── STATE ──────────────────────────────────────────────────────
+const S = {
+  api:         localStorage.getItem('zhida_api') || DEFAULT_API,
+  token:       '',
+  clientId:    '',
+  clientName:  '',
+  tab:         'messages',
+  msgs:        [],          // all messages for this client
+  allMsgs:     [],          // raw from server
+  reports:     [],
+  aiEnabled:   true,
+  tone:        '親切',
+  convUid:     '',
+  latestFile:  '',
+  kbLoaded:    false,
+  uploading:   false,
+};
+
+// ── UTILS ──────────────────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const qs = sel => document.querySelector(sel);
+const qsa = sel => [...document.querySelectorAll(sel)];
+
+function toast(msg, dur = 2200) {
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => el.classList.remove('show'), dur);
+}
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function relTime(ts) {
+  if (!ts) return '';
+  try {
+    const d = new Date(ts), now = Date.now(), diff = (now - d) / 1000;
+    if (diff < 55)    return '剛剛';
+    if (diff < 3600)  return `${Math.floor(diff/60)}分前`;
+    if (diff < 86400) return `${Math.floor(diff/3600)}小時前`;
+    return `${d.getMonth()+1}/${d.getDate()}`;
+  } catch { return ''; }
+}
+
+async function apiFetch(path, opts = {}) {
+  const url = S.api + path;
+  const headers = {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
+  };
+  if (S.token) headers['X-Client-Token'] = S.token;
+  try {
+    const r = await fetch(url, { headers, ...opts });
+    return await r.json();
+  } catch (e) {
+    console.warn('[API]', path, e.message);
+    return null;
+  }
+}
+
+// ── LOGIN / REGISTER ───────────────────────────────────────────
+function switchAuthTab(tab) {
+  $('tab-login').classList.toggle('active', tab === 'login');
+  $('tab-register').classList.toggle('active', tab === 'register');
+  $('login-form').style.display    = tab === 'login'    ? '' : 'none';
+  $('register-form').style.display = tab === 'register' ? '' : 'none';
+  $('login-err').textContent = '';
+  $('reg-err').textContent   = '';
+}
+
+function initLogin() {
+  // Auto-detect server URL in background
+  autoDetectServerUrl().then(() => {
+    $('inp-api').value = S.api;
+  });
+
+  // Restore saved API URL
+  $('inp-api').value = S.api;
+  $('api-toggle-btn').onclick = () => $('api-cfg').classList.toggle('open');
+  $('inp-api').onchange = () => {
+    S.api = $('inp-api').value.trim() || DEFAULT_API;
+    localStorage.setItem('zhida_api', S.api);
+  };
+
+  // Login password visibility
+  $('pw-eye').onclick = () => {
+    const f = $('inp-pw');
+    f.type = f.type === 'password' ? 'text' : 'password';
+    $('pw-eye').textContent = f.type === 'password' ? '👁' : '🙈';
+  };
+
+  // Register password visibility
+  $('reg-pw-eye').onclick = () => {
+    const f = $('reg-pw');
+    f.type = f.type === 'password' ? 'text' : 'password';
+    $('reg-pw-eye').textContent = f.type === 'password' ? '👁' : '🙈';
+  };
+
+  // Restore remembered ID
+  if (localStorage.getItem('zhida_remember') === '1') {
+    $('inp-id').value = localStorage.getItem('zhida_cid') || '';
+    $('chk-remember').checked = true;
+  }
+
+  $('btn-login').onclick    = doLogin;
+  $('btn-register').onclick = doRegister;
+  $('inp-pw').onkeydown  = e => { if (e.key === 'Enter') doLogin(); };
+  $('reg-pw2').onkeydown = e => { if (e.key === 'Enter') doRegister(); };
+}
+
+async function doLogin() {
+  const cid = $('inp-id').value.trim();
+  const pw  = $('inp-pw').value;
+  if (!cid || !pw) { $('login-err').textContent = '請輸入帳號與密碼'; return; }
+
+  $('btn-login').textContent = '登入中…';
+  $('login-err').textContent = '';
+
+  const res = await apiFetch('/api/client/login', {
+    method: 'POST',
+    body: JSON.stringify({ client_id: cid, password: pw }),
+  });
+
+  $('btn-login').textContent = '登入';
+
+  if (!res?.ok) {
+    $('login-err').textContent = res?.error || '帳號或密碼錯誤';
+    return;
+  }
+
+  S.token      = res.token;
+  S.clientId   = res.client_id;
+  S.clientName = res.client_name;
+
+  if ($('chk-remember').checked) {
+    localStorage.setItem('zhida_remember', '1');
+    localStorage.setItem('zhida_cid', cid);
+  } else {
+    localStorage.removeItem('zhida_remember');
+    localStorage.removeItem('zhida_cid');
+  }
+  localStorage.setItem('zhida_token',  S.token);
+  localStorage.setItem('zhida_cname',  S.clientName);
+  localStorage.setItem('zhida_cid_full', S.clientId);
+
+  enterApp();
+}
+
+async function doRegister() {
+  const name  = $('reg-name').value.trim();
+  const email = $('reg-email').value.trim();
+  const pw    = $('reg-pw').value;
+  const pw2   = $('reg-pw2').value;
+  const ig    = $('reg-ig').value.trim();
+
+  if (!name || !email || !pw || !ig) { $('reg-err').textContent = '請填寫所有必填欄位'; return; }
+  if (pw !== pw2)   { $('reg-err').textContent = '兩次密碼不一致'; return; }
+  if (pw.length < 6){ $('reg-err').textContent = '密碼至少需要 6 個字元'; return; }
+
+  $('btn-register').textContent = '建立中…';
+  $('reg-err').textContent = '';
+
+  const res = await apiFetch('/api/client/register', {
+    method: 'POST',
+    body: JSON.stringify({ name, email, password: pw, ig_account: ig }),
+  });
+
+  $('btn-register').textContent = '建立帳號';
+
+  if (!res?.ok) {
+    $('reg-err').textContent = res?.error || '註冊失敗，請稍後再試';
+    return;
+  }
+
+  S.token      = res.token;
+  S.clientId   = res.client_id;
+  S.clientName = res.client_name;
+  localStorage.setItem('zhida_token',    S.token);
+  localStorage.setItem('zhida_cname',    S.clientName);
+  localStorage.setItem('zhida_cid_full', S.clientId);
+  toast('🎉 帳號建立成功！歡迎加入智答工作室');
+  enterApp();
+}
+
+function tryAutoLogin() {
+  const t = localStorage.getItem('zhida_token');
+  const c = localStorage.getItem('zhida_cid_full');
+  const n = localStorage.getItem('zhida_cname');
+  if (t && c && n) {
+    S.token = t; S.clientId = c; S.clientName = n;
+    return true;
+  }
+  return false;
+}
+
+// ── APP ENTRY ──────────────────────────────────────────────────
+function enterApp() {
+  $('login-screen').style.display = 'none';
+  $('app').classList.add('visible');
+  $('hdr-name').textContent = S.clientName;
+
+  initNav();
+  initConvPanel();
+  initOverlay();
+  initSettings();
+
+  loadTab('messages');
+  setInterval(() => { if (S.tab === 'messages') loadMessages(); }, 30000);
+}
+
+// ── NAV ────────────────────────────────────────────────────────
+function initNav() {
+  qsa('.nav-btn').forEach(btn => {
+    btn.onclick = () => switchTab(btn.dataset.tab);
+  });
+}
+
+function switchTab(tab) {
+  if (S.tab === tab) return;
+  S.tab = tab;
+  qsa('.tab-page').forEach(p => p.classList.remove('active'));
+  qsa('.nav-btn').forEach(n => n.classList.remove('active'));
+  $(`page-${tab}`).classList.add('active');
+  qs(`.nav-btn[data-tab="${tab}"]`).classList.add('active');
+  loadTab(tab);
+}
+
+function loadTab(tab) {
+  if (tab === 'messages')  loadMessages();
+  if (tab === 'reports')   loadReports();
+  if (tab === 'knowledge') loadKnowledge();
+  if (tab === 'settings')  loadClientSettings();
+}
+
+// ── MESSAGES ───────────────────────────────────────────────────
+async function loadMessages() {
+  const res = await apiFetch(`/api/messages?client_id=${encodeURIComponent(S.clientId)}&limit=50`);
+  if (!res) return;
+  S.allMsgs = res.messages || [];
+  renderMessages();
+}
+
+function renderMessages() {
+  const list = $('msg-list');
+  const msgs = S.allMsgs;
+  $('msg-count-lbl').textContent = msgs.length ? `${msgs.length} 筆` : '';
+
+  if (!msgs.length) {
+    list.innerHTML = '<li><div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">目前沒有訊息記錄</div></div></li>';
+    return;
+  }
+
+  // Group by sender, keep latest per sender
+  const byUid = {};
+  msgs.forEach(m => {
+    const k = m.sender_id || 'unknown';
+    if (!byUid[k] || m.timestamp > byUid[k].timestamp) byUid[k] = m;
+  });
+  const sorted = Object.values(byUid).sort((a, b) => (b.timestamp || '') > (a.timestamp || '') ? 1 : -1);
+
+  list.innerHTML = sorted.map(m => {
+    const uid  = (m.sender_id || '').slice(-6) || '訪客';
+    const init = uid.slice(-2).toUpperCase();
+    const prev = (m.message || '').slice(0, 36) || '（無內容）';
+    return `<li class="msg-item" data-uid="${esc(m.sender_id || '')}">
+      <div class="msg-avatar">${init}</div>
+      <div class="msg-body">
+        <div class="msg-top">
+          <div class="msg-uid">…${esc(uid)}</div>
+          <div class="msg-ts">${relTime(m.timestamp)}</div>
+        </div>
+        <div class="msg-prev">${esc(prev)}</div>
+      </div>
+    </li>`;
+  }).join('');
+
+  list.querySelectorAll('.msg-item').forEach(item => {
+    item.onclick = () => openConv(item.dataset.uid);
+  });
+
+  $('nav-badge').classList.remove('show');
+}
+
+// ── AI TOGGLE ──────────────────────────────────────────────────
+function initAiToggle() {
+  $('ai-toggle').onchange = async () => {
+    S.aiEnabled = $('ai-toggle').checked;
+    updateAiUI();
+    toast(S.aiEnabled ? '✅ AI 自動回覆已開啟' : '⏸ AI 自動回覆已暫停');
+    await apiFetch('/api/client/settings', {
+      method: 'POST',
+      body: JSON.stringify({ client_id: S.clientId, ai_enabled: S.aiEnabled }),
+    });
+  };
+}
+
+function updateAiUI() {
+  $('ai-status-txt').textContent = S.aiEnabled ? '開啟中' : '關閉中';
+  $('ai-toggle').checked = S.aiEnabled;
+  $('hdr-dot').className = 'status-dot' + (S.aiEnabled ? '' : ' off');
+  $('hdr-ai-txt').textContent = S.aiEnabled ? 'AI 運行中' : 'AI 已暫停';
+}
+
+// ── CONV PANEL ─────────────────────────────────────────────────
+function initConvPanel() {
+  $('conv-back').onclick = () => $('conv-panel').classList.remove('open');
+  $('conv-send').onclick = sendManual;
+  $('conv-input').onkeydown = e => e.key === 'Enter' && sendManual();
+}
+
+function openConv(uid) {
+  S.convUid = uid;
+  const short = (uid || '').slice(-6);
+  $('conv-title').textContent = `對話：…${short}`;
+  $('conv-panel').classList.add('open');
+  renderConv();
+}
+
+function renderConv() {
+  const box  = $('conv-msgs');
+  const msgs = S.allMsgs.filter(m => m.sender_id === S.convUid);
+  if (!msgs.length) {
+    box.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">無對話記錄</div></div>';
+    return;
+  }
+  box.innerHTML = msgs.map(m => `
+    <div class="bubble-wrap user">
+      <div class="bubble-meta">客人 · ${relTime(m.timestamp)}</div>
+      <div class="bubble user">${esc(m.message || '')}</div>
+    </div>
+    ${m.reply ? `<div class="bubble-wrap bot">
+      <div class="bubble-meta">AI 回覆</div>
+      <div class="bubble bot">${esc(m.reply)}</div>
+    </div>` : ''}
+  `).join('');
+  box.scrollTop = box.scrollHeight;
+}
+
+async function sendManual() {
+  const msg = $('conv-input').value.trim();
+  if (!msg || !S.convUid) return;
+  $('conv-input').value = '';
+  const res = await apiFetch('/api/manual-reply', {
+    method: 'POST',
+    body: JSON.stringify({ sender_id: S.convUid, client_name: S.clientName, message: msg }),
+  });
+  if (res?.ok) {
+    toast('✅ 已發送');
+    await loadMessages();
+    renderConv();
+  } else {
+    toast('❌ 發送失敗：' + (res?.error || '請確認系統已啟動'));
+  }
+}
+
+// ── REPORTS ────────────────────────────────────────────────────
+async function loadReports() {
+  const res = await apiFetch(`/api/reports?client_id=${encodeURIComponent(S.clientId)}`);
+  if (!res) return;
+
+  const st = res.today_stats || {};
+  $('s-msgs').textContent = st.messages  ?? '—';
+  $('s-rep').textContent  = st.replies   ?? '—';
+  $('s-fb').textContent   = st.feedback  ?? '—';
+
+  renderBarChart(res.bar_data || []);
+  renderPie(res.feedback_cats || {});
+
+  S.reports    = res.reports || [];
+  S.latestFile = res.latest_file || '';
+  renderReportList();
+
+  if (res.latest_preview) $('rpt-preview').textContent = res.latest_preview;
+  $('btn-dl-latest').onclick = () => downloadReport(S.latestFile);
+}
+
+function renderBarChart(data) {
+  const el = $('bar-chart');
+  if (!data.length) { el.innerHTML = '<div style="flex:1;font-size:12px;color:var(--muted);padding-top:28px;text-align:center">暫無數據</div>'; return; }
+  const max = Math.max(...data.map(d => d.count), 1);
+  el.innerHTML = data.map(d => {
+    const pct = Math.round((d.count / max) * 92);
+    return `<div class="bar-col">
+      <div class="bar-fill" style="height:${pct}%;"></div>
+      <div class="bar-lbl">${esc(d.label)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPie(cats) {
+  const colors = ['#FF6B35','#1A2B4A','#22C55E','#3B82F6','#8B5CF6','#EC4899'];
+  const el = $('pie-wrap');
+  const entries = Object.entries(cats);
+  if (!entries.length) { el.innerHTML = '<div style="font-size:13px;color:var(--muted)">暫無回饋資料</div>'; return; }
+  el.innerHTML = entries.map(([k, v], i) =>
+    `<div class="pie-item"><div class="pie-dot" style="background:${colors[i % colors.length]}"></div>${esc(k)}：${v} 則</div>`
+  ).join('');
+}
+
+function renderReportList() {
+  const el = $('rpt-list');
+  if (!S.reports.length) { el.innerHTML = '<div style="padding:20px 14px;font-size:13px;color:var(--muted)">尚無報表</div>'; return; }
+  el.innerHTML = S.reports.map((r, i) => `
+    <div class="rpt-item" data-idx="${i}">
+      <div style="font-size:22px">📄</div>
+      <div style="flex:1;min-width:0">
+        <div class="rpt-name">${esc(r.name)}</div>
+        <div class="rpt-meta">${esc(r.date || '')}  ${r.size_kb ? r.size_kb + 'KB' : ''}</div>
+      </div>
+      <button class="btn-dl" data-file="${esc(r.path || r.name)}">下載</button>
+    </div>`).join('');
+
+  el.querySelectorAll('.rpt-item').forEach(item => {
+    item.onclick = e => {
+      if (e.target.classList.contains('btn-dl')) {
+        downloadReport(e.target.dataset.file);
+        return;
+      }
+      const r = S.reports[+item.dataset.idx];
+      openModal(r.name, r.preview || '（無預覽）');
+    };
+  });
+}
+
+function downloadReport(file) {
+  if (!file) { toast('尚無報表可下載'); return; }
+  const url = `${S.api}/api/reports/download?client_id=${encodeURIComponent(S.clientId)}&file=${encodeURIComponent(file)}`;
+  Object.assign(document.createElement('a'), { href: url, download: file.split('/').pop() }).click();
+}
+
+// ── KNOWLEDGE ──────────────────────────────────────────────────
+async function loadKnowledge() {
+  const res = await apiFetch(`/api/knowledge?client_id=${encodeURIComponent(S.clientId)}`);
+  if (!res) return;
+  $('kb-fname').textContent   = res.filename || '知識庫.md';
+  $('kb-updated').textContent = res.updated  ? `更新：${res.updated}` : '';
+  $('kb-preview').textContent = res.preview  || '（空）';
+  renderVersions(res.versions || []);
+  if (!S.kbLoaded) { initUpload(); S.kbLoaded = true; }
+}
+
+function renderVersions(vers) {
+  const el = $('ver-list');
+  if (!vers.length) { el.innerHTML = '<div style="font-size:13px;color:var(--muted)">無版本記錄</div>'; return; }
+  el.innerHTML = vers.slice(0, 3).map((v, i) => `
+    <div class="ver-item">
+      <div class="ver-num">v${vers.length - i}</div>
+      <div><div class="ver-name">${esc(v.name)}</div><div class="ver-date">${esc(v.date || '')}</div></div>
+    </div>`).join('');
+}
+
+function initUpload() {
+  const zone   = $('upload-zone');
+  const input  = $('kb-file');
+  const status = $('upload-status');
+
+  zone.ondragover  = e => { e.preventDefault(); zone.classList.add('drag'); };
+  zone.ondragleave = ()  => zone.classList.remove('drag');
+  zone.ondrop = e => {
+    e.preventDefault(); zone.classList.remove('drag');
+    if (e.dataTransfer.files[0]) doUpload(e.dataTransfer.files[0]);
+  };
+  input.onchange = () => { if (input.files[0]) doUpload(input.files[0]); };
+
+  async function doUpload(file) {
+    if (S.uploading) return;
+    S.uploading = true;
+    status.textContent = '⏳ 上傳中…';
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('client_id', S.clientId);
+    try {
+      const r = await fetch(`${S.api}/api/knowledge/upload`, {
+        method: 'POST',
+        headers: { 'X-Client-Token': S.token },
+        body: fd,
+      });
+      const d = await r.json();
+      if (d.ok) {
+        status.textContent = `✅ 上傳成功：${file.name}`;
+        toast('✅ 知識庫已更新'); await loadKnowledge();
+      } else {
+        status.textContent = '❌ 上傳失敗：' + (d.error || '未知');
+      }
+    } catch {
+      status.textContent = '❌ 連線失敗，請確認系統已啟動';
+    }
+    S.uploading = false;
+  }
+}
+
+// ── SETTINGS ───────────────────────────────────────────────────
+function initSettings() {
+  initAiToggle();
+  qsa('.tone-btn').forEach(btn => {
+    btn.onclick = () => { S.tone = btn.dataset.tone; updateToneUI(); };
+  });
+  $('btn-save').onclick        = saveClientSettings;
+  $('btn-logout').onclick      = doLogout;
+  $('nav-logout-btn').onclick  = doLogout;
+}
+
+async function loadClientSettings() {
+  const res = await apiFetch(`/api/client/settings?client_id=${encodeURIComponent(S.clientId)}`);
+  if (!res) return;
+  $('s-ai-name').value    = res.ai_name || '';
+  $('s-email').value      = res.email   || '';
+  $('s-forbidden').value  = (res.forbidden_words || []).join('\n');
+  S.tone       = res.tone       || '親切';
+  S.aiEnabled  = res.ai_enabled !== false;
+  updateToneUI(); updateAiUI();
+}
+
+function updateToneUI() {
+  qsa('.tone-btn').forEach(b => b.classList.toggle('active', b.dataset.tone === S.tone));
+}
+
+async function saveClientSettings() {
+  const payload = {
+    client_id:       S.clientId,
+    ai_name:         $('s-ai-name').value.trim(),
+    email:           $('s-email').value.trim(),
+    tone:            S.tone,
+    forbidden_words: $('s-forbidden').value.split('\n').map(s => s.trim()).filter(Boolean),
+    ai_enabled:      S.aiEnabled,
+  };
+  const res = await apiFetch('/api/client/settings', { method: 'POST', body: JSON.stringify(payload) });
+  toast(res?.ok ? '✅ 設定已儲存' : '❌ 儲存失敗');
+}
+
+function doLogout() {
+  if (!confirm('確定要登出嗎？')) return;
+  ['zhida_token','zhida_cid_full','zhida_cname'].forEach(k => localStorage.removeItem(k));
+  location.reload();
+}
+
+// ── MODAL ──────────────────────────────────────────────────────
+function initOverlay() {
+  $('modal-close').onclick    = closeModal;
+  $('overlay').onclick = e => { if (e.target === $('overlay')) closeModal(); };
+}
+function openModal(title, body) {
+  $('modal-title').textContent = title;
+  $('modal-body').textContent  = body;
+  $('overlay').classList.add('open');
+}
+function closeModal() { $('overlay').classList.remove('open'); }
+
+// ── BOOT ───────────────────────────────────────────────────────
+initLogin();
+if (tryAutoLogin()) { enterApp(); }
+</script>
+</body>
+</html>

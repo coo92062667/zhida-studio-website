@@ -1,0 +1,47 @@
+[build]
+  publish = "."
+
+# 安全標頭：適用所有頁面
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options            = "SAMEORIGIN"
+    X-Content-Type-Options     = "nosniff"
+    X-XSS-Protection           = "1; mode=block"
+    Referrer-Policy            = "strict-origin-when-cross-origin"
+    Permissions-Policy         = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security  = "max-age=63072000; includeSubDomains; preload"
+
+# HTML 頁面不快取（確保更新即時生效）
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# 靜態資源快取（如未來加入 CSS/JS/圖片）
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# 簡潔 URL 重新導向（無副檔名存取）
+[[redirects]]
+  from   = "/privacy"
+  to     = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from   = "/terms"
+  to     = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from   = "/home"
+  to     = "/"
+  status = 301
+
+# 404 自訂頁面（如未來建立 404.html）
+# [[redirects]]
+#   from   = "/*"
+#   to     = "/404.html"
+#   status = 404

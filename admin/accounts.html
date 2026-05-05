@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>帳號密碼管理 · 智答工作室後台</title>
+<style>
+:root {
+  --navy:    #1A2B4A;
+  --navy3:   #0D1B35;
+  --orange:  #FF6B35;
+  --green:   #22C55E;
+  --red:     #EF4444;
+  --yellow:  #F59E0B;
+  --bg:      #F0F2F7;
+  --surface: #FFFFFF;
+  --border:  rgba(26,43,74,0.10);
+  --muted:   #8898AA;
+  --text:    #1A2B4A;
+  --text2:   #4A5568;
+  --radius:  12px;
+  --shadow:  0 2px 12px rgba(26,43,74,0.08);
+  --font:    "Inter","Noto Sans TC","PingFang TC",sans-serif;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html,body { height:100%; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
+a { text-decoration:none; color:inherit; }
+button { font-family:inherit; cursor:pointer; border:none; outline:none; }
+input,select { font-family:inherit; }
+
+/* ── Header ── */
+#hdr {
+  background:var(--navy); height:60px; flex-shrink:0;
+  display:flex; align-items:center; padding:0 28px; gap:16px;
+  position:sticky; top:0; z-index:50;
+}
+.hdr-back {
+  display:flex; align-items:center; gap:7px;
+  font-size:13px; color:rgba(255,255,255,0.65);
+  cursor:pointer; padding:6px 10px; border-radius:8px;
+  transition:background 0.15s;
+}
+.hdr-back:hover { background:rgba(255,255,255,0.1); color:#fff; }
+.hdr-title { flex:1; font-size:17px; font-weight:700; color:#fff; }
+.hdr-user  { font-size:13px; color:rgba(255,255,255,0.5); }
+.btn-logout {
+  padding:7px 14px; border-radius:8px;
+  background:rgba(239,68,68,0.15); color:#fca5a5;
+  font-size:13px; font-weight:600;
+  transition:background 0.15s;
+}
+.btn-logout:hover { background:rgba(239,68,68,0.3); }
+
+/* ── Layout ── */
+#page { max-width:1100px; margin:0 auto; padding:28px 24px 60px; }
+
+/* ── Admin Info Card ── */
+.admin-info-card {
+  background:var(--navy); color:#fff;
+  border-radius:var(--radius); padding:24px 28px;
+  margin-bottom:28px; display:flex; align-items:center; gap:24px;
+  flex-wrap:wrap;
+}
+.admin-avatar {
+  width:52px; height:52px; border-radius:16px;
+  background:var(--orange);
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; font-weight:900; flex-shrink:0;
+}
+.admin-meta { flex:1; min-width:180px; }
+.admin-name { font-size:17px; font-weight:700; margin-bottom:3px; }
+.admin-role { font-size:12px; color:rgba(255,255,255,0.45); }
+.admin-info-rows { display:flex; flex-direction:column; gap:6px; }
+.admin-info-row  { display:flex; align-items:center; gap:10px; font-size:13px; }
+.admin-info-lbl  { color:rgba(255,255,255,0.4); width:110px; flex-shrink:0; }
+.admin-info-val  { color:rgba(255,255,255,0.85); font-family:"Consolas",monospace; font-size:12px; word-break:break-all; }
+.btn-change-pw {
+  padding:9px 18px; border-radius:8px;
+  background:rgba(255,107,53,0.22); color:#FFB494;
+  font-size:13px; font-weight:600;
+  border:1px solid rgba(255,107,53,0.3);
+  transition:background 0.15s;
+}
+.btn-change-pw:hover { background:rgba(255,107,53,0.38); color:#fff; }
+
+/* ── Section header ── */
+.sec-hdr {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px;
+}
+.sec-title { font-size:16px; font-weight:700; color:var(--navy); }
+.sec-count { font-size:13px; color:var(--muted); }
+.btn-add {
+  display:flex; align-items:center; gap:7px;
+  padding:9px 18px; border-radius:8px;
+  background:var(--orange); color:#fff;
+  font-size:14px; font-weight:700;
+  transition:opacity 0.15s;
+}
+.btn-add:hover { opacity:0.88; }
+
+/* ── Table ── */
+.tbl-wrap {
+  background:var(--surface); border-radius:var(--radius);
+  box-shadow:var(--shadow); overflow:hidden;
+  margin-bottom:28px;
+}
+table { width:100%; border-collapse:collapse; }
+thead th {
+  padding:12px 14px; background:#F7F8FB;
+  font-size:11px; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:0.07em;
+  text-align:left; border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+tbody tr { border-bottom:1px solid var(--border); transition:background 0.12s; }
+tbody tr:last-child { border-bottom:none; }
+tbody tr:hover { background:#FAFBFF; }
+td { padding:13px 14px; font-size:13px; color:var(--text2); vertical-align:middle; }
+td.name  { font-weight:700; color:var(--navy); }
+td.mono  { font-family:"Consolas",monospace; font-size:12px; }
+td.pw-cell { min-width:180px; }
+
+/* Password display */
+.pw-wrap { display:flex; align-items:center; gap:6px; }
+.pw-dots { font-family:"Consolas",monospace; font-size:14px; color:var(--muted); letter-spacing:2px; }
+.pw-text { font-family:"Consolas",monospace; font-size:12px; color:var(--navy); display:none; word-break:break-all; }
+.pw-wrap.revealed .pw-dots { display:none; }
+.pw-wrap.revealed .pw-text { display:block; }
+.btn-eye {
+  background:none; border:none; cursor:pointer;
+  padding:3px 5px; border-radius:5px; font-size:14px;
+  color:var(--muted); transition:color 0.12s;
+  flex-shrink:0;
+}
+.btn-eye:hover { color:var(--navy); }
+
+/* Plan badge */
+.badge {
+  display:inline-block; padding:3px 9px; border-radius:20px;
+  font-size:11px; font-weight:700;
+}
+.badge-trial  { background:rgba(245,158,11,0.12); color:#B45309; }
+.badge-basic  { background:rgba(26,43,74,0.09); color:var(--navy); }
+.badge-pro    { background:rgba(34,197,94,0.12); color:#15803D; }
+.badge-ent    { background:rgba(255,107,53,0.12); color:#C2410C; }
+
+/* Row action buttons */
+.row-actions { display:flex; align-items:center; gap:6px; }
+.btn-action {
+  padding:5px 10px; border-radius:6px; font-size:12px; font-weight:600;
+  transition:opacity 0.12s; white-space:nowrap;
+}
+.btn-action:hover { opacity:0.8; }
+.btn-copy  { background:rgba(26,43,74,0.08); color:var(--navy); }
+.btn-reset { background:rgba(239,68,68,0.1); color:var(--red); }
+
+/* ── Modal ── */
+.modal-bg {
+  position:fixed; inset:0; background:rgba(13,27,53,0.5); z-index:500;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  opacity:0; pointer-events:none; transition:opacity 0.2s;
+}
+.modal-bg.open { opacity:1; pointer-events:auto; }
+.modal-box {
+  background:var(--surface); border-radius:20px;
+  padding:32px 28px; width:100%; max-width:420px;
+  box-shadow:0 24px 80px rgba(26,43,74,0.22);
+  transform:scale(0.96); transition:transform 0.2s;
+}
+.modal-bg.open .modal-box { transform:scale(1); }
+.modal-title  { font-size:18px; font-weight:800; color:var(--navy); margin-bottom:6px; }
+.modal-sub    { font-size:14px; color:var(--muted); margin-bottom:22px; }
+.field-grp    { margin-bottom:14px; }
+.field-label  {
+  display:block; font-size:11px; font-weight:700; color:var(--navy);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;
+}
+.field-input {
+  display:block; width:100%;
+  padding:11px 14px;
+  border:1.5px solid var(--border); border-radius:var(--radius);
+  font-size:15px; color:var(--navy); background:var(--bg);
+  transition:border-color 0.2s, box-shadow 0.2s;
+}
+.field-input:focus { outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(255,107,53,0.12); }
+.modal-actions { display:flex; gap:10px; margin-top:22px; }
+.btn-modal-cancel {
+  flex:1; padding:12px; border-radius:var(--radius);
+  background:var(--bg); color:var(--navy);
+  font-size:14px; font-weight:600;
+  transition:background 0.15s;
+}
+.btn-modal-cancel:hover { background:var(--border); }
+.btn-modal-ok {
+  flex:2; padding:12px; border-radius:var(--radius);
+  background:var(--navy); color:#fff;
+  font-size:14px; font-weight:700;
+  transition:background 0.15s;
+}
+.btn-modal-ok:hover { background:var(--orange); }
+.btn-modal-ok.danger { background:var(--red); }
+.modal-err { font-size:13px; color:var(--red); margin-top:10px; min-height:18px; text-align:center; }
+
+/* ── Toast ── */
+#toast {
+  position:fixed; bottom:28px; left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--navy); color:#fff;
+  padding:10px 22px; border-radius:20px;
+  font-size:13px; font-weight:600;
+  opacity:0; pointer-events:none; z-index:900;
+  transition:opacity 0.25s, transform 0.25s;
+}
+#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ── Loading ── */
+.spinner { width:28px; height:28px; border:3px solid var(--border); border-top-color:var(--orange); border-radius:50%; animation:spin 0.75s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.loading-row { padding:48px; text-align:center; color:var(--muted); display:flex; flex-direction:column; align-items:center; gap:12px; }
+</style>
+</head>
+<body>
+
+<header id="hdr">
+  <a class="hdr-back" href="./index.html">‹ 返回後台</a>
+  <div class="hdr-title">🔑 帳號密碼管理</div>
+  <div class="hdr-user" id="hdr-user"></div>
+  <button class="btn-logout" id="btn-logout">登出</button>
+</header>
+
+<div id="page">
+
+  <!-- Admin info -->
+  <div class="admin-info-card">
+    <div class="admin-avatar">智</div>
+    <div class="admin-meta">
+      <div class="admin-name" id="adm-name">管理員</div>
+      <div class="admin-role">系統管理員 · 智答工作室後台</div>
+    </div>
+    <div class="admin-info-rows">
+      <div class="admin-info-row">
+        <span class="admin-info-lbl">管理後台網址</span>
+        <span class="admin-info-val">https://zhidastudio.com/admin/login.html</span>
+      </div>
+      <div class="admin-info-row">
+        <span class="admin-info-lbl">管理員帳號</span>
+        <span class="admin-info-val" id="adm-username">—</span>
+      </div>
+    </div>
+    <button class="btn-change-pw" id="btn-chg-admin-pw">修改管理員密碼</button>
+  </div>
+
+  <!-- Clients section -->
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-title">客戶帳號清單</div>
+      <div class="sec-count" id="client-count"></div>
+    </div>
+    <button class="btn-add" id="btn-add-client">＋ 新增客戶</button>
+  </div>
+
+  <div class="tbl-wrap">
+    <table id="accounts-tbl">
+      <thead>
+        <tr>
+          <th>客戶名稱</th>
+          <th>客戶 ID</th>
+          <th>電子郵件</th>
+          <th>密碼</th>
+          <th>IG 帳號</th>
+          <th>建立日期</th>
+          <th>方案</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="tbl-body">
+        <tr>
+          <td colspan="8">
+            <div class="loading-row"><div class="spinner"></div><span>載入中…</span></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ── Toast ── -->
+<div id="toast"></div>
+
+<!-- ── Modal: Change Admin Password ── -->
+<div class="modal-bg" id="modal-admin-pw">
+  <div class="modal-box">
+    <div class="modal-title">修改管理員密碼</div>
+    <div class="modal-sub">輸入新密碼並確認</div>
+    <div class="field-grp">
+      <label class="field-label" for="adm-pw-cur">目前密碼</label>
+      <input class="field-input" type="password" id="adm-pw-cur" placeholder="目前的密碼">
+    </div>
+    <div class="field-grp">
+      <label class="field-label" for="adm-pw-new">新密碼</label>
+      <input class="field-input" type="password" id="adm-pw-new" placeholder="至少 6 個字元">
+    </div>
+    <div class="field-grp">
+      <label class="field-label" for="adm-pw-new2">確認新密碼</label>
+      <input class="field-input" type="password" id="adm-pw-new2" placeholder="再輸入一次">
+    </div>
+    <div class="modal-err" id="adm-pw-err"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" id="adm-pw-cancel">取消</button>
+      <button class="btn-modal-ok" id="adm-pw-ok">確認修改</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modal: Add Client ── -->
+<div class="modal-bg" id="modal-add">
+  <div class="modal-box">
+    <div class="modal-title">新增客戶帳號</div>
+    <div class="modal-sub">建立新的客戶登入帳號</div>
+    <div class="field-grp">
+      <label class="field-label" for="add-name">客戶名稱 <span style="color:var(--red)">*</span></label>
+      <input class="field-input" type="text" id="add-name" placeholder="例：鮮境生活">
+    </div>
+    <div class="field-grp">
+      <label class="field-label" for="add-email">電子郵件</label>
+      <input class="field-input" type="email" id="add-email" placeholder="you@email.com">
+    </div>
+    <div class="field-grp">
+      <label class="field-label" for="add-ig">IG 帳號</label>
+      <input class="field-input" type="text" id="add-ig" placeholder="@your.brand">
+    </div>
+    <div class="field-grp">
+      <label class="field-label" for="add-plan">方案</label>
+      <select class="field-input" id="add-plan">
+        <option>免費試用</option>
+        <option>基礎版</option>
+        <option>專業版</option>
+        <option>企業版</option>
+      </select>
+    </div>
+    <div class="field-grp">
+      <label class="field-label" for="add-pw">初始密碼（留空自動產生）</label>
+      <input class="field-input" type="text" id="add-pw" placeholder="留空則自動產生強密碼">
+    </div>
+    <div class="modal-err" id="add-err"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" id="add-cancel">取消</button>
+      <button class="btn-modal-ok" id="add-ok">建立帳號</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Modal: Reset Password ── -->
+<div class="modal-bg" id="modal-reset">
+  <div class="modal-box">
+    <div class="modal-title">重設密碼</div>
+    <div class="modal-sub" id="reset-sub">重設客戶密碼</div>
+    <div class="field-grp">
+      <label class="field-label" for="reset-pw">新密碼</label>
+      <input class="field-input" type="text" id="reset-pw" placeholder="至少 6 個字元">
+    </div>
+    <div class="modal-err" id="reset-err"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" id="reset-cancel">取消</button>
+      <button class="btn-modal-ok danger" id="reset-ok">確認重設</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const token    = localStorage.getItem('admin_token');
+const exp      = parseFloat(localStorage.getItem('admin_exp') || '0');
+const username = localStorage.getItem('admin_user') || 'admin';
+let   apiBase  = localStorage.getItem('admin_api')  || '';
+
+// Auth guard
+if (!token || Date.now() / 1000 >= exp) {
+  location.replace('./login.html');
+}
+if (!apiBase) {
+  alert('找不到伺服器網址，請重新登入並填寫 ngrok 網址。');
+  location.replace('./login.html');
+}
+
+document.getElementById('hdr-user').textContent   = username;
+document.getElementById('adm-name').textContent    = username;
+document.getElementById('adm-username').textContent = username;
+
+function api(path, opts) {
+  const t = localStorage.getItem('admin_token');
+  if (!t) { location.replace('./login.html'); return Promise.reject('no token'); }
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), 8000);
+  const { headers: extraHeaders, ...restOpts } = opts || {};
+  return fetch(apiBase + path, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + t,
+      'ngrok-skip-browser-warning': 'true',
+      ...(extraHeaders || {}),
+    },
+    signal: ctrl.signal,
+    ...restOpts,
+  }).then(r => {
+    clearTimeout(tid);
+    if (r.status === 401) { location.replace('./login.html'); throw new Error('未授權'); }
+    return r.json();
+  }).catch(e => { clearTimeout(tid); throw e; });
+}
+
+// ── Toast ──────────────────────────────────────────────────────
+let _toastTimer;
+function toast(msg, dur = 2500) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('show'), dur);
+}
+
+// ── Modal helpers ──────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── Logout ─────────────────────────────────────────────────────
+document.getElementById('btn-logout').addEventListener('click', () => {
+  ['admin_token','admin_user','admin_exp'].forEach(k => localStorage.removeItem(k));
+  location.replace('./login.html');
+});
+
+// ── Badge helper ───────────────────────────────────────────────
+function planBadge(plan) {
+  const cls = { '免費試用':'trial','基礎版':'basic','專業版':'pro','企業版':'ent' };
+  const key = plan || '免費試用';
+  return `<span class="badge badge-${cls[key] || 'trial'}">${key}</span>`;
+}
+
+// ── Load accounts ──────────────────────────────────────────────
+let _clients = [];
+
+async function loadAccounts(retries = 2) {
+  const tbody = document.getElementById('tbl-body');
+  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--muted)">載入中…</td></tr>`;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await api('/api/admin/accounts');
+      if (res.error) throw new Error(res.error);
+      _clients = res.clients || [];
+      renderTable(_clients);
+      document.getElementById('client-count').textContent = `共 ${_clients.length} 個帳號`;
+      return;
+    } catch (e) {
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 1500));
+        continue;
+      }
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--red)">
+        載入失敗：${e.message || '請確認伺服器連線'}<br>
+        <button onclick="loadAccounts()" style="margin-top:10px;padding:8px 18px;background:var(--navy);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px">重試</button>
+      </td></tr>`;
+    }
+  }
+}
+
+function renderTable(clients) {
+  const tbody = document.getElementById('tbl-body');
+  if (!clients.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--muted)">尚無客戶帳號</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = clients.map((c, i) => {
+    const pw = c.password || '（未設定）';
+    const ig = c.ig_account || '—';
+    const date = (c.created_date || c.created || '—').slice(0, 10);
+    const safeN = encodeAttr(c.name || '');
+    return `
+    <tr>
+      <td class="name">${esc(c.name || '—')}</td>
+      <td class="mono">${esc(c.client_id || '—')}</td>
+      <td>${esc(c.email || '—')}</td>
+      <td class="pw-cell">
+        <div class="pw-wrap" id="pw-wrap-${i}">
+          <span class="pw-dots">••••••••</span>
+          <span class="pw-text" id="pw-text-${i}">${esc(pw)}</span>
+          <button class="btn-eye" onclick="togglePw(${i})" title="顯示/隱藏密碼">👁</button>
+        </div>
+      </td>
+      <td>${esc(ig)}</td>
+      <td class="mono">${date}</td>
+      <td>${planBadge(c.plan)}</td>
+      <td>
+        <div class="row-actions">
+          <button class="btn-action btn-copy" onclick="copyPw(${i})">複製密碼</button>
+          <button class="btn-action btn-reset" onclick="openReset('${safeN}', ${i})">重設密碼</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function encodeAttr(s) {
+  return encodeURIComponent(s);
+}
+
+function togglePw(i) {
+  const wrap = document.getElementById('pw-wrap-' + i);
+  wrap.classList.toggle('revealed');
+}
+
+function copyPw(i) {
+  const c = _clients[i];
+  const pw = c?.password || '';
+  if (!pw) { toast('此帳號未設定密碼'); return; }
+  navigator.clipboard.writeText(pw).then(() => {
+    toast('✓ 密碼已複製到剪貼簿');
+  }).catch(() => {
+    toast('複製失敗，請手動複製');
+  });
+}
+
+// ── Add Client ─────────────────────────────────────────────────
+document.getElementById('btn-add-client').addEventListener('click', () => {
+  ['add-name','add-email','add-ig','add-pw'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('add-plan').value = '免費試用';
+  document.getElementById('add-err').textContent = '';
+  openModal('modal-add');
+});
+document.getElementById('add-cancel').addEventListener('click', () => closeModal('modal-add'));
+document.getElementById('add-ok').addEventListener('click', addClient);
+
+async function addClient() {
+  const name  = document.getElementById('add-name').value.trim();
+  const email = document.getElementById('add-email').value.trim();
+  const ig    = document.getElementById('add-ig').value.trim();
+  const plan  = document.getElementById('add-plan').value;
+  const pw    = document.getElementById('add-pw').value.trim();
+  const errEl = document.getElementById('add-err');
+
+  if (!name) { errEl.textContent = '請輸入客戶名稱'; return; }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('add-ok');
+  btn.textContent = '建立中…'; btn.disabled = true;
+
+  try {
+    const res = await api('/api/admin/clients', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, ig_account: ig, plan, password: pw || undefined }),
+    });
+    if (!res.ok) { errEl.textContent = res.error || '建立失敗'; }
+    else {
+      closeModal('modal-add');
+      toast('✓ 帳號已建立：' + name);
+      await loadAccounts();
+    }
+  } catch (e) {
+    errEl.textContent = '連線失敗';
+  }
+  btn.textContent = '建立帳號'; btn.disabled = false;
+}
+
+// ── Reset Password ─────────────────────────────────────────────
+let _resetTarget = null;
+
+function openReset(encodedName, idx) {
+  _resetTarget = { name: decodeURIComponent(encodedName), idx };
+  document.getElementById('reset-sub').textContent = `重設「${_resetTarget.name}」的登入密碼`;
+  document.getElementById('reset-pw').value = '';
+  document.getElementById('reset-err').textContent = '';
+  openModal('modal-reset');
+}
+document.getElementById('reset-cancel').addEventListener('click', () => closeModal('modal-reset'));
+document.getElementById('reset-ok').addEventListener('click', resetPassword);
+
+async function resetPassword() {
+  const pw    = document.getElementById('reset-pw').value.trim();
+  const errEl = document.getElementById('reset-err');
+  if (pw.length < 6) { errEl.textContent = '密碼至少需要 6 個字元'; return; }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('reset-ok');
+  btn.textContent = '重設中…'; btn.disabled = true;
+
+  try {
+    const res = await api(`/api/admin/clients/${encodeURIComponent(_resetTarget.name)}/reset-password`, {
+      method: 'POST',
+      body: JSON.stringify({ password: pw }),
+    });
+    if (!res.ok) { errEl.textContent = res.error || '重設失敗'; }
+    else {
+      closeModal('modal-reset');
+      toast('✓ 密碼已重設');
+      await loadAccounts();
+    }
+  } catch (e) {
+    errEl.textContent = '連線失敗';
+  }
+  btn.textContent = '確認重設'; btn.disabled = false;
+}
+
+// ── Change Admin Password ──────────────────────────────────────
+document.getElementById('btn-chg-admin-pw').addEventListener('click', () => {
+  ['adm-pw-cur','adm-pw-new','adm-pw-new2'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('adm-pw-err').textContent = '';
+  openModal('modal-admin-pw');
+});
+document.getElementById('adm-pw-cancel').addEventListener('click', () => closeModal('modal-admin-pw'));
+document.getElementById('adm-pw-ok').addEventListener('click', changeAdminPw);
+
+async function changeAdminPw() {
+  const cur   = document.getElementById('adm-pw-cur').value;
+  const nw    = document.getElementById('adm-pw-new').value;
+  const nw2   = document.getElementById('adm-pw-new2').value;
+  const errEl = document.getElementById('adm-pw-err');
+
+  if (!cur || !nw) { errEl.textContent = '請填寫所有欄位'; return; }
+  if (nw !== nw2)  { errEl.textContent = '兩次密碼不一致'; return; }
+  if (nw.length < 6) { errEl.textContent = '新密碼至少 6 個字元'; return; }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('adm-pw-ok');
+  btn.textContent = '更新中…'; btn.disabled = true;
+
+  try {
+    const res = await api('/api/admin/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ current_password: cur, new_password: nw }),
+    });
+    if (!res.ok) { errEl.textContent = res.error || '更新失敗'; }
+    else {
+      closeModal('modal-admin-pw');
+      toast('✓ 管理員密碼已更新，請重新登入');
+      setTimeout(() => {
+        ['admin_token','admin_user','admin_exp'].forEach(k => localStorage.removeItem(k));
+        location.replace('./login.html');
+      }, 2000);
+    }
+  } catch (e) {
+    errEl.textContent = '連線失敗';
+  }
+  btn.textContent = '確認修改'; btn.disabled = false;
+}
+
+// ── Close modal on backdrop click ─────────────────────────────
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); });
+});
+
+// ── Init ───────────────────────────────────────────────────────
+loadAccounts();
+</script>
+</body>
+</html>

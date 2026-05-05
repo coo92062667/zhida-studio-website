@@ -3,20 +3,24 @@
    ═══════════════════════════════════════ */
 
 /* ════════════════
-   SPLASH SCREEN
-   只有第一次訪問才顯示
+   SPLASH SCREEN（可重複播放）
 ════════════════ */
-(function () {
+function showSplash() {
   const splash = document.getElementById('splash');
   if (!splash) return;
 
-  const shown = sessionStorage.getItem('splash_shown');
-  if (shown) { splash.style.display = 'none'; return; }
+  /* 重置：移除 hidden，重新顯示 */
+  splash.style.display = 'flex';
+  splash.style.zIndex  = '99999';
+  requestAnimationFrame(() => {
+    splash.classList.remove('hidden');
+  });
 
-  /* Typewriter for English subtitle */
+  /* 重置打字機 */
   const enEl = document.getElementById('splash-en');
   if (enEl) {
-    const TEXT = 'ZHIDA STUDIO';
+    enEl.innerHTML = '';
+    const TEXT   = 'ZHIDA STUDIO';
     const cursor = document.createElement('span');
     cursor.className = 'splash-tw-cursor';
     enEl.appendChild(cursor);
@@ -29,7 +33,7 @@
     }, 700);
   }
 
-  /* Canvas particle scatter */
+  /* 重置並啟動粒子 canvas */
   const canvas = document.getElementById('splash-canvas');
   if (canvas) {
     canvas.width  = window.innerWidth;
@@ -37,6 +41,7 @@
     const ctx = canvas.getContext('2d');
     const cx  = canvas.width  / 2;
     const cy  = canvas.height / 2;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const particles = Array.from({ length: 80 }, () => {
       const angle = Math.random() * Math.PI * 2;
@@ -56,7 +61,6 @@
     setTimeout(() => { active = true; }, 400);
 
     (function draw() {
-      if (!document.getElementById('splash') || splash.style.display === 'none') return;
       if (splash.classList.contains('hidden')) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (active) {
@@ -77,12 +81,17 @@
     })();
   }
 
-  /* Dismiss after 2.8s */
+  /* 2.8s 後淡出，transitionend 後設 display:none */
   setTimeout(() => {
     splash.classList.add('hidden');
-    sessionStorage.setItem('splash_shown', '1');
+    splash.addEventListener('transitionend', () => {
+      splash.style.display = 'none';
+    }, { once: true });
   }, 2800);
-})();
+}
+
+/* 頁面載入時自動播放 */
+showSplash();
 
 
 /* ════════════════
@@ -158,7 +167,7 @@ const revObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
   });
-}, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
+}, { threshold: 0.12, rootMargin: '0px 0px -32px 0px' });
 document.querySelectorAll('.fade-up,.fade-left,.fade-right,.fade-scale').forEach(el => revObs.observe(el));
 
 

@@ -63,82 +63,12 @@ body {
   font-size: clamp(.9375rem, 1.5vw, 1.125rem); line-height: 1.7;
   color: var(--body); background: var(--bg);
   overflow-x: hidden;
-  cursor: auto;
 }
+* { cursor: default !important; }
+a, button, [role="button"], label[for], select { cursor: pointer !important; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { display: block; max-width: 100%; }
-
-/* ── Mouse glow (replaces cursor effects) ── */
-#mouse-glow {
-  position: fixed; pointer-events: none; z-index: 1;
-  width: 700px; height: 700px; border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(255,107,53,.065) 0%, transparent 65%);
-  opacity: 0;
-  transition: opacity .6s ease, left .08s linear, top .08s linear;
-}
-[data-theme="dark"] #mouse-glow {
-  background: radial-gradient(circle, rgba(255,107,53,.13) 0%, transparent 65%);
-}
-#mouse-glow.active { opacity: 1; }
-
-/* ── Splash screen ── */
-#splash {
-  position: fixed; inset: 0; z-index: 99999;
-  background: #000;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column;
-  transition: opacity .9s ease, visibility .9s;
-}
-#splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; z-index: -1; }
-#splash-canvas { position: absolute; inset: 0; pointer-events: none; }
-.splash-content {
-  position: relative; z-index: 1; text-align: center;
-  display: flex; flex-direction: column; align-items: center;
-}
-.splash-logo-wrap { position: relative; margin-bottom: 28px; }
-.splash-logo {
-  width: 88px; height: 88px; border-radius: 22px;
-  background: rgba(255,107,53,.15);
-  backdrop-filter: blur(12px);
-  border: 1.5px solid rgba(255,107,53,.5);
-  box-shadow:
-    0 0 60px rgba(255,107,53,.55),
-    0 0 120px rgba(255,107,53,.25),
-    inset 0 0 24px rgba(255,107,53,.12);
-  display: flex; align-items: center; justify-content: center;
-  font-family: "Manrope", sans-serif;
-  font-size: 40px; font-weight: 900; color: #fff;
-  margin: 0 auto;
-  animation: splashLogoExpand .7s cubic-bezier(.34,1.56,.64,1) both;
-}
-.splash-ring {
-  position: absolute; top: 50%; left: 50%; border-radius: 50%;
-  border: 1px solid rgba(255,107,53,.2);
-  transform: translate(-50%, -50%);
-  animation: splashRingPulse 2s ease-out infinite;
-}
-.splash-ring:nth-child(1) { width: 120px; height: 120px; animation-delay: 0s; }
-.splash-ring:nth-child(2) { width: 160px; height: 160px; animation-delay: .3s; }
-.splash-ring:nth-child(3) { width: 210px; height: 210px; animation-delay: .6s; }
-.splash-name {
-  font-family: "Manrope", "Noto Sans TC", sans-serif;
-  font-size: 30px; font-weight: 800; color: #fff;
-  letter-spacing: -.02em;
-  animation: splashNameIn .6s .5s ease both;
-}
-.splash-en {
-  font-family: "Space Grotesk", monospace;
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,107,53,.75); letter-spacing: .22em;
-  margin-top: 8px; min-height: 22px;
-}
-.splash-tw-cursor {
-  display: inline-block; width: 2px; height: 1em;
-  background: #FF6B35; vertical-align: middle;
-  animation: blink .75s step-end infinite;
-}
 
 /* ── Scroll progress ── */
 #scroll-progress {
@@ -148,27 +78,21 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 0 10px rgba(255,107,53,.6);
 }
 
-/* ── Theme toggle (inline in navbar) ── */
+/* ── Theme toggle (fixed bottom-right) ── */
 #theme-toggle {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: transparent;
+  position: fixed; bottom: 32px; right: 32px; z-index: 9000;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--card-bg);
   border: 1.5px solid var(--card-border);
-  cursor: pointer; font-size: 16px;
+  box-shadow: var(--shadow-m);
+  cursor: pointer !important; font-size: 20px;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: transform .25s, border-color .25s;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
 }
-#theme-toggle:hover { transform: rotate(20deg); border-color: var(--orange); }
-
-/* ── Replay splash button ── */
-#replay-btn {
-  font-size: 12px; font-weight: 600; letter-spacing: .04em;
-  color: var(--muted); background: transparent; border: none; cursor: pointer;
-  padding: 4px 8px; border-radius: var(--r-s);
-  transition: color .2s;
-  white-space: nowrap;
+#theme-toggle:hover {
+  transform: rotate(30deg) scale(1.1);
+  box-shadow: var(--glow-orange);
 }
-#replay-btn:hover { color: var(--orange); }
 
 /* ════════════════════
    NAVBAR
@@ -789,8 +713,8 @@ footer::after {
 
 /* ── Back to top ── */
 #back-top {
-  position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; border-radius: 50%;
-  background: #FF6B35; color: #fff; border: none; cursor: pointer;
+  position: fixed; bottom: 88px; right: 32px; width: 46px; height: 46px; border-radius: 50%;
+  background: #FF6B35; color: #fff; border: none; cursor: pointer !important;
   display: flex; align-items: center; justify-content: center; font-size: 18px;
   box-shadow: 0 4px 20px rgba(255,107,53,.4);
   opacity: 0; pointer-events: none; z-index: 100;
@@ -839,3 +763,20 @@ footer::after {
     transition-duration: .01ms !important;
   }
 }
+
+/* ── Reveal alias (simple pattern) ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── Font size overrides ── */
+body     { font-size: clamp(15px, 1.5vw, 18px) !important; }
+h1, .hero-title  { font-size: clamp(40px, 5vw, 72px) !important; }
+h2, .section-title { font-size: clamp(28px, 3vw, 48px) !important; }
+h3                 { font-size: clamp(20px, 2vw, 28px) !important; }
+p                  { font-size: clamp(15px, 1.5vw, 18px) !important; }
+nav ul a, .nav-link { font-size: 16px !important; }
+.btn-primary, .btn-ghost, .btn-mint, .btn-outline-white, .pc-btn { font-size: 16px !important; }

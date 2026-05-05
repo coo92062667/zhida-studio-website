@@ -34,26 +34,11 @@
 </head>
 <body>
 
-<!-- ══ 開場動畫 ══ -->
-<div id="splash" aria-hidden="true">
-  <canvas id="splash-canvas"></canvas>
-  <div class="splash-content">
-    <div class="splash-logo-wrap">
-      <div class="splash-logo">智</div>
-      <div class="splash-ring"></div>
-      <div class="splash-ring"></div>
-      <div class="splash-ring"></div>
-    </div>
-    <div class="splash-name">智答工作室</div>
-    <div class="splash-en" id="splash-en"></div>
-  </div>
-</div>
-
-<!-- ── 滑鼠光暈 ── -->
-<div id="mouse-glow"></div>
-
 <!-- ── 捲軸進度條 ── -->
 <div id="scroll-progress"></div>
+
+<!-- ── 深色模式切換（右下角固定） ── -->
+<button id="theme-toggle" aria-label="切換主題">🌙</button>
 
 <!-- ══ NAVBAR ══ -->
 <header id="navbar">
@@ -76,8 +61,6 @@
   </nav>
 
   <div class="nav-actions">
-    <button id="theme-toggle" aria-label="切換主題">🌙</button>
-    <button id="replay-btn" onclick="showSplash()" aria-label="重播開場">▶ 開場</button>
     <a href="login.html" class="nav-login">登入</a>
     <a href="#pricing" class="nav-cta">免費試用 →</a>
   </div>

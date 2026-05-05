@@ -1,97 +1,6 @@
 /* ═══════════════════════════════════════
-   智答工作室 — Main JS v5
+   智答工作室 — Main JS v6
    ═══════════════════════════════════════ */
-
-/* ════════════════
-   SPLASH SCREEN（可重複播放）
-════════════════ */
-function showSplash() {
-  const splash = document.getElementById('splash');
-  if (!splash) return;
-
-  /* 重置：移除 hidden，重新顯示 */
-  splash.style.display = 'flex';
-  splash.style.zIndex  = '99999';
-  requestAnimationFrame(() => {
-    splash.classList.remove('hidden');
-  });
-
-  /* 重置打字機 */
-  const enEl = document.getElementById('splash-en');
-  if (enEl) {
-    enEl.innerHTML = '';
-    const TEXT   = 'ZHIDA STUDIO';
-    const cursor = document.createElement('span');
-    cursor.className = 'splash-tw-cursor';
-    enEl.appendChild(cursor);
-    let i = 0;
-    setTimeout(() => {
-      const iv = setInterval(() => {
-        if (i < TEXT.length) { cursor.before(TEXT[i++]); }
-        else clearInterval(iv);
-      }, 70);
-    }, 700);
-  }
-
-  /* 重置並啟動粒子 canvas */
-  const canvas = document.getElementById('splash-canvas');
-  if (canvas) {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const ctx = canvas.getContext('2d');
-    const cx  = canvas.width  / 2;
-    const cy  = canvas.height / 2;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const particles = Array.from({ length: 80 }, () => {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 5 + 1.5;
-      return {
-        x: cx, y: cy,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        r:  Math.random() * 3 + 1,
-        life: 1,
-        decay: Math.random() * .014 + .007,
-        color: Math.random() > .5 ? [255,107,53] : [0,212,170]
-      };
-    });
-
-    let active = false;
-    setTimeout(() => { active = true; }, 400);
-
-    (function draw() {
-      if (splash.classList.contains('hidden')) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (active) {
-        particles.forEach(p => {
-          if (p.life <= 0) return;
-          const [r,g,b] = p.color;
-          const g2 = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
-          g2.addColorStop(0, `rgba(${r},${g},${b},${p.life})`);
-          g2.addColorStop(1, `rgba(${r},${g},${b},0)`);
-          ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
-          ctx.fillStyle = g2; ctx.fill();
-          p.x += p.vx; p.y += p.vy;
-          p.vx *= .975; p.vy *= .975;
-          p.life -= p.decay;
-        });
-      }
-      requestAnimationFrame(draw);
-    })();
-  }
-
-  /* 2.8s 後淡出，transitionend 後設 display:none */
-  setTimeout(() => {
-    splash.classList.add('hidden');
-    splash.addEventListener('transitionend', () => {
-      splash.style.display = 'none';
-    }, { once: true });
-  }, 2800);
-}
-
-/* 頁面載入時自動播放 */
-showSplash();
 
 
 /* ════════════════
@@ -168,7 +77,7 @@ const revObs = new IntersectionObserver(entries => {
     if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -32px 0px' });
-document.querySelectorAll('.fade-up,.fade-left,.fade-right,.fade-scale').forEach(el => revObs.observe(el));
+document.querySelectorAll('.fade-up,.fade-left,.fade-right,.fade-scale,.reveal').forEach(el => revObs.observe(el));
 
 
 /* ════════════════

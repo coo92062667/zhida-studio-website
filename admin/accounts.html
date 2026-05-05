@@ -418,6 +418,7 @@ function api(path, opts) {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + t,
+      'X-Admin-Token': t,
       'ngrok-skip-browser-warning': 'true',
       ...(extraHeaders || {}),
     },

@@ -759,12 +759,16 @@ async function api(path, opts = {}) {
     'Content-Type': 'application/json',
     'ngrok-skip-browser-warning': 'true',
   };
-  if (S.token) headers['X-Admin-Token'] = S.token;
+  if (S.token) {
+    headers['X-Admin-Token']  = S.token;
+    headers['Authorization']  = 'Bearer ' + S.token;
+  }
   try {
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 5000);
     const r = await fetch(S.api + path, { headers, signal: ctrl.signal, ...opts });
     clearTimeout(timer);
+    if (r.status === 401) { doLogout(); return null; }
     return await r.json();
   } catch (e) {
     console.warn('[API]', path, e.message);

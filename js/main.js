@@ -192,6 +192,51 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 
 /* ════════════════
+   HERO ROTATING TEXT
+════════════════ */
+(function () {
+  const el = document.getElementById('hero-rotating');
+  if (!el) return;
+  const words = ['永不打烊', '自動回覆', '有溫度', '記住你'];
+  let i = 0;
+  setInterval(() => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(10px)';
+    setTimeout(() => {
+      i = (i + 1) % words.length;
+      el.textContent = words[i];
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    }, 320);
+  }, 2600);
+})();
+
+
+/* ════════════════
+   CONTACT FORM
+════════════════ */
+(function () {
+  const form    = document.getElementById('contact-form');
+  const btn     = document.getElementById('form-submit-btn');
+  const success = document.getElementById('form-success');
+  if (!form || !btn || !success) return;
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const submitText    = btn.querySelector('.submit-text');
+    const submitLoading = btn.querySelector('.submit-loading');
+    btn.disabled = true;
+    if (submitText) submitText.style.display = 'none';
+    if (submitLoading) submitLoading.style.display = 'inline';
+    setTimeout(() => {
+      form.style.display = 'none';
+      success.style.display = 'block';
+    }, 1500);
+  });
+})();
+
+
+/* ════════════════
    COOKIE CONSENT
 ════════════════ */
 (function () {

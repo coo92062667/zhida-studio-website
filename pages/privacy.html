@@ -1,509 +1,251 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>隱私權政策 — 智答工作室 Zhida Studio</title>
-  <meta name="description" content="智答工作室隱私權政策 — 我們如何保護您和您客戶的個人資料安全。">
-  <meta name="robots" content="noindex, follow">
-  <meta property="og:title" content="隱私權政策 — 智答工作室 Zhida Studio">
-  <meta property="og:url" content="https://zhidastudio.com/pages/privacy.html">
-  <link rel="canonical" href="https://zhidastudio.com/pages/privacy.html">
+  <title>隱私政策 — 智答工作室</title>
+  <meta name="description" content="智答工作室隱私政策：說明我們如何收集、使用及保護您的個人資料。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/global.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --brand:   #6C63FF;
-      --brand-2: #A78BFA;
-      --dark:    #1E1B2E;
-      --text:    #374151;
-      --muted:   #6B7280;
-      --bg:      #F9FAFB;
-      --card:    #FFFFFF;
-      --border:  #E5E7EB;
-      --radius:  12px;
-    }
-
-    body {
-      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.8;
-      font-size: 15px;
-    }
-
-    /* ── Header ── */
-    header {
-      background: linear-gradient(135deg, var(--dark) 0%, #2D2A4A 100%);
-      color: #fff;
-      padding: 56px 24px 48px;
-      text-align: center;
-    }
-    header .badge {
-      display: inline-block;
-      background: rgba(108, 99, 255, 0.35);
-      border: 1px solid var(--brand-2);
-      color: var(--brand-2);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      padding: 4px 14px;
-      border-radius: 999px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-    header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      margin-bottom: 12px;
-    }
-    header p {
-      color: rgba(255,255,255,0.65);
-      font-size: 14px;
-    }
-
-    /* ── Layout ── */
-    .container {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
-    }
-
-    /* ── Intro card ── */
-    .intro-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--brand);
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      margin-bottom: 40px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .intro-card strong { color: var(--text); }
-
-    /* ── Section ── */
-    section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 36px;
-      margin-bottom: 24px;
-    }
-    section h2 {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    section h2 .icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      font-size: 15px;
-      flex-shrink: 0;
-    }
-    section p { margin-bottom: 12px; color: var(--text); }
-    section p:last-child { margin-bottom: 0; }
-
-    /* ── List ── */
-    ul.policy-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    ul.policy-list li {
-      display: flex;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-    }
-    ul.policy-list li:last-child { border-bottom: none; }
-    ul.policy-list li .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--brand);
-      flex-shrink: 0;
-      margin-top: 7px;
-    }
-
-    /* ── Table ── */
-    .table-wrap { overflow-x: auto; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    th {
-      background: #F3F4F6;
-      color: var(--dark);
-      font-weight: 600;
-      text-align: left;
-      padding: 10px 14px;
-      border-bottom: 2px solid var(--border);
-    }
-    td {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #FAFAFA; }
-
-    /* ── Highlight box ── */
-    .highlight {
-      background: #EEF2FF;
-      border: 1px solid #C7D2FE;
-      border-radius: 8px;
-      padding: 16px 20px;
-      font-size: 14px;
-      color: #3730A3;
-      margin-top: 16px;
-    }
-    .highlight strong { font-weight: 700; }
-
-    /* ── Contact card ── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-top: 4px;
-    }
-    .contact-item {
-      background: #F3F4F6;
-      border-radius: 8px;
-      padding: 16px 18px;
-      font-size: 14px;
-    }
-    .contact-item .label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--brand);
-      margin-bottom: 6px;
-    }
-    .contact-item a { color: var(--text); text-decoration: none; }
-    .contact-item a:hover { color: var(--brand); }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 32px 24px;
-      font-size: 12px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-    }
-
-    @media (max-width: 600px) {
-      section { padding: 24px 20px; }
-      header { padding: 40px 20px 36px; }
-    }
-
-    /* ── NAVBAR ── */
-    #site-nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      padding: 16px 5%; display: flex; align-items: center; justify-content: space-between;
-      background: rgba(13,27,53,0.97); backdrop-filter: blur(16px);
-      box-shadow: 0 2px 24px rgba(0,0,0,0.3);
-    }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo .logo-mark {
-      width: 36px; height: 36px; background: linear-gradient(135deg, #FF6B35, #FF9A70);
-      border-radius: 9px; display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 16px; color: #fff;
-    }
-    .nav-logo .logo-text-wrap .lt { color: #fff; font-weight: 700; font-size: 15px; font-family: "Noto Sans TC",sans-serif; }
-    .nav-logo .logo-text-wrap .ls { color: rgba(255,255,255,0.35); font-size: 10px; letter-spacing: 0.1em; }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a {
-      color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500;
-      text-decoration: none; transition: color 0.25s; position: relative;
-      font-family: "Inter","Noto Sans TC",sans-serif;
-    }
-    .nav-links a::after { content:""; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:#FF6B35; transition:width 0.3s; }
-    .nav-links a:hover { color: #fff; }
-    .nav-links a:hover::after { width: 100%; }
-    .nav-cta-btn {
-      background: #FF6B35; color: #fff !important; padding: 8px 20px;
-      border-radius: 999px; font-weight: 600 !important; font-size: 13px !important;
-    }
-    .nav-cta-btn::after { display: none !important; }
-    .nav-cta-btn:hover { box-shadow: 0 0 20px rgba(255,107,53,0.5) !important; }
-    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
-    #nav-mobile {
-      display: none; position: fixed; inset: 0; background: #060E1F;
-      z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
-    }
-    #nav-mobile.open { display: flex; }
-    #nav-mobile a { color: #fff; font-size: 20px; text-decoration: none; }
-    #nav-mobile a:hover { color: #FF6B35; }
-    #nav-mobile .mob-cta { background: #FF6B35; padding: 12px 36px; border-radius: 999px; font-weight: 700; }
-    header { padding-top: 116px !important; }
-    @media (max-width: 680px) {
-      .nav-links, .nav-cta-btn { display: none; }
-      .nav-hamburger { display: flex; }
-    }
+    .legal-hero { padding: 140px 0 64px; text-align: center; background: linear-gradient(180deg, var(--surface) 0%, transparent 100%); }
+    .legal-hero h1 { font-size: clamp(2rem,4vw,3rem); font-weight: 800; color: var(--dark); }
+    .legal-hero p { color: var(--muted); margin-top: 12px; font-size: 1rem; }
+    .legal-layout { display: grid; grid-template-columns: 220px 1fr; gap: 48px; max-width: 960px; margin: 0 auto; padding: 0 24px 100px; align-items: start; }
+    @media (max-width: 768px) { .legal-layout { grid-template-columns: 1fr; } .legal-nav { display: none; } }
+    .legal-nav { position: sticky; top: 96px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; }
+    .legal-nav h4 { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .legal-nav a { display: block; font-size: 13.5px; color: var(--muted); text-decoration: none; padding: 7px 10px; border-radius: 8px; transition: background .2s, color .2s; line-height: 1.4; }
+    .legal-nav a:hover { background: var(--surface); color: var(--dark); }
+    .legal-nav a.active { background: var(--orange); color: #fff; }
+    .legal-content section { margin-bottom: 56px; scroll-margin-top: 100px; }
+    .legal-content h2 { font-size: 1.35rem; font-weight: 700; color: var(--dark); padding-bottom: 10px; border-bottom: 2px solid var(--orange); margin-bottom: 20px; display: inline-block; }
+    .legal-content h3 { font-size: 1rem; font-weight: 600; color: var(--dark); margin: 20px 0 8px; }
+    .legal-content p { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 12px; }
+    .legal-content ul { padding-left: 20px; margin-bottom: 12px; }
+    .legal-content ul li { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 6px; }
+    .legal-tag { display: inline-block; font-size: 11px; font-weight: 700; background: rgba(255,107,53,.12); color: var(--orange); border-radius: 6px; padding: 3px 8px; margin-right: 6px; }
+    .legal-update { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--card-border); border-radius: 10px; padding: 8px 14px; font-size: 13px; color: var(--muted); margin-bottom: 40px; }
+    .legal-contact-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 24px 28px; }
+    .legal-contact-box p { margin: 0; }
+    .legal-contact-box a { color: var(--orange); text-decoration: none; }
+    .legal-contact-box a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-<div id="nav-mobile">
-  <a href="index.html">首頁</a>
-  <a href="index.html#features">服務介紹</a>
-  <a href="story.html">品牌故事</a>
-  <a href="index.html#pricing">收費方案</a>
-  <a href="index.html#contact" class="mob-cta">聯絡我們</a>
-</div>
+<div id="scroll-progress"></div>
 
-<nav id="site-nav">
-  <a href="index.html" class="nav-logo">
-    <div class="logo-mark">智</div>
-    <div class="logo-text-wrap">
-      <div class="lt">智答工作室</div>
-      <div class="ls">ZHIDA STUDIO</div>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+        <defs><linearGradient id="nav-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#E85D25"/></linearGradient></defs>
+        <rect width="40" height="40" rx="10" fill="url(#nav-g1)"/>
+        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="22" font-family="Noto Sans TC,sans-serif" font-weight="900">智</text>
+      </svg>
+      智答工作室
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#features">功能</a></li>
+      <li class="nav-has-dropdown">
+        <button class="nav-dd-btn" aria-expanded="false">服務 <span class="nav-chevron">▾</span></button>
+        <div class="nav-dropdown">
+          <div class="nav-dd-grid">
+            <a href="services/knowledge-base.html" class="nav-dd-item"><span class="nav-dd-icon">🧠</span><span class="nav-dd-text"><strong>AI 知識庫建置</strong><small>打造品牌專屬大腦</small></span></a>
+            <a href="services/brand-voice.html" class="nav-dd-item"><span class="nav-dd-icon">🎨</span><span class="nav-dd-text"><strong>品牌語氣設定</strong><small>AI 說話像你的品牌</small></span></a>
+            <a href="services/daily-report.html" class="nav-dd-item"><span class="nav-dd-icon">📊</span><span class="nav-dd-text"><strong>每日客服報告</strong><small>昨日數據早晨送達</small></span></a>
+            <a href="services/ai-training.html" class="nav-dd-item"><span class="nav-dd-icon">⚡</span><span class="nav-dd-text"><strong>AI 持續訓練</strong><small>越用越聰明</small></span></a>
+            <a href="#" class="nav-dd-item nav-dd-soon"><span class="nav-dd-icon">📸</span><span class="nav-dd-text"><strong>IG AI 客服</strong><small>即將推出</small></span></a>
+            <a href="#" class="nav-dd-item nav-dd-soon"><span class="nav-dd-icon">💬</span><span class="nav-dd-text"><strong>LINE / WhatsApp</strong><small>即將推出</small></span></a>
+          </div>
+        </div>
+      </li>
+      <li><a href="../index.html#pricing">方案</a></li>
+      <li><a href="story.html">關於我們</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="theme-toggle" aria-label="切換深色模式">🌙</button>
+      <a href="../index.html#contact" class="btn-primary nav-cta">免費試用</a>
     </div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="index.html">首頁</a></li>
-    <li><a href="index.html#features">服務介紹</a></li>
-    <li><a href="story.html">品牌故事</a></li>
-    <li><a href="index.html#pricing">收費方案</a></li>
-    <li><a href="index.html#contact" class="nav-cta-btn">聯絡我們</a></li>
-  </ul>
-  <div class="nav-hamburger" onclick="document.getElementById('nav-mobile').classList.toggle('open')">
-    <span></span><span></span><span></span>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="選單">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
-<!-- ═══════════════════ Header ═══════════════════ -->
-<header>
-  <div class="badge">Privacy Policy</div>
-  <h1>隱私權政策</h1>
-  <p>智答工作室 Zhida Studio &nbsp;·&nbsp; AI 客服服務&nbsp;·&nbsp; 最後更新：2026 年 5 月 3 日</p>
-</header>
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" onclick="closeMobile()">✕</button>
+  <ul>
+    <li><a href="../index.html#features" onclick="closeMobile()">功能</a></li>
+    <li><a href="../index.html#pricing" onclick="closeMobile()">方案</a></li>
+    <li><a href="story.html" onclick="closeMobile()">關於我們</a></li>
+    <li><a href="../index.html#contact" onclick="closeMobile()">聯絡我們</a></li>
+  </ul>
+</div>
 
-<!-- ═══════════════════ Body ═══════════════════ -->
-<div class="container">
+<div class="legal-hero">
+  <h1 class="fade-up">隱私政策</h1>
+  <p class="fade-up">Privacy Policy</p>
+</div>
 
-  <!-- 前言 -->
-  <div class="intro-card">
-    <strong>智答工作室 Zhida Studio</strong>（以下簡稱「本工作室」）非常重視您的隱私。
-    本政策說明當您或您的客戶透過 Instagram 等社群平台使用我們所提供的 AI 客服服務時，
-    我們如何收集、使用、儲存及保護相關資料。請您在使用本服務前詳閱以下內容。
+<div class="legal-layout">
+  <nav class="legal-nav" aria-label="文件目錄">
+    <h4>目錄</h4>
+    <a href="#collect">資料收集範圍</a>
+    <a href="#use">資料使用目的</a>
+    <a href="#protect">資料保護方式</a>
+    <a href="#rights">您的權利</a>
+    <a href="#cookies">Cookie 政策</a>
+    <a href="#contact-info">聯絡方式</a>
+  </nav>
+
+  <div class="legal-content">
+    <div class="legal-update"><span>📅</span> 最後更新：2026 年 1 月 1 日</div>
+
+    <p style="font-size:15px;color:var(--text);line-height:1.85;margin-bottom:40px;">
+      智答工作室（以下簡稱「本公司」）重視您的隱私權。本政策說明當您使用本公司服務時，我們如何收集、使用、儲存及保護您的個人資料。請您在使用服務前仔細閱讀本政策。
+    </p>
+
+    <section id="collect">
+      <h2>資料收集範圍</h2>
+      <h3>我們收集的資料類型</h3>
+      <p>當您使用智答工作室的服務時，我們可能收集以下類型的資料：</p>
+      <ul>
+        <li><span class="legal-tag">帳戶</span>姓名、電子郵件地址、聯絡電話</li>
+        <li><span class="legal-tag">品牌</span>品牌名稱、Instagram 帳號 ID、產品類別</li>
+        <li><span class="legal-tag">使用</span>服務使用記錄、AI 對話日誌、功能操作紀錄</li>
+        <li><span class="legal-tag">技術</span>IP 位址、瀏覽器類型、裝置資訊、Cookie 資料</li>
+        <li><span class="legal-tag">付款</span>付款方式（由第三方金流處理，本公司不儲存卡號）</li>
+      </ul>
+      <h3>自動收集的資料</h3>
+      <p>我們的系統會自動記錄您使用服務的技術資料，包括存取時間、頁面瀏覽紀錄及功能使用頻率，用於改善服務品質及排除技術問題。</p>
+    </section>
+
+    <section id="use">
+      <h2>資料使用目的</h2>
+      <p>我們收集的資料僅用於以下明確目的：</p>
+      <ul>
+        <li>提供、維護及改善 AI 客服服務</li>
+        <li>處理訂閱方案及付款事宜</li>
+        <li>發送服務通知、帳單及重要更新</li>
+        <li>回應您的客服詢問與支援請求</li>
+        <li>分析整體使用趨勢以優化產品功能</li>
+        <li>遵守法律義務及防範詐欺行為</li>
+      </ul>
+      <p>我們<strong>不會</strong>將您的個人資料出售給第三方，亦不會將其用於與上述目的無關的行銷活動。</p>
+    </section>
+
+    <section id="protect">
+      <h2>資料保護方式</h2>
+      <h3>技術安全措施</h3>
+      <ul>
+        <li>所有資料傳輸採用 TLS 1.3 加密</li>
+        <li>資料庫採用 AES-256 靜態加密</li>
+        <li>定期進行安全稽核與滲透測試</li>
+        <li>員工存取個人資料需通過多因素驗證</li>
+      </ul>
+      <h3>資料保留期限</h3>
+      <p>帳戶資料在您終止服務後保留 90 天，以便處理退款或爭議。AI 對話日誌保留 12 個月用於模型優化，之後永久刪除。</p>
+      <h3>第三方服務商</h3>
+      <p>本公司可能委託符合 GDPR 及個資法規定的第三方服務商處理部分資料（如雲端儲存、付款處理），所有服務商均需簽署資料處理協議。</p>
+    </section>
+
+    <section id="rights">
+      <h2>您的權利</h2>
+      <p>依據《個人資料保護法》，您享有以下權利：</p>
+      <ul>
+        <li><strong>查詢權：</strong>您有權查詢我們持有的您的個人資料。</li>
+        <li><strong>更正權：</strong>如資料有誤，您有權要求更正。</li>
+        <li><strong>刪除權：</strong>您可要求刪除您的帳戶及相關資料。</li>
+        <li><strong>限制處理：</strong>在特定情況下，您可要求暫停資料處理。</li>
+        <li><strong>資料可攜：</strong>您可申請以機器可讀格式取得您的資料。</li>
+        <li><strong>撤回同意：</strong>您可隨時撤回對特定資料處理的同意。</li>
+      </ul>
+      <p>行使上述權利，請透過下方聯絡方式與我們聯繫，我們將於 30 個工作日內回覆。</p>
+    </section>
+
+    <section id="cookies">
+      <h2>Cookie 政策</h2>
+      <h3>必要 Cookie</h3>
+      <p>這些 Cookie 是網站正常運作所必需的，無法關閉。包括登入狀態維持、安全性驗證及偏好設定儲存（如深色模式）。</p>
+      <h3>分析 Cookie</h3>
+      <p>我們使用匿名化的分析工具了解使用者如何與網站互動，以改善使用體驗。您可透過 Cookie 設定橫幅選擇是否接受。</p>
+      <h3>如何管理 Cookie</h3>
+      <p>您可透過瀏覽器設定刪除或封鎖 Cookie。請注意，封鎖必要 Cookie 可能影響部分功能的正常運作。</p>
+    </section>
+
+    <section id="contact-info">
+      <h2>聯絡方式</h2>
+      <p>若您對本隱私政策有任何疑問，或需行使上述任何權利，請透過以下方式聯繫我們：</p>
+      <div class="legal-contact-box">
+        <p>📧 電子郵件：<a href="mailto:privacy@zhida.studio">privacy@zhida.studio</a></p>
+        <p style="margin-top:8px;">📸 Instagram：<a href="https://instagram.com/zhida.studio" target="_blank" rel="noopener">@zhida.studio</a></p>
+        <p style="margin-top:8px;">⏰ 回覆時間：週一至週五，上午 10:00 至下午 6:00</p>
+        <p style="margin-top:8px;">📍 本政策適用於所有智答工作室提供的服務，並依台灣《個人資料保護法》規定執行。</p>
+      </div>
+    </section>
   </div>
+</div>
 
-  <!-- 1. 適用範圍 -->
-  <section>
-    <h2><span class="icon">📋</span>一、適用範圍</h2>
-    <p>本政策適用於智答工作室 Zhida Studio 所建置及維運的 AI 客服系統，包含但不限於：</p>
-    <ul class="policy-list">
-      <li><span class="dot"></span>透過 Instagram Messenger 與 AI 客服機器人（卡卡）互動產生的對話資料</li>
-      <li><span class="dot"></span>透過本工作室開發的 Webhook 服務所接收與處理的訊息事件</li>
-      <li><span class="dot"></span>本工作室為品牌客戶建置的 AI 自動回覆解決方案</li>
-    </ul>
-    <p style="margin-top:14px;">本政策不適用於 Meta（Instagram 母公司）或 OpenAI 等第三方平台，其各自擁有獨立隱私政策。</p>
-  </section>
+<button id="back-top" aria-label="回到頂部">↑</button>
 
-  <!-- 2. 資料收集 -->
-  <section>
-    <h2><span class="icon">📥</span>二、我們收集的資料</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>資料類型</th>
-            <th>內容說明</th>
-            <th>來源</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>使用者識別碼</strong></td>
-            <td>Instagram 平台提供的匿名 Sender ID（非真實姓名或帳號名稱）</td>
-            <td>Instagram Messaging API</td>
-          </tr>
-          <tr>
-            <td><strong>對話訊息</strong></td>
-            <td>使用者傳送給 AI 客服的文字訊息內容</td>
-            <td>使用者主動輸入</td>
-          </tr>
-          <tr>
-            <td><strong>對話歷史</strong></td>
-            <td>同一用戶在 24 小時內的完整對話紀錄，用於提供連貫回覆</td>
-            <td>系統自動記錄</td>
-          </tr>
-          <tr>
-            <td><strong>需求統計資料</strong></td>
-            <td>訊息中的關鍵字類別頻率（如「價格詢問」、「配送問題」），以匯總形式儲存，<strong>不含個人識別資訊</strong></td>
-            <td>系統自動分析</td>
-          </tr>
-          <tr>
-            <td><strong>互動時間戳記</strong></td>
-            <td>每則訊息的接收時間，用於管理對話有效期限</td>
-            <td>系統自動記錄</td>
-          </tr>
-        </tbody>
-      </table>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="../index.html" class="footer-logo">
+        <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+          <defs><linearGradient id="foot-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#E85D25"/></linearGradient></defs>
+          <rect width="40" height="40" rx="10" fill="url(#foot-g1)"/>
+          <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="22" font-family="Noto Sans TC,sans-serif" font-weight="900">智</text>
+        </svg>
+        智答工作室
+      </a>
+      <p class="footer-tagline">讓每一則訊息，都成為品牌的機會。</p>
     </div>
-    <div class="highlight">
-      ⚠️ <strong>我們不收集</strong>您的真實姓名、電話、電子郵件、地址或任何金融資訊。
-      所有識別均以 Instagram 平台所提供的匿名 ID 為準。
-    </div>
-  </section>
-
-  <!-- 3. 使用方式 -->
-  <section>
-    <h2><span class="icon">⚙️</span>三、資料使用方式</h2>
-    <p>我們僅將收集的資料用於以下目的：</p>
-    <ul class="policy-list">
-      <li><span class="dot"></span><strong>提供連貫的 AI 客服對話</strong>：保留同一用戶在 24 小時內的對話歷史，使 AI 能理解前後文，避免重複詢問</li>
-      <li><span class="dot"></span><strong>改善服務品質</strong>：透過匯總的需求統計分析（非個人資料），了解客戶最常詢問的產品資訊類別</li>
-      <li><span class="dot"></span><strong>系統除錯與維護</strong>：記錄必要的運行日誌，以排查服務異常</li>
-      <li><span class="dot"></span><strong>合規遵循</strong>：依法律要求或主管機關指示提供必要資訊</li>
-    </ul>
-    <p style="margin-top:14px;">我們<strong>不會</strong>將您的對話內容用於廣告投放、出售給第三方，或用於任何與客服服務無關的目的。</p>
-  </section>
-
-  <!-- 4. 資料分享 -->
-  <section>
-    <h2><span class="icon">🤝</span>四、資料分享與第三方</h2>
-    <p>為了正常運作 AI 客服服務，我們會與以下第三方服務共享必要資料：</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>第三方服務</th>
-            <th>共享內容</th>
-            <th>用途</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Meta（Instagram）</strong></td>
-            <td>訊息傳遞（透過官方 API）</td>
-            <td>接收用戶訊息、發送 AI 回覆</td>
-          </tr>
-          <tr>
-            <td><strong>OpenAI</strong></td>
-            <td>對話訊息內容（含對話歷史）</td>
-            <td>生成 AI 回覆內容</td>
-          </tr>
-          <tr>
-            <td><strong>伺服器主機商</strong></td>
-            <td>加密後的對話歷史與統計資料</td>
-            <td>資料儲存與服務運行</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:14px;">傳送給 OpenAI 的訊息受其
-      <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener" style="color:var(--brand);">隱私政策</a>
-      規範。OpenAI 預設不會使用 API 傳入的資料訓練其模型。</p>
-  </section>
-
-  <!-- 5. 資料儲存與保護 -->
-  <section>
-    <h2><span class="icon">🔒</span>五、資料儲存與保護措施</h2>
-    <ul class="policy-list">
-      <li><span class="dot"></span><strong>自動過期機制</strong>：個人對話記憶在用戶最後互動後 <strong>24 小時</strong>自動清除，不長期累積個人對話</li>
-      <li><span class="dot"></span><strong>最小化原則</strong>：每位用戶僅保留最近 20 則訊息（約 10 來回），超過上限自動捨棄舊訊息</li>
-      <li><span class="dot"></span><strong>環境隔離</strong>：API 金鑰與存取憑證以環境變數儲存，不寫入程式碼或公開儲存庫</li>
-      <li><span class="dot"></span><strong>傳輸加密</strong>：所有對外通訊採用 HTTPS/TLS 加密傳輸</li>
-      <li><span class="dot"></span><strong>存取控制</strong>：伺服器管理端點受到驗證保護，僅授權人員可操作</li>
-      <li><span class="dot"></span><strong>需求統計匿名化</strong>：大眾需求分析資料僅記錄關鍵字類別頻次，不關聯至任何個人識別碼</li>
-    </ul>
-  </section>
-
-  <!-- 6. 用戶權利 -->
-  <section>
-    <h2><span class="icon">🙋</span>六、您的權利</h2>
-    <p>依據《個人資料保護法》，您對自身資料擁有以下權利：</p>
-    <ul class="policy-list">
-      <li><span class="dot"></span><strong>查詢或閱覽</strong>：您可要求查詢我們保存的您的對話記錄</li>
-      <li><span class="dot"></span><strong>更正</strong>：若您發現記錄有誤，可要求更正</li>
-      <li><span class="dot"></span><strong>刪除</strong>：您可隨時要求刪除您的對話歷史記憶</li>
-      <li><span class="dot"></span><strong>停止使用</strong>：您可選擇停止與 AI 客服互動，現有資料將依保留期限自動到期清除</li>
-    </ul>
-    <p style="margin-top:14px;">如需行使上述權利，請透過下方聯絡方式與我們聯繫，我們將於 <strong>7 個工作天</strong>內回覆。</p>
-  </section>
-
-  <!-- 7. Cookie 與追蹤 -->
-  <section>
-    <h2><span class="icon">🍪</span>七、Cookie 與追蹤技術</h2>
-    <p>
-      本 AI 客服服務以 Instagram 平台為主要互動介面，<strong>本工作室不使用 Cookie 或任何瀏覽器追蹤技術</strong>追蹤終端用戶。
-      如需了解 Instagram 平台本身的 Cookie 使用方式，請參閱 Meta 的隱私政策。
-    </p>
-  </section>
-
-  <!-- 8. 未成年人 -->
-  <section>
-    <h2><span class="icon">👦</span>八、未成年人保護</h2>
-    <p>
-      本服務不針對 13 歲以下兒童提供服務。若我們發現無意間收集了未成年人資料，
-      將立即予以刪除。如您認為我們可能持有未成年人資料，請立即與我們聯繫。
-    </p>
-  </section>
-
-  <!-- 9. 政策更新 -->
-  <section>
-    <h2><span class="icon">🔄</span>九、隱私政策更新</h2>
-    <p>
-      本政策如有重大變更，我們將在本頁面更新「最後更新日期」，並視情況透過服務渠道通知用戶。
-      繼續使用本服務視為您同意更新後的政策內容。建議您定期查閱本頁面以掌握最新資訊。
-    </p>
-  </section>
-
-  <!-- 10. 聯絡我們 -->
-  <section>
-    <h2><span class="icon">✉️</span>十、聯絡我們</h2>
-    <p>若您對本隱私政策有任何疑問，或需要行使個人資料相關權利，請透過以下方式聯絡：</p>
-    <div class="contact-grid" style="margin-top:20px;">
-      <div class="contact-item">
-        <div class="label">服務名稱</div>
-        智答工作室 Zhida Studio
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>服務</h4>
+        <a href="services/knowledge-base.html">AI 知識庫建置</a>
+        <a href="services/brand-voice.html">品牌語氣設定</a>
+        <a href="services/daily-report.html">每日客服報告</a>
+        <a href="services/ai-training.html">AI 持續訓練</a>
       </div>
-      <div class="contact-item">
-        <div class="label">電子郵件</div>
-        <a href="mailto:coo92062667@gmail.com">coo92062667@gmail.com</a>
+      <div class="footer-col">
+        <h4>公司</h4>
+        <a href="story.html">關於我們</a>
+        <a href="privacy.html">隱私政策</a>
+        <a href="terms.html">服務條款</a>
+        <a href="../index.html#contact">聯絡我們</a>
       </div>
-      <div class="contact-item">
-        <div class="label">Instagram</div>
-        <a href="https://www.instagram.com/zhidastudio.com" target="_blank" rel="noopener">@zhidastudio.com</a>
-      </div>
-      <div class="contact-item">
-        <div class="label">回覆時效</div>
-        7 個工作天內
+      <div class="footer-col">
+        <h4>聯絡</h4>
+        <a href="mailto:hello@zhida.studio">hello@zhida.studio</a>
+        <a href="https://instagram.com/zhida.studio" target="_blank" rel="noopener">@zhida.studio</a>
       </div>
     </div>
-  </section>
-
-</div><!-- /.container -->
-
-<footer>
-  &copy; 2026 智答工作室 Zhida Studio &nbsp;·&nbsp; 本文件依據《個人資料保護法》制訂
-  &nbsp;·&nbsp;
-  <a href="index.html">回首頁</a>
-  <a href="terms.html">服務條款</a>
-  &nbsp;·&nbsp; 最後更新：2026 年 5 月 3 日
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 智答工作室 All rights reserved.</p>
+    <div class="footer-bottom-links">
+      <a href="privacy.html">隱私政策</a>
+      <a href="terms.html">服務條款</a>
+    </div>
+  </div>
 </footer>
 
+<script src="../js/main.js"></script>
+<script src="../js/cursor.js"></script>
+<script>
+  const sections = document.querySelectorAll('.legal-content section');
+  const navLinks = document.querySelectorAll('.legal-nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+  }, { passive: true });
+</script>
 </body>
 </html>

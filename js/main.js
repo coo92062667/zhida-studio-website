@@ -102,18 +102,6 @@ document.querySelectorAll('.counter').forEach(el => cntObs.observe(el));
 
 
 /* ════════════════
-   PRICING TABS
-════════════════ */
-function switchPlan(plan) {
-  document.querySelectorAll('.ptab').forEach(t => t.classList.toggle('active', t.dataset.plan === plan));
-  document.querySelectorAll('.pricing-panel').forEach(p => p.classList.toggle('active', p.dataset.plan === plan));
-}
-document.querySelectorAll('.ptab').forEach(tab => {
-  tab.addEventListener('click', () => switchPlan(tab.dataset.plan));
-});
-
-
-/* ════════════════
    FAQ ACCORDION
 ════════════════ */
 document.querySelectorAll('.faq-q').forEach(q => {
@@ -124,44 +112,6 @@ document.querySelectorAll('.faq-q').forEach(q => {
     if (!isOpen) item.classList.add('open');
   });
 });
-
-
-/* ════════════════
-   PHONE CHAT DEMO (sequential bubble animation)
-════════════════ */
-(function () {
-  const container = document.querySelector('.ph-msgs');
-  if (!container) return;
-
-  const msgs = [
-    { type: 'user', text: '請問這款有素食版本嗎？', delay: 1000 },
-    { type: 'typing', delay: 1700 },
-    { type: 'ai',   text: '有的！原味完全植物性 🌱\n附素食認證標章～', delay: 2600 },
-    { type: 'user', text: '今天方便到貨嗎？', delay: 3800 },
-    { type: 'typing', delay: 4500 },
-    { type: 'ai',   text: '下午3點前下單可今日出貨 ✅\n要幫您保留一份嗎？', delay: 5400 },
-  ];
-
-  container.innerHTML = '';
-
-  msgs.forEach(({ type, text, delay }) => {
-    setTimeout(() => {
-      const existing = container.querySelector('.ph-bubble.typing');
-      if (existing) existing.remove();
-
-      const el = document.createElement('div');
-      if (type === 'typing') {
-        el.className = 'ph-bubble typing';
-        el.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-      } else {
-        el.className = `ph-bubble ${type}`;
-        el.textContent = text;
-      }
-      container.appendChild(el);
-      container.scrollTop = container.scrollHeight;
-    }, delay);
-  });
-})();
 
 
 /* ════════════════

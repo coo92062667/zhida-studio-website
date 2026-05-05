@@ -43,7 +43,23 @@
 <!-- ══ NAVBAR ══ -->
 <header id="navbar">
   <a href="#" class="nav-logo">
-    <div class="logo-mark">智</div>
+    <svg class="logo-svg" width="40" height="33" viewBox="0 0 40 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="16" y="11" width="24" height="17" rx="6" fill="url(#nav-g2)"/>
+      <path d="M31 28L37 32L29 28Z" fill="url(#nav-g2)"/>
+      <rect x="0" y="1" width="27" height="20" rx="8" fill="url(#nav-g1)"/>
+      <path d="M4 21L1 27L12 21Z" fill="url(#nav-g1)"/>
+      <circle cx="8"   cy="11" r="2.2" fill="white" opacity="0.92"/>
+      <circle cx="13.5" cy="11" r="2.2" fill="white" opacity="0.92"/>
+      <circle cx="19"  cy="11" r="2.2" fill="white" opacity="0.92"/>
+      <defs>
+        <linearGradient id="nav-g1" x1="0" y1="1" x2="27" y2="21" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#FF8040"/><stop offset="1" stop-color="#FF5A20"/>
+        </linearGradient>
+        <linearGradient id="nav-g2" x1="16" y1="11" x2="40" y2="28" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#00E0B5"/><stop offset="1" stop-color="#00C49A"/>
+        </linearGradient>
+      </defs>
+    </svg>
     <div class="logo-text-wrap">
       <span class="logo-text">智答工作室</span>
       <span class="logo-sub">ZHIDA STUDIO</span>
@@ -128,38 +144,60 @@
       </div>
     </div>
 
-    <!-- Right: 3D Phone Widget -->
-    <div class="hero-right">
-      <div class="phone-scene">
-        <div class="phone-widget">
-          <div class="phone-frame">
-            <div class="phone-notch"></div>
-            <div class="phone-screen">
-              <div class="phone-header">
-                <div class="ph-avatar">🤖</div>
-                <div>
-                  <div class="ph-name">智答助理</div>
-                  <div class="ph-status">● 線上中</div>
-                </div>
-              </div>
-              <div class="ph-msgs"></div>
-            </div>
-          </div>
+    <!-- Right: Abstract Geometric Art -->
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-grid"></div>
 
-          <div class="phone-cards">
-            <div class="fcard fcard-1">
-              <div class="fcard-tick">⚡</div>
-              <div class="fcard-val">3 秒</div>
-              <div class="fcard-lbl">平均回應</div>
-            </div>
-            <div class="fcard fcard-2">
-              <div class="fcard-tick">✅</div>
-              <div class="fcard-val">98%</div>
-              <div class="fcard-lbl">客戶滿意度</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Main orange sphere -->
+      <svg class="art-orb art-orb-main" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="orb-glow-g" cx="0.5" cy="0.56" r="0.5">
+            <stop offset="0%"   stop-color="#FF6B35" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="main-orb-g" cx="0.38" cy="0.30" r="0.68">
+            <stop offset="0%"   stop-color="#FFB870"/>
+            <stop offset="32%"  stop-color="#FF6B35"/>
+            <stop offset="72%"  stop-color="#E83A00"/>
+            <stop offset="100%" stop-color="#B02800" stop-opacity="0.55"/>
+          </radialGradient>
+          <radialGradient id="orb-shine-g" cx="0.34" cy="0.27" r="0.52">
+            <stop offset="0%"   stop-color="white" stop-opacity="0.58"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="250" cy="270" r="228" fill="url(#orb-glow-g)"/>
+        <circle cx="250" cy="245" r="200" fill="url(#main-orb-g)"/>
+        <ellipse cx="185" cy="165" rx="98" ry="74" fill="url(#orb-shine-g)"/>
+        <circle  cx="250" cy="245" r="200" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.2"/>
+      </svg>
+
+      <!-- Secondary mint sphere -->
+      <svg class="art-orb art-orb-mint" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="mint-orb-g" cx="0.38" cy="0.30" r="0.66">
+            <stop offset="0%"   stop-color="#00F5D4"/>
+            <stop offset="46%"  stop-color="#00D4AA"/>
+            <stop offset="100%" stop-color="#007860" stop-opacity="0.25"/>
+          </radialGradient>
+          <radialGradient id="mint-shine-g" cx="0.34" cy="0.27" r="0.48">
+            <stop offset="0%"   stop-color="white" stop-opacity="0.52"/>
+            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle  cx="120" cy="118" r="105" fill="url(#mint-orb-g)"/>
+        <ellipse cx="86"  cy="80"  rx="56"  ry="43" fill="url(#mint-shine-g)"/>
+        <circle  cx="120" cy="118" r="105" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+      </svg>
+
+      <!-- Floating micro-shapes -->
+      <div class="fsh fsh-1"></div>
+      <div class="fsh fsh-2"></div>
+      <div class="fsh fsh-3"></div>
+      <div class="fsh fsh-4"></div>
+      <div class="fsh fsh-5"></div>
+      <div class="fsh fsh-6"></div>
+      <div class="fsh fsh-7"></div>
     </div>
   </div>
 </section>
@@ -305,88 +343,74 @@
 
 <!-- ══ PRICING ══ -->
 <section id="pricing">
-  <div class="pricing-layout">
-    <div class="fade-left">
-      <div class="section-eyebrow">方案選擇</div>
-      <h2 class="section-title">找到最適合你的方案</h2>
-      <p class="section-sub" style="margin-bottom:36px;">
-        從免費試用開始，不需要信用卡，7天內隨時取消。
-      </p>
-      <div class="pricing-perks">
-        <div class="perk"><div class="perk-icon">✓</div>7 天免費試用，不需信用卡</div>
-        <div class="perk"><div class="perk-icon">✓</div>專人協助建立品牌知識庫</div>
-        <div class="perk"><div class="perk-icon">✓</div>隨時升降方案，彈性靈活</div>
-        <div class="perk"><div class="perk-icon">✓</div>升級後立即生效，不中斷服務</div>
+  <div class="section-head">
+    <div class="section-eyebrow fade-up">方案選擇</div>
+    <h2 class="section-title fade-up d1">找到最適合你的方案</h2>
+    <p class="section-sub fade-up d2">從免費試用開始，7 天不需信用卡，隨時取消。</p>
+  </div>
+
+  <!-- Free trial banner -->
+  <div class="trial-banner fade-up d3">
+    <div class="trial-icon">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M11 2L13.82 7.73L20 8.64L15.5 13L16.64 19.18L11 16.22L5.36 19.18L6.5 13L2 8.64L8.18 7.73L11 2Z"
+              stroke="#FF6B35" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+              fill="rgba(255,107,53,0.12)"/>
+      </svg>
+    </div>
+    <div class="trial-copy">
+      <strong>免費試用 7 天</strong>
+      <span>不需信用卡・隨時取消・專人協助・同日上線</span>
+    </div>
+    <a href="login.html" class="trial-cta">立即免費開始 →</a>
+  </div>
+
+  <!-- Plan comparison cards -->
+  <div class="plans-compare fade-up d4">
+
+    <!-- Basic -->
+    <div class="plan-card plan-basic">
+      <div class="plan-label">基本版</div>
+      <div class="plan-price-row">
+        <span class="plan-currency">NT$</span>
+        <span class="plan-amount">1,990</span>
+        <span class="plan-per">/ 月</span>
       </div>
+      <div class="plan-annual">年付享 85 折・NT$1,692 / 月</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-list">
+        <li><span class="chk chk-mint">✓</span>AI 自動回覆（每日 500 則）</li>
+        <li><span class="chk chk-mint">✓</span>品牌知識庫（3 個）</li>
+        <li><span class="chk chk-mint">✓</span>自訂 AI 語氣風格</li>
+        <li><span class="chk chk-mint">✓</span>完整對話數據報表</li>
+        <li><span class="chk chk-mint">✓</span>Instagram DM 支援</li>
+        <li><span class="chk chk-off">✕</span>優先技術支援</li>
+      </ul>
+      <button class="plan-btn plan-btn-basic" onclick="window.location.href='login.html'">選擇基本版 →</button>
     </div>
 
-    <div class="fade-right">
-      <div class="pricing-tabs">
-        <div class="ptab active" data-plan="free">免費試用</div>
-        <div class="ptab" data-plan="basic">基本版</div>
-        <div class="ptab" data-plan="pro">進階版</div>
+    <!-- Pro (featured) -->
+    <div class="plan-card plan-pro">
+      <div class="plan-star-badge">★ 最受歡迎</div>
+      <div class="plan-label">進階版</div>
+      <div class="plan-price-row">
+        <span class="plan-currency plan-currency-gold">NT$</span>
+        <span class="plan-amount plan-amount-light">4,990</span>
+        <span class="plan-per plan-per-dim">/ 月</span>
       </div>
-
-      <div class="pricing-panels">
-        <!-- Free -->
-        <div class="pricing-panel active" data-plan="free">
-          <div class="pricing-card">
-            <div class="pc-plan">免費試用</div>
-            <div class="pc-price"><span>NT$</span>0</div>
-            <div class="pc-period">7天免費，到期後再決定</div>
-            <div class="pc-divider"></div>
-            <ul class="pc-list">
-              <li>AI 自動回覆（每日 50 則）</li>
-              <li>品牌知識庫建立（1個）</li>
-              <li>基本對話報表</li>
-              <li class="no">自訂 AI 語氣風格</li>
-              <li class="no">進階數據分析</li>
-              <li class="no">優先客服支援</li>
-            </ul>
-            <button class="pc-btn outline" onclick="window.location.href='login.html'">立即開始免費試用</button>
-          </div>
-        </div>
-
-        <!-- Basic -->
-        <div class="pricing-panel" data-plan="basic">
-          <div class="pricing-card featured">
-            <div class="pricing-badge">最熱門</div>
-            <div class="pc-plan">基本版</div>
-            <div class="pc-price"><span>NT$</span>1,990</div>
-            <div class="pc-period">/ 月，年付享 85 折</div>
-            <div class="pc-divider"></div>
-            <ul class="pc-list">
-              <li>AI 自動回覆（每日 500 則）</li>
-              <li>品牌知識庫（3個）</li>
-              <li>自訂 AI 語氣風格</li>
-              <li>完整對話數據報表</li>
-              <li>Line / IG 雙平台支援</li>
-              <li class="no">優先技術支援</li>
-            </ul>
-            <button class="pc-btn" onclick="window.location.href='login.html'">選擇基本版 →</button>
-          </div>
-        </div>
-
-        <!-- Pro -->
-        <div class="pricing-panel" data-plan="pro">
-          <div class="pricing-card">
-            <div class="pc-plan">進階版</div>
-            <div class="pc-price"><span>NT$</span>4,990</div>
-            <div class="pc-period">/ 月，年付享 85 折</div>
-            <div class="pc-divider"></div>
-            <ul class="pc-list">
-              <li>AI 自動回覆（無限則）</li>
-              <li>品牌知識庫（無限個）</li>
-              <li>多平台同時整合</li>
-              <li>進階 AI 個性化訓練</li>
-              <li>即時數據儀表板 API</li>
-              <li>專屬客戶成功經理</li>
-            </ul>
-            <button class="pc-btn" onclick="window.location.href='login.html'">選擇進階版 →</button>
-          </div>
-        </div>
-      </div>
+      <div class="plan-annual plan-annual-gold">年付享 85 折・NT$4,242 / 月</div>
+      <div class="plan-divider plan-divider-gold"></div>
+      <ul class="plan-list plan-list-dark">
+        <li><span class="chk chk-gold">✓</span>AI 自動回覆（無限則）</li>
+        <li><span class="chk chk-gold">✓</span>品牌知識庫（無限個）</li>
+        <li><span class="chk chk-gold">✓</span>多平台同時整合</li>
+        <li><span class="chk chk-gold">✓</span>進階 AI 個性化訓練</li>
+        <li><span class="chk chk-gold">✓</span>即時數據儀表板 API</li>
+        <li><span class="chk chk-gold">✓</span>專屬客戶成功經理</li>
+      </ul>
+      <button class="plan-btn plan-btn-pro" onclick="window.location.href='login.html'">選擇進階版 →</button>
     </div>
+
   </div>
 </section>
 
@@ -509,7 +533,23 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <a href="#" class="nav-logo" style="display:inline-flex;align-items:center;gap:10px;">
-        <div class="logo-mark">智</div>
+        <svg class="logo-svg" width="40" height="33" viewBox="0 0 40 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="16" y="11" width="24" height="17" rx="6" fill="url(#foot-g2)"/>
+          <path d="M31 28L37 32L29 28Z" fill="url(#foot-g2)"/>
+          <rect x="0" y="1" width="27" height="20" rx="8" fill="url(#foot-g1)"/>
+          <path d="M4 21L1 27L12 21Z" fill="url(#foot-g1)"/>
+          <circle cx="8"    cy="11" r="2.2" fill="white" opacity="0.92"/>
+          <circle cx="13.5" cy="11" r="2.2" fill="white" opacity="0.92"/>
+          <circle cx="19"   cy="11" r="2.2" fill="white" opacity="0.92"/>
+          <defs>
+            <linearGradient id="foot-g1" x1="0" y1="1" x2="27" y2="21" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#FF8040"/><stop offset="1" stop-color="#FF5A20"/>
+            </linearGradient>
+            <linearGradient id="foot-g2" x1="16" y1="11" x2="40" y2="28" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#00E0B5"/><stop offset="1" stop-color="#00C49A"/>
+            </linearGradient>
+          </defs>
+        </svg>
         <div class="logo-text-wrap">
           <span class="logo-text" style="color:#fff;">智答工作室</span>
           <span class="logo-sub">ZHIDA STUDIO</span>

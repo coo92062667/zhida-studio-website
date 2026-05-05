@@ -34,12 +34,29 @@
 </head>
 <body>
 
-<!-- ── Custom cursor ── -->
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
+<!-- ══ 開場動畫 ══ -->
+<div id="splash" aria-hidden="true">
+  <canvas id="splash-canvas"></canvas>
+  <div class="splash-content">
+    <div class="splash-logo-wrap">
+      <div class="splash-logo">智</div>
+      <div class="splash-ring"></div>
+      <div class="splash-ring"></div>
+      <div class="splash-ring"></div>
+    </div>
+    <div class="splash-name">智答工作室</div>
+    <div class="splash-en" id="splash-en"></div>
+  </div>
+</div>
 
-<!-- ── Scroll progress ── -->
+<!-- ── 滑鼠光暈 ── -->
+<div id="mouse-glow"></div>
+
+<!-- ── 捲軸進度條 ── -->
 <div id="scroll-progress"></div>
+
+<!-- ── 深色/白色切換 ── -->
+<button id="theme-toggle" aria-label="切換主題">🌙</button>
 
 <!-- ══ NAVBAR ══ -->
 <header id="navbar">
@@ -66,7 +83,6 @@
     <a href="#pricing" class="nav-cta">免費試用 →</a>
   </div>
 
-  <!-- Hamburger -->
   <button class="hamburger" id="hamburger" aria-label="選單" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
@@ -84,7 +100,6 @@
 
 <!-- ══ HERO ══ -->
 <section id="hero">
-  <!-- Decorative geometry -->
   <div class="geo geo-1"></div>
   <div class="geo geo-2"></div>
   <div class="geo geo-3"></div>
@@ -112,7 +127,7 @@
 
       <div class="hero-actions">
         <a href="#pricing" class="btn-primary">免費試用 7 天 →</a>
-        <a href="#pain"    class="btn-ghost">了解更多</a>
+        <a href="#pain" class="btn-ghost">了解更多</a>
       </div>
 
       <div class="hero-stats">
@@ -121,7 +136,7 @@
           <div class="hstat-lbl">訊息回覆率</div>
         </div>
         <div>
-          <div class="hstat-val">3<span>秒</span></div>
+          <div class="hstat-val"><span>3</span><span>秒</span></div>
           <div class="hstat-lbl">平均回應時間</div>
         </div>
         <div>
@@ -145,24 +160,14 @@
                   <div class="ph-status">● 線上中</div>
                 </div>
               </div>
-              <div class="ph-msgs">
-                <div class="ph-bubble user">請問這款有素食版本嗎？</div>
-                <div class="ph-bubble ai">有的！原味口味完全植物性 🌱 附素食認證</div>
-                <div class="ph-bubble user">方便今天到貨嗎？</div>
-                <div class="ph-bubble typing">
-                  <div class="typing-dots">
-                    <span></span><span></span><span></span>
-                  </div>
-                </div>
-              </div>
+              <div class="ph-msgs"></div>
             </div>
           </div>
 
-          <!-- Floating info cards -->
           <div class="phone-cards">
             <div class="fcard fcard-1">
               <div class="fcard-tick">⚡</div>
-              <div class="fcard-val">3秒</div>
+              <div class="fcard-val">3 秒</div>
               <div class="fcard-lbl">平均回應</div>
             </div>
             <div class="fcard fcard-2">
@@ -180,7 +185,7 @@
 <!-- ══ PAIN POINTS ══ -->
 <section id="pain">
   <div class="pain-layout">
-    <!-- Left: chat demo -->
+    <!-- Left: IG chat demo -->
     <div class="pain-chat fade-left">
       <div class="chat-label">客戶 DM 你</div>
       <div class="chat-row">
@@ -192,21 +197,21 @@
         <div class="chat-bubble customer">素食可以吃嗎</div>
       </div>
 
-      <div class="chat-label" style="margin-top:12px;">沒有 AI 時...</div>
+      <div class="chat-label" style="margin-top:14px;">沒有 AI 時…</div>
       <div class="chat-row right">
         <div class="chat-bubble ai" style="background:#9898B0;">（3小時後）好的請問你要哪款</div>
         <div class="chat-avatar ai">😮‍💨</div>
       </div>
 
-      <div class="chat-label" style="margin-top:20px; color: #00D4AA;">有智答 AI 後 ✨</div>
+      <div class="chat-label" style="margin-top:22px;color:#00D4AA;">有智答 AI 後 ✨</div>
       <div class="chat-row right">
         <div class="chat-bubble ai mint">有貨！原味是素食認證款 🌱 今天下午3點前下單可以今日到貨，要幫您保留一份嗎？</div>
         <div class="chat-avatar ai">🤖</div>
       </div>
-      <div class="chat-time">剛剛 · 3秒內自動回覆</div>
+      <div class="chat-time">剛剛 · 3 秒內自動回覆</div>
     </div>
 
-    <!-- Right: pain points copy -->
+    <!-- Right: pain copy -->
     <div class="fade-right">
       <div class="section-eyebrow">你也有這些困擾嗎</div>
       <h2 class="section-title">客服壓力吃掉你多少時間？</h2>
@@ -215,26 +220,26 @@
         這些痛點，智答 AI 全部幫你解決。
       </p>
 
-      <div style="display:flex;flex-direction:column;gap:18px;">
-        <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,107,53,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">😫</div>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div class="pain-item">
+          <div class="pain-item-icon">😫</div>
           <div>
-            <div style="font-weight:700;color:var(--heading);font-size:.95rem;margin-bottom:4px;">重複問題消耗精力</div>
-            <div style="font-size:13.5px;color:var(--body);line-height:1.7;">「有貨嗎」「怎麼訂購」「什麼時候到」每天重複 N 遍</div>
+            <div class="pain-item-title">重複問題消耗精力</div>
+            <div class="pain-item-desc">「有貨嗎」「怎麼訂購」「什麼時候到」每天重複 N 遍</div>
           </div>
         </div>
-        <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,107,53,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🌙</div>
+        <div class="pain-item">
+          <div class="pain-item-icon">🌙</div>
           <div>
-            <div style="font-weight:700;color:var(--heading);font-size:.95rem;margin-bottom:4px;">深夜訊息流失訂單</div>
-            <div style="font-size:13.5px;color:var(--body);line-height:1.7;">客戶在你睡著時問了一句，沒回就直接買別家</div>
+            <div class="pain-item-title">深夜訊息流失訂單</div>
+            <div class="pain-item-desc">客戶在你睡著時問了一句，沒回就直接買別家</div>
           </div>
         </div>
-        <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,107,53,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🤖</div>
+        <div class="pain-item">
+          <div class="pain-item-icon">🤖</div>
           <div>
-            <div style="font-weight:700;color:var(--heading);font-size:.95rem;margin-bottom:4px;">機器人感讓人卻步</div>
-            <div style="font-size:13.5px;color:var(--body);line-height:1.7;">市面 AI 回答制式冰冷，反而傷害品牌溫度</div>
+            <div class="pain-item-title">機器人感讓人卻步</div>
+            <div class="pain-item-desc">市面 AI 回答制式冰冷，反而傷害品牌溫度</div>
           </div>
         </div>
       </div>
@@ -267,7 +272,7 @@
     <div class="feat-card fade-up d2">
       <div class="feat-icon">💬</div>
       <h3>有溫度的語氣</h3>
-      <p>AI 學習你的品牌說話風格，不再是冰冷模板。</p>
+      <p>AI 學習你的品牌說話風格，不再是冰冷模板，每則回覆都像真人店員。</p>
     </div>
 
     <div class="feat-card fade-up d1">
@@ -310,7 +315,7 @@
     </div>
     <div class="stat-item fade-scale d3">
       <div class="stat-num"><span class="counter" data-target="24">0</span><span class="stat-suffix">hr</span></div>
-      <div class="stat-lbl">全天候不間斷服務</div>
+      <div class="stat-lbl">全天候不間斷</div>
       <div class="stat-bar"></div>
     </div>
   </div>
@@ -319,7 +324,6 @@
 <!-- ══ PRICING ══ -->
 <section id="pricing">
   <div class="pricing-layout">
-    <!-- Left -->
     <div class="fade-left">
       <div class="section-eyebrow">方案選擇</div>
       <h2 class="section-title">找到最適合你的方案</h2>
@@ -334,7 +338,6 @@
       </div>
     </div>
 
-    <!-- Right: tabs + cards -->
     <div class="fade-right">
       <div class="pricing-tabs">
         <div class="ptab active" data-plan="free">免費試用</div>
@@ -503,14 +506,14 @@
 <!-- ══ CTA ══ -->
 <section id="cta">
   <div class="cta-glow"></div>
-  <div class="section-eyebrow fade-up" style="color:rgba(255,107,53,.7);">開始使用</div>
+  <div class="section-eyebrow fade-up">開始使用</div>
   <h2 class="section-title fade-up d1">準備好讓 AI 幫你接客服了嗎？</h2>
   <p class="section-sub fade-up d2">
     7 天免費試用，不需要信用卡，不需要技術背景。<br>
     今天設定，明天就能讓 AI 幫你上班。
   </p>
   <div class="cta-actions fade-up d3">
-    <a href="login.html" class="btn-primary" style="font-size:16px;padding:17px 44px;">
+    <a href="login.html" class="btn-primary" style="padding:17px 44px;font-size:17px;">
       免費試用 7 天 →
     </a>
     <a href="https://www.instagram.com/zhida.studio/" target="_blank" rel="noopener" class="btn-outline-white">
@@ -523,7 +526,7 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="#" class="nav-logo" style="gap:10px;display:inline-flex;align-items:center;">
+      <a href="#" class="nav-logo" style="display:inline-flex;align-items:center;gap:10px;">
         <div class="logo-mark">智</div>
         <div class="logo-text-wrap">
           <span class="logo-text" style="color:#fff;">智答工作室</span>

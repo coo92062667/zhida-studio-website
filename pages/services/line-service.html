@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LINE 客服整合 — 智答工作室</title>
+  <meta name="description" content="智答工作室 LINE AI 客服，整合 LINE 官方帳號，24 小時自動回覆，有溫度不冰冷，讓你的品牌在 LINE 也能永不打烊。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/global.css" />
+  <style>
+    :root { --line-green: #06C755; --line-dark: #00B900; }
+    .page-hero { padding: 160px 0 100px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6,199,85,.08) 0%, transparent 70%); pointer-events: none; }
+    .page-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(6,199,85,.1); border: 1px solid rgba(6,199,85,.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--line-green); margin-bottom: 24px; }
+    .page-hero h1 { font-size: clamp(2.4rem,5vw,4rem); font-weight: 900; color: var(--dark); line-height: 1.15; margin-bottom: 20px; }
+    .page-hero p { font-size: clamp(1rem,2vw,1.25rem); color: var(--muted); max-width: 600px; margin: 0 auto 40px; line-height: 1.7; }
+    .page-hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* chat demo */
+    .chat-demo {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 24px; padding: 32px; max-width: 560px; margin: 56px auto 0;
+      box-shadow: 0 24px 64px rgba(0,0,0,.08);
+    }
+    .chat-demo-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--card-border); }
+    .chat-demo-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #06C755, #00B900); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .chat-demo-name { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .chat-demo-status { font-size: 12px; color: #34C759; }
+    .chat-row { display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-end; }
+    .chat-row.right { flex-direction: row-reverse; }
+    .chat-bubble { max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 13.5px; line-height: 1.5; }
+    .chat-bubble.customer { background: var(--surface); color: var(--text); border-bottom-left-radius: 4px; }
+    .chat-bubble.ai { background: linear-gradient(135deg, #06C755, #00B900); color: #fff; border-bottom-right-radius: 4px; }
+    .chat-time { font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; }
+
+    .features-section { padding: 100px 0; }
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 56px; }
+    .feat-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px; transition: transform .3s, box-shadow .3s, border-color .3s; }
+    .feat-item:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,.08); border-color: rgba(6,199,85,.3); }
+    .feat-icon { font-size: 36px; margin-bottom: 20px; }
+    .feat-item h3 { font-size: 1.15rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+    .feat-item p { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+    .feat-item ul { padding-left: 18px; margin-top: 12px; }
+    .feat-item ul li { font-size: 14px; color: var(--muted); line-height: 1.8; }
+
+    .how-section { padding: 100px 0; background: var(--surface); }
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin-top: 56px; }
+    .step-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 36px 28px; text-align: center; }
+    .step-num { width: 52px; height: 52px; background: linear-gradient(135deg, #06C755, #00B900); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; color: #fff; margin: 0 auto 20px; }
+    .step-item h3 { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+    .step-item p { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
+    .step-duration { display: inline-block; margin-top: 14px; font-size: 12px; font-weight: 600; color: var(--line-green); background: rgba(6,199,85,.08); border-radius: 6px; padding: 3px 10px; }
+
+    .platform-section { padding: 100px 0; }
+    .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 860px; margin: 56px auto 0; }
+    @media (max-width: 640px) { .platform-grid { grid-template-columns: 1fr; } }
+    .platform-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 36px; text-align: center; }
+    .platform-icon { font-size: 48px; margin-bottom: 16px; }
+    .platform-card h3 { font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+    .platform-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .platform-tag { display: inline-block; margin-top: 12px; font-size: 12px; font-weight: 600; color: var(--line-green); background: rgba(6,199,85,.1); border-radius: 6px; padding: 3px 10px; }
+
+    .faq-section { padding: 100px 0; background: var(--surface); }
+    .faq-list { max-width: 720px; margin: 56px auto 0; }
+
+    .cta-section { padding: 100px 0; text-align: center; background: linear-gradient(135deg, #011a07 0%, #012e0d 100%); position: relative; overflow: hidden; }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(6,199,85,.18), transparent 70%); pointer-events: none; }
+    .cta-section h2 { font-size: clamp(1.8rem,4vw,3rem); font-weight: 800; color: #fff; margin-bottom: 16px; }
+    .cta-section p { font-size: 1.1rem; color: rgba(255,255,255,.7); margin-bottom: 40px; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+        <defs><linearGradient id="nav-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#E85D25"/></linearGradient></defs>
+        <rect width="40" height="40" rx="10" fill="url(#nav-g1)"/>
+        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="22" font-family="Noto Sans TC,sans-serif" font-weight="900">智</text>
+      </svg>
+      智答工作室
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html#features">功能</a></li>
+      <li class="nav-has-dropdown">
+        <button class="nav-dd-btn" aria-expanded="false">服務 <span class="nav-chevron">▾</span></button>
+        <div class="nav-dropdown">
+          <div class="nav-dd-grid">
+            <a href="knowledge-base.html" class="nav-dd-item"><span class="nav-dd-icon">🧠</span><span class="nav-dd-text"><strong>AI 知識庫建置</strong><small>打造品牌專屬大腦</small></span></a>
+            <a href="brand-voice.html" class="nav-dd-item"><span class="nav-dd-icon">🎨</span><span class="nav-dd-text"><strong>品牌語氣設定</strong><small>AI 說話像你的品牌</small></span></a>
+            <a href="daily-report.html" class="nav-dd-item"><span class="nav-dd-icon">📊</span><span class="nav-dd-text"><strong>每日客服報告</strong><small>昨日數據早晨送達</small></span></a>
+            <a href="ai-training.html" class="nav-dd-item"><span class="nav-dd-icon">⚡</span><span class="nav-dd-text"><strong>AI 持續訓練</strong><small>越用越聰明</small></span></a>
+            <a href="ig-service.html" class="nav-dd-item"><span class="nav-dd-icon">📸</span><span class="nav-dd-text"><strong>IG AI 客服</strong><small>24 小時自動回覆</small></span></a>
+            <a href="line-service.html" class="nav-dd-item"><span class="nav-dd-icon">💬</span><span class="nav-dd-text"><strong>LINE 客服</strong><small>LINE 官方帳號整合</small></span></a>
+          </div>
+        </div>
+      </li>
+      <li><a href="../../index.html#pricing">方案</a></li>
+      <li><a href="../story.html">關於我們</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="theme-toggle" aria-label="切換深色模式">🌙</button>
+      <a href="../../index.html#contact" class="btn-primary nav-cta">免費試用</a>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="選單">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" onclick="closeMobile()">✕</button>
+  <ul>
+    <li><a href="../../index.html#features" onclick="closeMobile()">功能</a></li>
+    <li><a href="../../index.html#pricing" onclick="closeMobile()">方案</a></li>
+    <li><a href="../story.html" onclick="closeMobile()">關於我們</a></li>
+    <li><a href="../../index.html#contact" onclick="closeMobile()">聯絡我們</a></li>
+  </ul>
+</div>
+
+<!-- hero -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-eyebrow fade-up">💬 LINE 客服整合</div>
+    <h1 class="fade-up">LINE 官方帳號<br><span style="background:linear-gradient(135deg,#06C755,#00B900);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">AI 智能升級</span></h1>
+    <p class="fade-up">你的 LINE 官方帳號從此不再只是公告頻道。<br>智答 AI 讓每位顧客的訊息都得到即時、有溫度的回應。</p>
+    <div class="page-hero-actions fade-up">
+      <a href="../../index.html#contact" class="btn-primary">免費諮詢整合方案</a>
+      <a href="../../index.html#pricing" class="btn-ghost">查看方案費用</a>
+    </div>
+
+    <!-- chat demo -->
+    <div class="chat-demo fade-up">
+      <div class="chat-demo-header">
+        <div class="chat-demo-avatar">💬</div>
+        <div>
+          <div class="chat-demo-name">智答 LINE 客服助理</div>
+          <div class="chat-demo-status">● 上線中 · 已讀</div>
+        </div>
+      </div>
+      <div class="chat-row">
+        <div class="chat-bubble customer">你好！我想問一下上次訂的商品什麼時候到？</div>
+      </div>
+      <div class="chat-row right">
+        <div class="chat-bubble ai">您好！感謝您的詢問 😊 請問可以提供您的訂單編號嗎？我馬上幫您查詢最新物流狀態！</div>
+      </div>
+      <div class="chat-row">
+        <div class="chat-bubble customer">訂單號碼是 #20260507-038</div>
+      </div>
+      <div class="chat-row right">
+        <div class="chat-bubble ai">查到了！您的訂單目前在台中轉運站，預計明天（5/8）中午前送達 🚚 如有變動系統會自動通知您，還有其他問題嗎？</div>
+      </div>
+      <div class="chat-time">⚡ AI 自動回覆 · 平均 2 秒</div>
+    </div>
+  </div>
+</section>
+
+<!-- features -->
+<section class="features-section">
+  <div class="container">
+    <div class="section-label fade-up">核心功能</div>
+    <h2 class="section-title fade-up">LINE 官方帳號智能升級</h2>
+    <p class="section-sub fade-up">不只是自動回覆，而是把 LINE OA 打造成全天候智能客服中心。</p>
+    <div class="feat-grid">
+      <div class="feat-item fade-up">
+        <div class="feat-icon">⚡</div>
+        <h3>即時 AI 自動回覆</h3>
+        <p>整合 LINE Messaging API，智答 AI 接管所有進線訊息，24 小時即時回應每位顧客。</p>
+        <ul>
+          <li>訊息秒到秒回，不讓顧客等</li>
+          <li>支援文字、貼圖、圖片訊息辨識</li>
+          <li>多位顧客同時詢問不塞車</li>
+          <li>假日、夜間全自動運作</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">🧠</div>
+        <h3>品牌知識庫整合</h3>
+        <p>上傳你的產品目錄、FAQ、配送規則，AI 自動學習並精準回答顧客各類問題。</p>
+        <ul>
+          <li>產品規格與庫存即時同步</li>
+          <li>訂單查詢與物流串接</li>
+          <li>活動優惠自動更新</li>
+          <li>品牌禁區話題自動跳過</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">🎭</div>
+        <h3>語氣自動偵測</h3>
+        <p>AI 識別每位顧客的對話習慣，自動切換輕鬆、正式或關懷語氣，讓溝通更自然順暢。</p>
+        <ul>
+          <li>語氣風格動態調整</li>
+          <li>長輩顧客使用更親切語氣</li>
+          <li>緊急訴求即時識別處理</li>
+          <li>品牌語氣底線始終如一</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">🔀</div>
+        <h3>智能轉介人工</h3>
+        <p>設定轉介條件，遇到退款糾紛、複雜問題或 VIP 顧客，AI 自動轉給真人客服並附上對話摘要。</p>
+        <ul>
+          <li>轉介關鍵字自訂設定</li>
+          <li>對話摘要自動生成</li>
+          <li>優先級標記，重要案例不遺漏</li>
+          <li>轉介後 AI 保持輔助狀態</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">📢</div>
+        <h3>主動推播整合</h3>
+        <p>結合 LINE 推播功能，AI 客服與行銷推播共用同一個官方帳號，讓顧客體驗更完整一致。</p>
+        <ul>
+          <li>推播後顧客回覆 AI 自動接手</li>
+          <li>個人化回應推播相關問題</li>
+          <li>活動期間訊息量暴增不當機</li>
+          <li>推播效果自動追蹤回報</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">📊</div>
+        <h3>每日 LINE 客服報告</h3>
+        <p>每天早上自動寄送昨日 LINE 客服摘要，掌握顧客問題分佈、AI 回覆品質、滿意度趨勢。</p>
+        <ul>
+          <li>訊息量與自動回覆率統計</li>
+          <li>Top 5 熱門問題排行</li>
+          <li>轉介人工次數與原因分析</li>
+          <li>顧客滿意度評分趨勢</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- how it works -->
+<section class="how-section">
+  <div class="container">
+    <div class="section-label fade-up">整合流程</div>
+    <h2 class="section-title fade-up">三步驟，LINE OA 智能升級</h2>
+    <p class="section-sub fade-up">不需要廢棄現有帳號，直接在現有 LINE 官方帳號上疊加 AI 能力。</p>
+    <div class="steps-grid">
+      <div class="step-item fade-up">
+        <div class="step-num">1</div>
+        <h3>LINE OA 授權串接</h3>
+        <p>透過 LINE Messaging API 授權，將智答 AI 連結至你的 LINE 官方帳號，現有粉絲與設定完全保留。</p>
+        <span class="step-duration">⏱ 約 15 分鐘</span>
+      </div>
+      <div class="step-item fade-up">
+        <div class="step-num">2</div>
+        <h3>建立品牌知識庫</h3>
+        <p>填寫品牌資料、上傳 FAQ 文件，我們的顧問協助整理成 AI 可讀的知識庫，確保回覆準確。</p>
+        <span class="step-duration">⏱ 約 1–2 小時</span>
+      </div>
+      <div class="step-item fade-up">
+        <div class="step-num">3</div>
+        <h3>測試上線</h3>
+        <p>進行真實對話測試，確認 AI 語氣、準確度與轉介規則正確後正式啟動，最快當日上線。</p>
+        <span class="step-duration">⏱ 當日上線</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- platform comparison -->
+<section class="platform-section">
+  <div class="container">
+    <div class="section-label fade-up">跨平台整合</div>
+    <h2 class="section-title fade-up">一個後台，管理 IG + LINE</h2>
+    <p class="section-sub fade-up">同時使用 IG 和 LINE 的品牌，可在單一智答後台統一管理兩個平台的 AI 客服。</p>
+    <div class="platform-grid fade-up">
+      <div class="platform-card">
+        <div class="platform-icon">📸</div>
+        <h3>Instagram AI 客服</h3>
+        <p>24 小時自動回覆 IG DM，有溫度的品牌語氣，讓每位詢問者都感受到被重視。</p>
+        <a href="ig-service.html" class="platform-tag">了解 IG 客服 →</a>
+      </div>
+      <div class="platform-card" style="border-color:rgba(6,199,85,.3)">
+        <div class="platform-icon">💬</div>
+        <h3>LINE AI 客服</h3>
+        <p>整合 LINE OA，讓推播行銷與客服服務融為一體，提升顧客全方位體驗。</p>
+        <span class="platform-tag">目前頁面</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-label fade-up">常見問題</div>
+    <h2 class="section-title fade-up">LINE 客服整合 FAQ</h2>
+    <div class="faq-list">
+      <div class="faq-item fade-up">
+        <div class="faq-q">整合後現有的 LINE 官方帳號粉絲和設定會消失嗎？</div>
+        <div class="faq-a">完全不會。智答 AI 是透過 LINE Messaging API Webhook 接入，不會影響現有粉絲、推播訊息或任何帳號設定。你可以隨時停用 AI 回到手動模式。</div>
+      </div>
+      <div class="faq-item fade-up">
+        <div class="faq-q">AI 和真人客服可以同時使用嗎？</div>
+        <div class="faq-a">可以。你可以設定「AI 優先處理，特定情況轉真人」，或者「真人上班時間手動、下班後 AI 接手」，兩種模式都支援，彈性切換。</div>
+      </div>
+      <div class="faq-item fade-up">
+        <div class="faq-q">LINE 的 Rich Menu、圖文訊息會受影響嗎？</div>
+        <div class="faq-a">不會影響。智答 AI 僅接管 Chat 訊息的回覆，Rich Menu 按鈕、圖文訊息推播等功能完全由你控制，AI 整合是額外疊加，不取代原有功能。</div>
+      </div>
+      <div class="faq-item fade-up">
+        <div class="faq-q">LINE AI 客服和 IG AI 客服是分開計費嗎？</div>
+        <div class="faq-a">進階版方案同時包含 LINE 和 IG 客服整合，訊息量合計計算。若只需要單一平台，基本版方案即可，選擇 IG 或 LINE 其中一種。詳見<a href="../../index.html#pricing" style="color:#06C755">方案頁面</a>。</div>
+      </div>
+      <div class="faq-item fade-up">
+        <div class="faq-q">LINE 官方帳號需要哪個方案才能整合？</div>
+        <div class="faq-a">需要 LINE 官方帳號的「輕用量方案」或以上（可使用 Messaging API）。LINE 免費版不支援 Messaging API，若您還沒有符合資格的帳號，我們可協助您升級，費用由 LINE 直接收取。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container" style="position:relative;z-index:1;">
+    <h2 class="fade-up">讓你的 LINE OA 成為智能客服中心</h2>
+    <p class="fade-up">7 天免費試用，顧問協助完成整合，當日上線。</p>
+    <div class="cta-actions fade-up">
+      <a href="../../index.html#contact" class="btn-primary">立即預約整合顧問</a>
+      <a href="../../index.html#pricing" style="color:rgba(255,255,255,.7);text-decoration:none;padding:14px 24px;font-size:15px;font-weight:600;">查看方案費用 →</a>
+    </div>
+  </div>
+</section>
+
+<button id="back-top" aria-label="回到頂部">↑</button>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="../../index.html" class="footer-logo">
+        <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+          <defs><linearGradient id="foot-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#E85D25"/></linearGradient></defs>
+          <rect width="40" height="40" rx="10" fill="url(#foot-g1)"/>
+          <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="22" font-family="Noto Sans TC,sans-serif" font-weight="900">智</text>
+        </svg>
+        智答工作室
+      </a>
+      <p class="footer-tagline">讓每一則訊息，都成為品牌的機會。</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>服務</h4>
+        <a href="ig-service.html">IG AI 客服</a>
+        <a href="line-service.html">LINE 客服</a>
+        <a href="knowledge-base.html">AI 知識庫建置</a>
+        <a href="brand-voice.html">品牌語氣設定</a>
+        <a href="daily-report.html">每日客服報告</a>
+        <a href="ai-training.html">AI 持續訓練</a>
+      </div>
+      <div class="footer-col">
+        <h4>公司</h4>
+        <a href="../story.html">關於我們</a>
+        <a href="../privacy.html">隱私政策</a>
+        <a href="../terms.html">服務條款</a>
+        <a href="../../index.html#contact">聯絡我們</a>
+      </div>
+      <div class="footer-col">
+        <h4>聯絡</h4>
+        <a href="mailto:coo92062667@gmail.com">coo92062667@gmail.com</a>
+        <a href="https://instagram.com/zhida.studio" target="_blank" rel="noopener">@zhida.studio</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 智答工作室 All rights reserved.</p>
+    <div class="footer-bottom-links">
+      <a href="../privacy.html">隱私政策</a>
+      <a href="../terms.html">服務條款</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+<script src="../../js/cursor.js"></script>
+</body>
+</html>

@@ -3,58 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>品牌語氣設定 — 智答工作室</title>
-  <meta name="description" content="讓 AI 說話像你的品牌。智答工作室協助品牌設定獨特語氣，讓每一則客服回覆都符合品牌個性。" />
+  <title>品牌語氣客製化 — 智答工作室</title>
+  <meta name="description" content="讓 AI 說話像你的品牌。智答工作室品牌語氣客製化服務，打造獨一無二的對話風格，讓每則回覆都有品牌溫度。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/global.css" />
   <style>
-    .page-hero {
-      padding: 160px 0 100px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .page-hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,172,254,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .page-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(79,172,254,.1); border: 1px solid rgba(79,172,254,.2);
-      border-radius: 100px; padding: 6px 16px;
-      font-size: 13px; font-weight: 600; color: #4FACFE;
-      margin-bottom: 24px;
-    }
+    .page-hero { padding: 160px 0 100px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,172,254,.08) 0%, transparent 70%); pointer-events: none; }
+    .page-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(79,172,254,.1); border: 1px solid rgba(79,172,254,.2); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: #4FACFE; margin-bottom: 24px; }
     .page-hero h1 { font-size: clamp(2.4rem,5vw,4rem); font-weight: 900; color: var(--dark); line-height: 1.15; margin-bottom: 20px; }
     .page-hero p { font-size: clamp(1rem,2vw,1.25rem); color: var(--muted); max-width: 600px; margin: 0 auto 40px; line-height: 1.7; }
     .page-hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
-    .voice-demo {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 24px; padding: 40px; max-width: 700px; margin: 60px auto 0;
-    }
-    .voice-demo-title { font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; margin-bottom: 28px; letter-spacing: .05em; text-transform: uppercase; }
-    .voice-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
-    .voice-tab {
-      padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;
-      border: 1px solid var(--card-border); background: transparent; color: var(--muted);
-      cursor: pointer; transition: all .2s;
-    }
-    .voice-tab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-    .voice-bubble {
-      background: var(--surface); border-radius: 14px; padding: 16px 20px;
-      font-size: 14.5px; color: var(--text); line-height: 1.7;
-      border-left: 3px solid var(--orange);
-    }
+    .voice-demo { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 40px; max-width: 700px; margin: 60px auto 0; box-shadow: 0 24px 64px rgba(0,0,0,.08); }
+    .voice-demo-title { font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; margin-bottom: 24px; letter-spacing: .05em; text-transform: uppercase; }
+    .voice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .voice-row { grid-template-columns: 1fr; } }
+    .voice-col h5 { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .05em; }
+    .voice-bubble { background: var(--surface); border-radius: 14px; padding: 16px 20px; font-size: 14px; color: var(--text); line-height: 1.7; }
+    .voice-bubble.brand { border-left: 3px solid #4FACFE; }
+    .voice-tag { display: inline-block; margin-bottom: 10px; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 2px 10px; }
+    .voice-tag.generic { background: rgba(152,152,176,.12); color: #9898B0; }
+    .voice-tag.branded { background: rgba(79,172,254,.12); color: #4FACFE; }
 
     .features-section { padding: 100px 0; }
     .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 56px; }
-    .feat-item {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 20px; padding: 32px;
-      transition: transform .3s, box-shadow .3s, border-color .3s;
-    }
+    .feat-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px; transition: transform .3s, box-shadow .3s, border-color .3s; }
     .feat-item:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,.08); border-color: rgba(79,172,254,.3); }
     .feat-icon { font-size: 36px; margin-bottom: 20px; }
     .feat-item h3 { font-size: 1.15rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
@@ -64,64 +40,31 @@
 
     .process-section { padding: 100px 0; background: var(--surface); }
     .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; margin-top: 56px; }
-    .proc-item {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 20px; padding: 36px 28px; text-align: center;
-    }
-    .proc-num {
-      width: 52px; height: 52px;
-      background: linear-gradient(135deg, #4FACFE, #2d8fdd);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0 auto 20px;
-    }
+    .proc-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 36px 28px; text-align: center; }
+    .proc-num { width: 52px; height: 52px; background: linear-gradient(135deg, #4FACFE, #2d8fdd); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0 auto 20px; }
     .proc-item h3 { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
     .proc-item p { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
-    .proc-duration {
-      display: inline-block; margin-top: 14px;
-      font-size: 12px; font-weight: 600; color: #4FACFE;
-      background: rgba(79,172,254,.08); border-radius: 6px; padding: 3px 10px;
-    }
+    .proc-duration { display: inline-block; margin-top: 14px; font-size: 12px; font-weight: 600; color: #4FACFE; background: rgba(79,172,254,.08); border-radius: 6px; padding: 3px 10px; }
 
     .case-section { padding: 100px 0; }
-    .case-card {
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      border-radius: 24px; overflow: hidden;
-      display: grid; grid-template-columns: 1fr 1fr;
-      max-width: 860px; margin: 56px auto 0;
-    }
+    .case-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; max-width: 860px; margin: 56px auto 0; }
     @media (max-width: 640px) { .case-card { grid-template-columns: 1fr; } }
     .case-content { padding: 48px 40px; }
-    .case-tag {
-      display: inline-block; font-size: 11px; font-weight: 700;
-      background: rgba(79,172,254,.12); color: #4FACFE;
-      border-radius: 6px; padding: 3px 10px; margin-bottom: 16px;
-    }
+    .case-tag { display: inline-block; font-size: 11px; font-weight: 700; background: rgba(79,172,254,.12); color: #4FACFE; border-radius: 6px; padding: 3px 10px; margin-bottom: 16px; }
     .case-content h3 { font-size: 1.4rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
     .case-content p { font-size: 14.5px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; }
     .case-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .case-metric .val { font-size: 2rem; font-weight: 800; color: #4FACFE; }
     .case-metric .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .case-visual {
-      background: linear-gradient(135deg, #0a1628 0%, #162240 100%);
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px; flex-direction: column; gap: 16px;
-    }
+    .case-visual { background: linear-gradient(135deg, #0a1628 0%, #162240 100%); display: flex; align-items: center; justify-content: center; padding: 40px; flex-direction: column; gap: 16px; }
     .case-visual-icon { font-size: 56px; }
     .case-visual p { color: rgba(255,255,255,.6); font-size: 13px; text-align: center; line-height: 1.6; }
 
     .faq-section { padding: 100px 0; background: var(--surface); }
     .faq-list { max-width: 720px; margin: 56px auto 0; }
 
-    .cta-section {
-      padding: 100px 0; text-align: center;
-      background: linear-gradient(135deg, #0a1628 0%, #162240 100%);
-      position: relative; overflow: hidden;
-    }
-    .cta-section::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(79,172,254,.12), transparent 70%);
-      pointer-events: none;
-    }
+    .cta-section { padding: 100px 0; text-align: center; background: linear-gradient(135deg, #0a1628 0%, #162240 100%); position: relative; overflow: hidden; }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(79,172,254,.12), transparent 70%); pointer-events: none; }
     .cta-section h2 { font-size: clamp(1.8rem,4vw,3rem); font-weight: 800; color: #fff; margin-bottom: 16px; }
     .cta-section p { font-size: 1.1rem; color: rgba(255,255,255,.7); margin-bottom: 40px; }
     .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
@@ -135,11 +78,7 @@
   <div class="nav-inner">
     <a href="../../index.html" class="nav-logo">
       <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-        <defs>
-          <linearGradient id="nav-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#E85D25"/>
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="nav-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#E85D25"/></linearGradient></defs>
         <rect width="40" height="40" rx="10" fill="url(#nav-g1)"/>
         <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="22" font-family="Noto Sans TC,sans-serif" font-weight="900">智</text>
       </svg>
@@ -155,8 +94,8 @@
             <a href="brand-voice.html" class="nav-dd-item"><span class="nav-dd-icon">🎨</span><span class="nav-dd-text"><strong>品牌語氣設定</strong><small>AI 說話像你的品牌</small></span></a>
             <a href="daily-report.html" class="nav-dd-item"><span class="nav-dd-icon">📊</span><span class="nav-dd-text"><strong>每日客服報告</strong><small>昨日數據早晨送達</small></span></a>
             <a href="ai-training.html" class="nav-dd-item"><span class="nav-dd-icon">⚡</span><span class="nav-dd-text"><strong>AI 持續訓練</strong><small>越用越聰明</small></span></a>
-            <a href="#" class="nav-dd-item nav-dd-soon"><span class="nav-dd-icon">📸</span><span class="nav-dd-text"><strong>IG AI 客服</strong><small>即將推出</small></span></a>
-            <a href="#" class="nav-dd-item nav-dd-soon"><span class="nav-dd-icon">💬</span><span class="nav-dd-text"><strong>LINE / WhatsApp</strong><small>即將推出</small></span></a>
+            <a href="ig-service.html" class="nav-dd-item"><span class="nav-dd-icon">📸</span><span class="nav-dd-text"><strong>IG AI 客服</strong><small>24 小時自動回覆</small></span></a>
+            <a href="line-service.html" class="nav-dd-item"><span class="nav-dd-icon">💬</span><span class="nav-dd-text"><strong>LINE 客服</strong><small>LINE 官方帳號整合</small></span></a>
           </div>
         </div>
       </li>
@@ -183,187 +122,218 @@
   </ul>
 </div>
 
-<!-- ── hero ── -->
+<!-- hero -->
 <section class="page-hero">
   <div class="container">
-    <div class="page-eyebrow fade-up">🎨 品牌語氣設定</div>
-    <h1 class="fade-up">讓 AI 說話<br><span style="background:linear-gradient(135deg,#4FACFE,#2d8fdd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">像你的品牌</span></h1>
-    <p class="fade-up">每個品牌都有自己的個性。有的溫柔親切，有的專業俐落，有的活潑有趣。我們讓 AI 客服完全吸收你的品牌語氣，讓顧客感受不到機器人的冷漠。</p>
+    <div class="page-eyebrow fade-up">🎨 品牌語氣客製化</div>
+    <h1 class="fade-up">讓 AI<br><span style="background:linear-gradient(135deg,#4FACFE,#2d8fdd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">說話像你的品牌</span></h1>
+    <p class="fade-up">每個品牌都有獨特的說話方式。智答工作室的語氣客製化服務，讓你的 AI 客服說出品牌的聲音，不再是冰冷的模板。</p>
     <div class="page-hero-actions fade-up">
-      <a href="../../index.html#contact" class="btn-primary">免費體驗語氣設定</a>
+      <a href="../../index.html#contact" class="btn-primary">免費語氣診斷</a>
       <a href="../../index.html#pricing" class="btn-ghost">查看方案費用</a>
     </div>
 
-    <!-- voice demo -->
-    <div class="voice-demo fade-up" style="margin-top:48px;">
-      <div class="voice-demo-title">同一個問題，不同品牌語氣</div>
-      <div class="voice-tabs">
-        <button class="voice-tab active" onclick="switchVoice(this,'warm')">溫暖親切</button>
-        <button class="voice-tab" onclick="switchVoice(this,'pro')">專業俐落</button>
-        <button class="voice-tab" onclick="switchVoice(this,'fun')">活潑有趣</button>
-      </div>
-      <div class="voice-bubble" id="voice-bubble">
-        嗨！謝謝你的詢問 🌸 這款面霜非常適合敏感肌膚使用，我們選用天然燕麥萃取成分，溫和不刺激。建議早晚各使用一次，在化妝水之後、防曬之前使用效果最好。如果你有任何其他問題，隨時告訴我喔！
+    <!-- voice comparison demo -->
+    <div class="voice-demo fade-up">
+      <div class="voice-demo-title">同一個問題，不同語氣的回覆差異</div>
+      <p style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;">顧客問：「這件衣服 M 號和 L 號差多少？我通常穿 M 但怕太小…」</p>
+      <div class="voice-row">
+        <div class="voice-col">
+          <h5>❌ 一般 AI 回覆</h5>
+          <div class="voice-bubble">
+            <span class="voice-tag generic">制式語氣</span><br>
+            M 號胸圍 84-88 cm，L 號胸圍 88-92 cm。如需更多資訊請聯絡客服。
+          </div>
+        </div>
+        <div class="voice-col">
+          <h5>✅ 品牌語氣客製化</h5>
+          <div class="voice-bubble brand">
+            <span class="voice-tag branded">你的品牌語氣</span><br>
+            嗨！如果你通常穿 M 但怕太小，我推薦直接選 L 喔～這款版型偏修身，很多客人都說 L 穿起來更舒服 💕 需要我幫你保留 L 號嗎？
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── features ── -->
+<!-- features -->
 <section class="features-section">
   <div class="container">
-    <div class="section-label fade-up">核心功能</div>
-    <h2 class="section-title fade-up">語氣設定的四個維度</h2>
-    <p class="section-sub fade-up">從遣詞用字到情緒識別，打造完整的品牌語氣體驗。</p>
+    <div class="section-label fade-up">客製化項目</div>
+    <h2 class="section-title fade-up">五個維度，打造品牌專屬語氣</h2>
+    <p class="section-sub fade-up">從用詞風格到 emoji 使用習慣，每個細節都可以精確調整。</p>
     <div class="feat-grid">
       <div class="feat-item fade-up">
-        <div class="feat-icon">🔍</div>
-        <h3>語氣分析與定義</h3>
-        <p>分析您過去的客服紀錄、IG 文案及品牌指南，萃取出獨特的語氣 DNA 並量化設定。</p>
-        <ul>
-          <li>正式度（1–10 分量表）</li>
-          <li>親切度與幽默感設定</li>
-          <li>用詞偏好與禁用詞</li>
-          <li>句子長度與結構偏好</li>
-        </ul>
-      </div>
-      <div class="feat-item fade-up">
         <div class="feat-icon">💬</div>
-        <h3>回覆模板設計</h3>
-        <p>針對高頻問題類型設計標準化但有彈性的回覆模板，確保語氣一致性同時保有自然感。</p>
+        <h3>說話風格設定</h3>
+        <p>從「正式專業」到「親切活潑」，設定你的品牌說話方式，讓 AI 的每則回覆都符合品牌調性。</p>
         <ul>
-          <li>問候語與開場白</li>
-          <li>道歉與補救話術</li>
-          <li>促銷推薦語氣</li>
-          <li>結束語與 Call-to-Action</li>
+          <li>語氣正式度調整（1–10 級）</li>
+          <li>稱謂設定（您 / 你 / 名字）</li>
+          <li>結尾語習慣（感謝 / 期待 / 輕鬆）</li>
+          <li>句型長度與節奏偏好</li>
         </ul>
       </div>
       <div class="feat-item fade-up">
-        <div class="feat-icon">💛</div>
-        <h3>情緒識別與應對</h3>
-        <p>AI 能識別顧客情緒狀態，自動調整回覆語氣：對憤怒顧客更溫和，對開心顧客更熱情。</p>
+        <div class="feat-icon">😊</div>
+        <h3>Emoji 使用規範</h3>
+        <p>哪些 emoji 符合品牌形象？哪些絕對不用？精確設定讓 AI 的 emoji 使用與品牌視覺一致。</p>
         <ul>
-          <li>6 種情緒狀態識別</li>
-          <li>安撫話術自動啟動</li>
-          <li>高風險對話標記</li>
-          <li>轉真人客服時機判斷</li>
+          <li>品牌專屬 emoji 清單</li>
+          <li>各情境 emoji 使用規則</li>
+          <li>禁用 emoji 設定</li>
+          <li>使用頻率控制</li>
         </ul>
       </div>
       <div class="feat-item fade-up">
-        <div class="feat-icon">📈</div>
-        <h3>語氣持續優化</h3>
-        <p>根據顧客反應數據持續優化語氣設定，讓 AI 隨品牌成長一起進化。</p>
+        <div class="feat-icon">🎭</div>
+        <h3>語氣自動偵測</h3>
+        <p>AI 自動識別顧客的說話風格，動態調整回覆語氣——對方輕鬆就輕鬆回，正式就正式應對。</p>
         <ul>
-          <li>月度語氣效果報告</li>
-          <li>高評分回覆範本強化</li>
-          <li>低分回覆問題分析</li>
-          <li>季節性語氣微調</li>
+          <li>顧客語氣模式自動識別</li>
+          <li>回覆風格動態調整</li>
+          <li>品牌底線語氣始終保持</li>
+          <li>語氣偵測準確率追蹤</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">🚫</div>
+        <h3>禁用詞彙管理</h3>
+        <p>設定 AI 絕對不會說的詞彙和句型，避免品牌形象受損，確保每則回覆都符合品牌價值觀。</p>
+        <ul>
+          <li>競品名稱自動迴避</li>
+          <li>負面語氣詞彙過濾</li>
+          <li>法律敏感詞彙保護</li>
+          <li>自訂禁用詞彙清單</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">📝</div>
+        <h3>範本句型庫</h3>
+        <p>建立品牌專屬的常用回覆句型，讓 AI 在特定情境下使用你最喜歡的表達方式。</p>
+        <ul>
+          <li>開場白句型庫</li>
+          <li>感謝語句客製化</li>
+          <li>促購語句設定</li>
+          <li>道歉與安撫語句</li>
+        </ul>
+      </div>
+      <div class="feat-item fade-up">
+        <div class="feat-icon">🔄</div>
+        <h3>語氣定期校準</h3>
+        <p>品牌語氣會隨時間演變。我們提供每季語氣健康檢查，確保 AI 的語氣始終與品牌方向一致。</p>
+        <ul>
+          <li>季度語氣一致性報告</li>
+          <li>新語氣範本測試</li>
+          <li>A/B 語氣效果對比</li>
+          <li>品牌主確認後更新</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── process ── -->
+<!-- process -->
 <section class="process-section">
   <div class="container">
     <div class="section-label fade-up">設定流程</div>
-    <h2 class="section-title fade-up">三步驟完成語氣校準</h2>
-    <p class="section-sub fade-up">我們的語言學專家與 AI 工程師協作，確保語氣設定精準到位。</p>
+    <h2 class="section-title fade-up">從品牌訪談到語氣上線</h2>
+    <p class="section-sub fade-up">我們的語氣顧問會深度了解你的品牌，協助打造最適合的 AI 聲音。</p>
     <div class="process-steps">
       <div class="proc-item fade-up">
         <div class="proc-num">1</div>
-        <h3>品牌語氣工作坊</h3>
-        <p>2 小時線上工作坊，透過品牌形容詞練習、對話角色扮演，精確定義你的品牌語氣 DNA。</p>
-        <span class="proc-duration">⏱ Day 1</span>
+        <h3>品牌語氣訪談</h3>
+        <p>透過線上問卷 + 30 分鐘視訊，深度了解你的品牌個性、目標客群說話方式、以及你希望 AI 給客人的感受。</p>
+        <span class="proc-duration">⏱ 約 1 小時</span>
       </div>
       <div class="proc-item fade-up">
         <div class="proc-num">2</div>
-        <h3>語氣模型訓練</h3>
-        <p>我們的語言學專家根據工作坊成果，建立 50+ 種情境回覆範本，並訓練 AI 模型。</p>
-        <span class="proc-duration">⏱ Day 2–4</span>
+        <h3>語氣設定與測試</h3>
+        <p>根據訪談結果設定語氣參數，生成 20 個測試情境讓你驗證 AI 的回覆是否符合品牌感覺，不滿意即時調整。</p>
+        <span class="proc-duration">⏱ 1–2 天</span>
       </div>
       <div class="proc-item fade-up">
         <div class="proc-num">3</div>
-        <h3>A/B 測試與微調</h3>
-        <p>正式上線後 2 週進行 A/B 測試，比較不同語氣版本的顧客反應，完成最終校準。</p>
-        <span class="proc-duration">⏱ Week 2</span>
+        <h3>上線與持續優化</h3>
+        <p>語氣設定正式上線，系統每月自動生成語氣健康報告，讓你隨時了解 AI 的表達是否保持品牌一致性。</p>
+        <span class="proc-duration">⏱ 每月追蹤</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── case study ── -->
+<!-- case study -->
 <section class="case-section">
   <div class="container">
     <div class="section-label fade-up">成功案例</div>
-    <h2 class="section-title fade-up">語氣讓滿意度大躍升</h2>
+    <h2 class="section-title fade-up">語氣客製化讓回購率提升 31%</h2>
     <div class="case-card fade-scale">
       <div class="case-content">
-        <span class="case-tag">皮件精品品牌</span>
-        <h3>滿意度從 3.8 分躍升至 4.7 分</h3>
-        <p>這個台灣本土皮件品牌以「職人精神」為核心價值，但原有的 AI 客服語氣生硬，與品牌形象不符。導入品牌語氣設定後：</p>
+        <span class="case-tag">台灣甜點品牌</span>
+        <h3>把「少女感」注入 AI 語氣</h3>
+        <p>這個甜點品牌的顧客 80% 是 18–35 歲女性，品牌調性活潑可愛。但導入 AI 後，顧客反映回覆「太正式、不像這個品牌」。透過語氣客製化：</p>
         <div class="case-metrics">
           <div class="case-metric">
-            <div class="val">4.7⭐</div>
-            <div class="lbl">客服滿意度（原 3.8）</div>
+            <div class="val">+31%</div>
+            <div class="lbl">顧客回購率</div>
           </div>
           <div class="case-metric">
-            <div class="val">+34%</div>
-            <div class="lbl">顧客回購率提升</div>
-          </div>
-          <div class="case-metric">
-            <div class="val">91%</div>
-            <div class="lbl">語氣符合品牌滿意度</div>
+            <div class="val">4.9⭐</div>
+            <div class="lbl">AI 語氣滿意度</div>
           </div>
           <div class="case-metric">
             <div class="val">-67%</div>
-            <div class="lbl">客訴轉介真人比例</div>
+            <div class="lbl">「感覺不像真人」投訴</div>
+          </div>
+          <div class="case-metric">
+            <div class="val">2週</div>
+            <div class="lbl">語氣調整完成時間</div>
           </div>
         </div>
       </div>
       <div class="case-visual">
-        <div class="case-visual-icon">👜</div>
-        <p>「顧客現在會說『你們的客服好有溫度』，他們不知道是 AI 在回覆，這就是我們要的效果。」</p>
+        <div class="case-visual-icon">🍰</div>
+        <p>「本來擔心 AI 會讓品牌變冷漠，但設定完語氣後，很多客人說反而覺得更親切了，還以為是真人在回！」</p>
         <p style="margin-top:8px;font-weight:600;color:rgba(255,255,255,.8);">— 品牌創辦人</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── FAQ ── -->
+<!-- FAQ -->
 <section class="faq-section">
   <div class="container">
     <div class="section-label fade-up">常見問題</div>
-    <h2 class="section-title fade-up">品牌語氣設定 FAQ</h2>
+    <h2 class="section-title fade-up">品牌語氣客製化 FAQ</h2>
     <div class="faq-list">
       <div class="faq-item fade-up">
-        <div class="faq-q">如果我們的品牌語氣在不同情境下有差異怎麼辦？</div>
-        <div class="faq-a">這非常正常！我們支援多情境語氣設定：日常詢問用輕鬆語氣、客訴處理用正式語氣、促銷期間用興奮語氣。AI 會根據對話情境自動切換，不需要人工介入。</div>
+        <div class="faq-q">我的品牌語氣沒有明確定義，也可以做語氣客製化嗎？</div>
+        <div class="faq-a">完全沒問題！這正是我們的顧問最常遇到的情況。透過品牌訪談，我們會協助你釐清品牌語氣，有時候品牌主在這個過程中反而更清楚自己的品牌個性了。</div>
       </div>
       <div class="faq-item fade-up">
-        <div class="faq-q">語氣設定後還可以調整嗎？</div>
-        <div class="faq-a">當然可以。品牌語氣會隨時間演進，我們每季提供免費的語氣審核服務。基本方案每月可提交 5 次語氣調整，Pro 方案享有隨時調整的服務。</div>
+        <div class="faq-q">語氣設定完後，如果我想修改怎麼辦？</div>
+        <div class="faq-a">隨時可以修改！你可以在管理後台直接調整語氣參數，或提出修改需求，我們的顧問通常在 24–48 小時內完成更新。進階方案享有更快的語氣更新優先處理。</div>
       </div>
       <div class="faq-item fade-up">
-        <div class="faq-q">你們如何確保 AI 語氣一致性？</div>
-        <div class="faq-a">我們建立了多層次的語氣守護機制：語氣評分系統（每條回覆都會評分）、偏差警報（語氣偏移時通知）、以及每月語氣一致性報告，確保 AI 永遠在品牌語氣範圍內。</div>
+        <div class="faq-q">語氣客製化可以針對不同類型的顧客訊息設定不同語氣嗎？</div>
+        <div class="faq-a">可以。例如：回答「退換貨」時用更正式耐心的語氣，回答「新品詢問」時用更活潑推薦的語氣，回答「訂單追蹤」時用更簡潔效率的語氣。我們支援情境分類語氣設定。</div>
       </div>
       <div class="faq-item fade-up">
-        <div class="faq-q">可以支援繁體中文和英文的雙語語氣設定嗎？</div>
-        <div class="faq-a">可以。我們目前支援繁體中文、簡體中文及英文三種語言的語氣設定，並能針對不同語言設定不同的語氣參數，因為同一品牌在不同語言環境中的表達方式可能有所差異。</div>
+        <div class="faq-q">品牌語氣客製化是額外收費的服務嗎？</div>
+        <div class="faq-a">基本版方案已包含基礎語氣設定（正式度、稱謂、emoji 規範）。進階版享有完整的深度語氣客製化服務，包括顧問訪談、測試驗證和季度校準。詳見<a href="../../index.html#pricing" style="color:#4FACFE">方案頁面</a>。</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── CTA ── -->
+<!-- CTA -->
 <section class="cta-section">
   <div class="container" style="position:relative;z-index:1;">
-    <h2 class="fade-up">讓你的 AI 說話更像你</h2>
-    <p class="fade-up">免費體驗品牌語氣分析，了解你的品牌語氣 DNA。</p>
+    <h2 class="fade-up">讓你的 AI 說出品牌的聲音</h2>
+    <p class="fade-up">免費語氣診斷，了解你的品牌語氣需要哪些調整。</p>
     <div class="cta-actions fade-up">
-      <a href="../../index.html#contact" class="btn-primary">立即預約語氣設定諮詢</a>
+      <a href="../../index.html#contact" class="btn-primary">立即預約語氣顧問</a>
       <a href="../../index.html#pricing" style="color:rgba(255,255,255,.7);text-decoration:none;padding:14px 24px;font-size:15px;font-weight:600;">查看方案費用 →</a>
     </div>
   </div>
@@ -387,6 +357,8 @@
     <div class="footer-links">
       <div class="footer-col">
         <h4>服務</h4>
+        <a href="ig-service.html">IG AI 客服</a>
+        <a href="line-service.html">LINE 客服</a>
         <a href="knowledge-base.html">AI 知識庫建置</a>
         <a href="brand-voice.html">品牌語氣設定</a>
         <a href="daily-report.html">每日客服報告</a>
@@ -401,7 +373,7 @@
       </div>
       <div class="footer-col">
         <h4>聯絡</h4>
-        <a href="mailto:hello@zhida.studio">hello@zhida.studio</a>
+        <a href="mailto:coo92062667@gmail.com">coo92062667@gmail.com</a>
         <a href="https://instagram.com/zhida.studio" target="_blank" rel="noopener">@zhida.studio</a>
       </div>
     </div>
@@ -417,20 +389,5 @@
 
 <script src="../../js/main.js"></script>
 <script src="../../js/cursor.js"></script>
-<script>
-  const voices = {
-    warm: '嗨！謝謝你的詢問 🌸 這款面霜非常適合敏感肌膚使用，我們選用天然燕麥萃取成分，溫和不刺激。建議早晚各使用一次，在化妝水之後、防曬之前使用效果最好。如果你有任何其他問題，隨時告訴我喔！',
-    pro: '您好，感謝您的詢問。本品面霜採用燕麥萃取配方，適合敏感肌使用。建議使用順序為化妝水後、防曬前，早晚各一次。如需進一步資訊，請隨時與我們聯繫。',
-    fun: '哦哦！這款面霜超級溫柔 💕 完全是敏感肌的救星！天然燕麥成分讓你的皮膚喝飽飽水，早上出門前、晚上睡前各塗一次，放在化妝水後面就對了！有問題盡量問，我超愛回覆的 ✨'
-  };
-  function switchVoice(btn, key) {
-    document.querySelectorAll('.voice-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    const bubble = document.getElementById('voice-bubble');
-    bubble.style.opacity = '0';
-    setTimeout(() => { bubble.textContent = voices[key]; bubble.style.opacity = '1'; }, 200);
-  }
-  document.getElementById('voice-bubble').style.transition = 'opacity .2s';
-</script>
 </body>
 </html>

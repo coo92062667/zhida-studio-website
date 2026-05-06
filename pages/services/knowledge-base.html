@@ -4,46 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI 知識庫建置 — 智答工作室</title>
-  <meta name="description" content="打造專屬你品牌的 AI 大腦。智答工作室協助品牌建立完整的 AI 知識庫，讓客服自動回覆準確率高達 87%。" />
+  <meta name="description" content="讓 AI 真正「懂」你的品牌。智答工作室 AI 知識庫建置服務，把你的品牌故事、產品資訊、FAQ 整合成 AI 的專屬大腦，顧問一對一協助上線。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/global.css" />
   <style>
-    /* ── page hero ── */
-    .page-hero {
-      padding: 160px 0 100px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .page-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,.10) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .page-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.2);
-      border-radius: 100px; padding: 6px 16px;
-      font-size: 13px; font-weight: 600; color: var(--orange);
-      margin-bottom: 24px;
-    }
+    .page-hero { padding: 160px 0 100px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,.10) 0%, transparent 70%); pointer-events: none; }
+    .page-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,107,53,.1); border: 1px solid rgba(255,107,53,.2); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--orange); margin-bottom: 24px; }
     .page-hero h1 { font-size: clamp(2.4rem,5vw,4rem); font-weight: 900; color: var(--dark); line-height: 1.15; margin-bottom: 20px; }
     .page-hero p { font-size: clamp(1rem,2vw,1.25rem); color: var(--muted); max-width: 600px; margin: 0 auto 40px; line-height: 1.7; }
     .page-hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
-    /* ── features ── */
+    /* knowledge brain visual */
+    .kb-visual { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 40px; max-width: 680px; margin: 56px auto 0; box-shadow: 0 24px 64px rgba(0,0,0,.08); }
+    .kb-visual-title { font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; margin-bottom: 28px; letter-spacing: .05em; text-transform: uppercase; }
+    .kb-items { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    @media (max-width: 480px) { .kb-items { grid-template-columns: 1fr 1fr; } }
+    .kb-item { background: var(--surface); border-radius: 12px; padding: 14px; text-align: center; }
+    .kb-item .kb-icon { font-size: 24px; margin-bottom: 8px; }
+    .kb-item .kb-label { font-size: 12px; font-weight: 600; color: var(--text); }
+    .kb-item .kb-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .kb-footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+    .kb-footer span { font-size: 12px; color: var(--muted); }
+    .kb-footer strong { font-size: 14px; font-weight: 700; color: var(--orange); }
+
     .features-section { padding: 100px 0; }
     .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 56px; }
-    .feat-item {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 32px;
-      transition: transform .3s, box-shadow .3s, border-color .3s;
-    }
+    .feat-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px; transition: transform .3s, box-shadow .3s, border-color .3s; }
     .feat-item:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,.08); border-color: rgba(255,107,53,.3); }
     .feat-icon { font-size: 36px; margin-bottom: 20px; }
     .feat-item h3 { font-size: 1.15rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
@@ -51,85 +40,33 @@
     .feat-item ul { padding-left: 18px; margin-top: 12px; }
     .feat-item ul li { font-size: 14px; color: var(--muted); line-height: 1.8; }
 
-    /* ── process ── */
     .process-section { padding: 100px 0; background: var(--surface); }
     .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px; margin-top: 56px; position: relative; }
-    .proc-item {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 36px 28px;
-      text-align: center;
-      position: relative;
-    }
-    .proc-num {
-      width: 52px; height: 52px;
-      background: linear-gradient(135deg, var(--orange), #e85d25);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; font-weight: 800; color: #fff;
-      margin: 0 auto 20px;
-    }
+    .proc-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 36px 28px; text-align: center; }
+    .proc-num { width: 52px; height: 52px; background: linear-gradient(135deg, var(--orange), #e85d25); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0 auto 20px; }
     .proc-item h3 { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
     .proc-item p { font-size: 14.5px; color: var(--muted); line-height: 1.7; }
-    .proc-duration {
-      display: inline-block;
-      margin-top: 14px;
-      font-size: 12px; font-weight: 600; color: var(--orange);
-      background: rgba(255,107,53,.08); border-radius: 6px; padding: 3px 10px;
-    }
+    .proc-duration { display: inline-block; margin-top: 14px; font-size: 12px; font-weight: 600; color: var(--orange); background: rgba(255,107,53,.08); border-radius: 6px; padding: 3px 10px; }
 
-    /* ── case study ── */
     .case-section { padding: 100px 0; }
-    .case-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      max-width: 860px;
-      margin: 56px auto 0;
-    }
+    .case-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; max-width: 860px; margin: 56px auto 0; }
     @media (max-width: 640px) { .case-card { grid-template-columns: 1fr; } }
     .case-content { padding: 48px 40px; }
-    .case-tag {
-      display: inline-block; font-size: 11px; font-weight: 700;
-      background: rgba(255,107,53,.12); color: var(--orange);
-      border-radius: 6px; padding: 3px 10px; margin-bottom: 16px;
-    }
+    .case-tag { display: inline-block; font-size: 11px; font-weight: 700; background: rgba(255,107,53,.12); color: var(--orange); border-radius: 6px; padding: 3px 10px; margin-bottom: 16px; }
     .case-content h3 { font-size: 1.4rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
     .case-content p { font-size: 14.5px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; }
     .case-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .case-metric .val { font-size: 2rem; font-weight: 800; color: var(--orange); }
     .case-metric .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .case-visual {
-      background: linear-gradient(135deg, #0F1E38 0%, #1a2f52 100%);
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .case-visual { background: linear-gradient(135deg, #0F1E38 0%, #1a2f52 100%); display: flex; align-items: center; justify-content: center; padding: 40px; flex-direction: column; gap: 16px; }
     .case-visual-icon { font-size: 56px; }
     .case-visual p { color: rgba(255,255,255,.6); font-size: 13px; text-align: center; line-height: 1.6; }
 
-    /* ── FAQ ── */
     .faq-section { padding: 100px 0; background: var(--surface); }
     .faq-list { max-width: 720px; margin: 56px auto 0; }
 
-    /* ── CTA ── */
-    .cta-section {
-      padding: 100px 0;
-      text-align: center;
-      background: linear-gradient(135deg, #0F1E38 0%, #1a2f52 100%);
-      position: relative; overflow: hidden;
-    }
-    .cta-section::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,107,53,.15), transparent 70%);
-      pointer-events: none;
-    }
+    .cta-section { padding: 100px 0; text-align: center; background: linear-gradient(135deg, #0F1E38 0%, #1a2f52 100%); position: relative; overflow: hidden; }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255,107,53,.15), transparent 70%); pointer-events: none; }
     .cta-section h2 { font-size: clamp(1.8rem,4vw,3rem); font-weight: 800; color: #fff; margin-bottom: 16px; }
     .cta-section p { font-size: 1.1rem; color: rgba(255,255,255,.7); margin-bottom: 40px; }
     .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
@@ -139,7 +76,6 @@
 
 <div id="scroll-progress"></div>
 
-<!-- ── navbar ── -->
 <nav id="navbar">
   <div class="nav-inner">
     <a href="../../index.html" class="nav-logo">
@@ -178,13 +114,13 @@
               <span class="nav-dd-icon">⚡</span>
               <span class="nav-dd-text"><strong>AI 持續訓練</strong><small>越用越聰明</small></span>
             </a>
-            <a href="#" class="nav-dd-item nav-dd-soon">
+            <a href="ig-service.html" class="nav-dd-item">
               <span class="nav-dd-icon">📸</span>
-              <span class="nav-dd-text"><strong>IG AI 客服</strong><small>即將推出</small></span>
+              <span class="nav-dd-text"><strong>IG AI 客服</strong><small>24 小時自動回覆</small></span>
             </a>
-            <a href="#" class="nav-dd-item nav-dd-soon">
+            <a href="line-service.html" class="nav-dd-item">
               <span class="nav-dd-icon">💬</span>
-              <span class="nav-dd-text"><strong>LINE / WhatsApp</strong><small>即將推出</small></span>
+              <span class="nav-dd-text"><strong>LINE 客服</strong><small>LINE 官方帳號整合</small></span>
             </a>
           </div>
         </div>
@@ -192,12 +128,10 @@
       <li><a href="../../index.html#pricing">方案</a></li>
       <li><a href="../story.html">關於我們</a></li>
     </ul>
-
     <div class="nav-actions">
       <button id="theme-toggle" aria-label="切換深色模式">🌙</button>
       <a href="../../index.html#contact" class="btn-primary nav-cta">免費試用</a>
     </div>
-
     <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="選單">
       <span></span><span></span><span></span>
     </button>
@@ -214,178 +148,218 @@
   </ul>
 </div>
 
-<!-- ── hero ── -->
+<!-- hero -->
 <section class="page-hero">
   <div class="container">
     <div class="page-eyebrow fade-up">🧠 AI 知識庫建置</div>
-    <h1 class="fade-up">打造專屬你品牌的<br><span class="grad">AI 大腦</span></h1>
-    <p class="fade-up">每個品牌都有獨特的產品知識、常見問題與溝通風格。我們將這些精華系統化，讓 AI 客服從第一天起就能準確回答每一個問題。</p>
+    <h1 class="fade-up">打造品牌的<br><span style="background:linear-gradient(135deg,#FF6B35,#E85D25);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">AI 專屬大腦</span></h1>
+    <p class="fade-up">AI 客服的品質，取決於知識庫的完整度。我們的顧問協助你把品牌知識整理成 AI 能理解的格式，讓它真正「懂」你的品牌。</p>
     <div class="page-hero-actions fade-up">
-      <a href="../../index.html#contact" class="btn-primary">免費諮詢建置方案</a>
+      <a href="../../index.html#contact" class="btn-primary">免費諮詢知識庫建置</a>
       <a href="../../index.html#pricing" class="btn-ghost">查看方案費用</a>
+    </div>
+
+    <!-- knowledge base visual -->
+    <div class="kb-visual fade-up">
+      <div class="kb-visual-title">典型品牌知識庫內容範例</div>
+      <div class="kb-items">
+        <div class="kb-item">
+          <div class="kb-icon">👗</div>
+          <div class="kb-label">產品規格</div>
+          <div class="kb-count">120+ 項目</div>
+        </div>
+        <div class="kb-item">
+          <div class="kb-icon">🚚</div>
+          <div class="kb-label">配送政策</div>
+          <div class="kb-count">全台 / 海外</div>
+        </div>
+        <div class="kb-item">
+          <div class="kb-icon">🔄</div>
+          <div class="kb-label">退換貨流程</div>
+          <div class="kb-count">完整 SOP</div>
+        </div>
+        <div class="kb-item">
+          <div class="kb-icon">🎁</div>
+          <div class="kb-label">活動優惠</div>
+          <div class="kb-count">即時更新</div>
+        </div>
+        <div class="kb-item">
+          <div class="kb-icon">📋</div>
+          <div class="kb-label">常見問答</div>
+          <div class="kb-count">80+ 條 FAQ</div>
+        </div>
+        <div class="kb-item">
+          <div class="kb-icon">🏪</div>
+          <div class="kb-label">品牌故事</div>
+          <div class="kb-count">理念 / 背景</div>
+        </div>
+      </div>
+      <div class="kb-footer">
+        <span>知識庫完整度</span>
+        <div style="flex:1;height:8px;background:var(--surface);border-radius:100px;margin:0 16px;overflow:hidden;">
+          <div style="height:100%;width:87%;background:linear-gradient(90deg,#FF6B35,#E85D25);border-radius:100px;"></div>
+        </div>
+        <strong>87% → AI 自動回覆率 91%</strong>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── features ── -->
+<!-- features -->
 <section class="features-section">
   <div class="container">
-    <div class="section-label fade-up">核心功能</div>
-    <h2 class="section-title fade-up">知識庫的四大支柱</h2>
-    <p class="section-sub fade-up">從產品細節到處理邊緣案例，我們幫你打造全面的品牌知識體系。</p>
-
+    <div class="section-label fade-up">建置服務</div>
+    <h2 class="section-title fade-up">知識庫的完整度決定 AI 的智慧</h2>
+    <p class="section-sub fade-up">不只是填表格，我們的顧問深入了解你的品牌，確保知識庫涵蓋客人真正會問的所有問題。</p>
     <div class="feat-grid">
       <div class="feat-item fade-up">
-        <div class="feat-icon">📦</div>
-        <h3>產品知識庫</h3>
-        <p>系統化整理所有產品規格、使用說明、成分資訊，讓 AI 精準回答每個產品問題。</p>
+        <div class="feat-icon">📋</div>
+        <h3>品牌資料整理</h3>
+        <p>協助整理現有的產品文件、FAQ 表單、社群貼文，轉換成 AI 可讀的結構化知識。</p>
         <ul>
-          <li>規格與尺寸對照表</li>
-          <li>使用方式與注意事項</li>
-          <li>材質與成分說明</li>
-          <li>庫存狀態連動更新</li>
+          <li>產品規格資料整合</li>
+          <li>現有 FAQ 優化重整</li>
+          <li>社群貼文知識萃取</li>
+          <li>品牌手冊數位化</li>
         </ul>
       </div>
       <div class="feat-item fade-up">
-        <div class="feat-icon">❓</div>
-        <h3>常見問題資料庫</h3>
-        <p>收集整理品牌最常被問到的問題，建立標準化回覆庫，確保每次回答一致且準確。</p>
+        <div class="feat-icon">🔍</div>
+        <h3>顧客問題研究</h3>
+        <p>分析你過去的 IG / LINE 對話記錄，找出顧客最常問的問題，確保知識庫不漏掉任何重要問題。</p>
         <ul>
-          <li>退換貨政策說明</li>
-          <li>配送時程與物流追蹤</li>
-          <li>促銷活動規則</li>
-          <li>會員制度與點數</li>
+          <li>歷史對話問題分析</li>
+          <li>問題頻率統計排行</li>
+          <li>同業常見問題補充</li>
+          <li>季節性問題預測</li>
         </ul>
       </div>
       <div class="feat-item fade-up">
-        <div class="feat-icon">🚫</div>
-        <h3>禁忌語與敏感話題</h3>
-        <p>設定 AI 必須避免的詞彙、不應回答的問題，以及需要轉接真人客服的觸發條件。</p>
+        <div class="feat-icon">✍️</div>
+        <h3>問答撰寫服務</h3>
+        <p>由我們的文案顧問根據你的品牌語氣，撰寫符合品牌調性的標準問答，不只是資訊，更要有溫度。</p>
         <ul>
-          <li>競品比較問題處理</li>
-          <li>負評回覆策略</li>
-          <li>法律敏感問題過濾</li>
-          <li>轉接真人客服條件</li>
+          <li>品牌語氣問答撰寫</li>
+          <li>多版本回覆測試</li>
+          <li>情境分枝問答設計</li>
+          <li>轉介人工標準流程</li>
         </ul>
       </div>
       <div class="feat-item fade-up">
         <div class="feat-icon">🔄</div>
-        <h3>定期知識更新</h3>
-        <p>產品、政策、活動隨時在變。我們提供定期知識庫維護服務，確保 AI 資訊永遠最新。</p>
+        <h3>知識庫持續更新</h3>
+        <p>品牌不斷推出新品、新活動，知識庫也需要同步更新。我們提供定期維護與緊急更新服務。</p>
         <ul>
-          <li>新品上市前即時更新</li>
-          <li>季節活動特別設定</li>
-          <li>政策調整快速同步</li>
-          <li>每月知識庫健康報告</li>
+          <li>新品上架知識更新</li>
+          <li>活動期間即時更新</li>
+          <li>政策變更快速同步</li>
+          <li>AI 遇到新問題自動記錄</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── process ── -->
+<!-- process -->
 <section class="process-section">
   <div class="container">
     <div class="section-label fade-up">建置流程</div>
-    <h2 class="section-title fade-up">三步驟完成知識庫建置</h2>
-    <p class="section-sub fade-up">從品牌訪談到正式上線，平均只需 5 個工作天。</p>
-
+    <h2 class="section-title fade-up">一週完成品牌知識庫</h2>
+    <p class="section-sub fade-up">顧問全程陪伴，你只需要提供素材，我們負責整理成 AI 的大腦。</p>
     <div class="process-steps">
       <div class="proc-item fade-up">
         <div class="proc-num">1</div>
-        <h3>品牌深度訪談</h3>
-        <p>我們與您的團隊進行 1-2 小時的深度訪談，了解品牌定位、產品特色、常見問題及客服痛點。</p>
+        <h3>素材收集</h3>
+        <p>填寫品牌問卷，提供產品目錄、配送說明、退換貨政策、過去的客服對話記錄等素材。格式不限，有什麼給什麼。</p>
         <span class="proc-duration">⏱ Day 1–2</span>
       </div>
       <div class="proc-item fade-up">
         <div class="proc-num">2</div>
-        <h3>知識庫架構設計</h3>
-        <p>根據訪談內容，我們的 AI 顧問團隊設計客製化的知識庫結構，並初步建立所有問答內容。</p>
-        <span class="proc-duration">⏱ Day 3–4</span>
+        <h3>知識庫建構</h3>
+        <p>顧問整理所有素材，撰寫符合品牌語氣的問答，建立完整的知識庫架構，並進行 AI 測試初版。</p>
+        <span class="proc-duration">⏱ Day 3–5</span>
       </div>
       <div class="proc-item fade-up">
         <div class="proc-num">3</div>
-        <h3>測試驗證與上線</h3>
-        <p>您的團隊審核知識庫內容，我們進行壓力測試確保回覆準確率，完成後正式接入您的 IG 帳號。</p>
-        <span class="proc-duration">⏱ Day 5</span>
+        <h3>測試與上線</h3>
+        <p>提交 20 個測試問題驗證 AI 回覆準確度，你確認後正式上線。後續一週內免費調整 3 次。</p>
+        <span class="proc-duration">⏱ Day 6–7</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── case study ── -->
+<!-- case study -->
 <section class="case-section">
   <div class="container">
     <div class="section-label fade-up">成功案例</div>
-    <h2 class="section-title fade-up">真實品牌的真實成果</h2>
-
+    <h2 class="section-title fade-up">知識庫完整度提升讓回覆率達 87%</h2>
     <div class="case-card fade-scale">
       <div class="case-content">
-        <span class="case-tag">有機食品品牌</span>
-        <h3>從人工客服到 87% 自動化率</h3>
-        <p>這個有機食品品牌擁有超過 200 項 SKU，每天收到大量關於成分、保存方式、配送的問題。在建置完整知識庫後：</p>
+        <span class="case-tag">台灣保健食品品牌</span>
+        <h3>把 500+ 條問答整理成 AI 的大腦</h3>
+        <p>這個保健品牌有超過 300 個 SKU、複雜的成分說明與適用人群問題。客服每天花大量時間回覆相似問題。透過系統性的知識庫建置：</p>
         <div class="case-metrics">
           <div class="case-metric">
             <div class="val">87%</div>
-            <div class="lbl">客服訊息自動回覆率</div>
+            <div class="lbl">AI 自動回覆率</div>
           </div>
           <div class="case-metric">
-            <div class="val">4.2min</div>
-            <div class="lbl">平均回覆時間（原 6hr）</div>
+            <div class="val">-74%</div>
+            <div class="lbl">人工客服時間</div>
           </div>
           <div class="case-metric">
-            <div class="val">63%</div>
-            <div class="lbl">客服人力成本節省</div>
+            <div class="val">530+</div>
+            <div class="lbl">知識庫問答條目</div>
           </div>
           <div class="case-metric">
-            <div class="val">4.8⭐</div>
-            <div class="lbl">客服體驗滿意度</div>
+            <div class="val">7天</div>
+            <div class="lbl">完成建置到上線</div>
           </div>
         </div>
       </div>
       <div class="case-visual">
-        <div class="case-visual-icon">🌱</div>
-        <p>「知識庫建置完成後，我們的客服工作量減少了將近三分之二，但顧客滿意度反而提升了。」</p>
-        <p style="margin-top:8px;font-weight:600;color:rgba(255,255,255,.8);">— 品牌行銷總監</p>
+        <div class="case-visual-icon">💊</div>
+        <p>「我們把三年來的客服記錄交給智答，他們一週就整理成完整的知識庫。AI 現在能回答連新客服都不知道的問題。」</p>
+        <p style="margin-top:8px;font-weight:600;color:rgba(255,255,255,.8);">— 電商營運總監</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── FAQ ── -->
+<!-- FAQ -->
 <section class="faq-section">
   <div class="container">
     <div class="section-label fade-up">常見問題</div>
-    <h2 class="section-title fade-up">知識庫建置 FAQ</h2>
-
+    <h2 class="section-title fade-up">AI 知識庫建置 FAQ</h2>
     <div class="faq-list">
       <div class="faq-item fade-up">
-        <div class="faq-q">知識庫建置需要我們準備哪些資料？</div>
-        <div class="faq-a">我們需要您提供：產品目錄或電商後台資料、現有的 FAQ 文件（若有）、退換貨政策、配送說明，以及任何您希望 AI 能回答的標準問答。若您沒有現成文件，訪談過程中我們會協助您整理。</div>
+        <div class="faq-q">我的產品資料很亂，散在很多地方，可以整理嗎？</div>
+        <div class="faq-a">這是最常見的情況！許多品牌的資料散落在 Excel、Google Docs、IG 貼文、甚至只有老闆的腦袋裡。我們接受任何格式的素材，顧問會協助整理和結構化，不需要你事先整理好。</div>
       </div>
       <div class="faq-item fade-up">
-        <div class="faq-q">知識庫上線後如何更新內容？</div>
-        <div class="faq-a">您可以透過我們提供的管理後台自行更新知識庫，或提交給我們的客服團隊協助更新。基本方案每月可提交 10 次更新請求，Pro 方案享有無限次更新。</div>
+        <div class="faq-q">知識庫建好後，我可以自己更新嗎？</div>
+        <div class="faq-a">可以！管理後台提供直覺化的知識庫編輯介面，你可以自行新增、修改、刪除問答條目。新品上架、政策更新都可以自己維護，不需要依賴我們。</div>
       </div>
       <div class="faq-item fade-up">
-        <div class="faq-q">如果 AI 回答了錯誤的資訊怎麼辦？</div>
-        <div class="faq-a">每日客服報告會標記出 AI 信心度較低的回覆，供您審核。您也可以設定特定類型的問題必須轉接真人處理。發現錯誤後，我們承諾在 24 小時內完成知識庫修正。</div>
+        <div class="faq-q">知識庫的內容安全嗎？競爭對手可以看到嗎？</div>
+        <div class="faq-a">你的知識庫完全私密。每個客戶的知識庫都是獨立加密儲存，只有你和你授權的人員才能存取。智答工作室的員工也受嚴格的資料保密規範約束。</div>
       </div>
       <div class="faq-item fade-up">
-        <div class="faq-q">知識庫可以支援多少個產品或問題？</div>
-        <div class="faq-a">知識庫沒有硬性的產品數量上限。基本方案支援至 500 個 Q&A 條目，Pro 方案支援無限條目。我們服務的品牌中最大的知識庫超過 2,000 條問答紀錄。</div>
+        <div class="faq-q">知識庫需要定期更新嗎？費用怎麼算？</div>
+        <div class="faq-a">建議每次新品上架或活動前更新。基本版方案包含自助更新，進階版方案額外包含每月顧問協助更新服務。緊急更新（如重大政策變更）另有加急服務可選購。</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── CTA ── -->
+<!-- CTA -->
 <section class="cta-section">
   <div class="container" style="position:relative;z-index:1;">
-    <h2 class="fade-up">準備好打造你的 AI 大腦了嗎？</h2>
-    <p class="fade-up">免費諮詢 30 分鐘，我們評估你的品牌知識庫建置需求。</p>
+    <h2 class="fade-up">讓 AI 真正「懂」你的品牌</h2>
+    <p class="fade-up">免費諮詢，了解你的品牌需要什麼樣的知識庫。</p>
     <div class="cta-actions fade-up">
-      <a href="../../index.html#contact" class="btn-primary">立即預約免費諮詢</a>
+      <a href="../../index.html#contact" class="btn-primary">立即預約知識庫顧問</a>
       <a href="../../index.html#pricing" style="color:rgba(255,255,255,.7);text-decoration:none;padding:14px 24px;font-size:15px;font-weight:600;">查看方案費用 →</a>
     </div>
   </div>
@@ -393,18 +367,12 @@
 
 <button id="back-top" aria-label="回到頂部">↑</button>
 
-<!-- ── footer ── -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
       <a href="../../index.html" class="footer-logo">
         <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-          <defs>
-            <linearGradient id="foot-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#FF6B35"/>
-              <stop offset="100%" stop-color="#E85D25"/>
-            </linearGradient>
-          </defs>
+          <defs><linearGradient id="foot-g1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#E85D25"/></linearGradient></defs>
           <rect width="40" height="40" rx="10" fill="url(#foot-g1)"/>
           <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-size="22" font-family="Noto Sans TC,sans-serif" font-weight="900">智</text>
         </svg>
@@ -415,6 +383,8 @@
     <div class="footer-links">
       <div class="footer-col">
         <h4>服務</h4>
+        <a href="ig-service.html">IG AI 客服</a>
+        <a href="line-service.html">LINE 客服</a>
         <a href="knowledge-base.html">AI 知識庫建置</a>
         <a href="brand-voice.html">品牌語氣設定</a>
         <a href="daily-report.html">每日客服報告</a>
@@ -429,7 +399,7 @@
       </div>
       <div class="footer-col">
         <h4>聯絡</h4>
-        <a href="mailto:hello@zhida.studio">hello@zhida.studio</a>
+        <a href="mailto:coo92062667@gmail.com">coo92062667@gmail.com</a>
         <a href="https://instagram.com/zhida.studio" target="_blank" rel="noopener">@zhida.studio</a>
       </div>
     </div>

@@ -2167,8 +2167,7 @@ async function confirmImport() {
 async function loadProducts() {
   if (!S.clientId) return;
   const res = await apiFetch(`/api/products?client_id=${encodeURIComponent(S.clientId)}`);
-  if (!res) return;
-  S.products = res.products || [];
+  S.products = (res && res.products) ? res.products : [];
   renderProductList();
 }
 

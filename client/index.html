@@ -1737,7 +1737,10 @@ function enterApp() {
   initPlatformTabs();
 
   loadTab('messages');
-  loadUsage();
+  loadUsage().then(() => {
+    const badge = $('plan-badge');
+    if (badge) badge.style.transition = 'opacity 0.3s';
+  });
   // SSE 即時連線（降低輪詢頻率）
   initSSE();
   // fallback 輪詢：SSE 觸發後也補一次，確保資料同步
@@ -1799,6 +1802,7 @@ function renderPlanBar() {
   }
   badge.style.opacity = '1';
   qtxt.style.opacity  = '1';
+  localStorage.setItem('zhida_plan', S.plan);
 }
 
 // ── DAILY USAGE ──────────────────────────────────────────────
@@ -2089,7 +2093,9 @@ async function openConv(uid, platform) {
 
 function renderConv() {
   const box  = $('conv-msgs');
-  const msgs = (S.convMsgs.length ? S.convMsgs : S.allMsgs.filter(m => m.sender_id === S.convUid))
+  const uid  = S.convUid;
+  const pool = S.convMsgs.length ? S.convMsgs : S.allMsgs;
+  const msgs = pool.filter(m => m.sender_id === uid)
     .sort((a,b) => (a.timestamp||'') > (b.timestamp||'') ? 1 : -1);
   if (!msgs.length) {
     box.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">無對話記錄</div></div>';

@@ -159,9 +159,18 @@ nav ul a:hover::after { left: 0; right: 0; }
 .nav-cta:hover { box-shadow: var(--glow-orange); transform: translateY(-1px); }
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
 .hamburger span { display: block; width: 24px; height: 2px; background: var(--heading); border-radius: 2px; transition: transform .3s, opacity .3s; }
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open {
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  gap: 0;
+}
+.hamburger.open span { background: #fff; }
+.hamburger.open span:nth-child(1) { transform: translateY(0) rotate(45deg); position: absolute; }
 .hamburger.open span:nth-child(2) { opacity: 0; }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.hamburger.open span:nth-child(3) { transform: translateY(0) rotate(-45deg); position: absolute; }
 #mobile-menu {
   display: none; position: fixed; inset: 0;
   background: var(--mob-menu-bg); backdrop-filter: blur(20px);
@@ -1115,7 +1124,8 @@ nav ul a, .nav-link { font-size: 16px !important; }
     padding: 11px 14px; border-radius: 12px;
     background: rgba(255,255,255,.05);
     border: 1px solid rgba(255,255,255,.08);
-    font-size: 14px !important; font-weight: 600;
+    font-size: 13px !important; font-weight: 600;
+    letter-spacing: 0.01em;
     color: rgba(255,255,255,.9) !important;
     text-shadow: 0 1px 3px rgba(0,0,0,.3);
     transition: background .2s, border-color .2s, color .2s;

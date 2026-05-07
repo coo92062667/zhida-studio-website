@@ -2101,13 +2101,14 @@ function renderConv() {
     const repTxt = m.reply    || '';
     const plat   = m.ig_account_id ? 'IG' : 'LINE';
     if (m.manual) {
-      const userPart = msgTxt ? `<div class="bubble-wrap user">
+      const isPlaceholder = !msgTxt || msgTxt === '【手動回覆】';
+      const userPart = !isPlaceholder ? `<div class="bubble-wrap user">
         <div class="bubble-meta">客人 · ${ts}</div>
         <div class="bubble user">${esc(msgTxt)}</div>
       </div>` : '';
       return userPart + `<div class="bubble-wrap bot">
         <div class="bubble-meta" style="color:var(--navy)">✍ 手動回覆 · ${ts}</div>
-        <div class="bubble bot" style="background:var(--navy);color:#fff">${esc(repTxt || msgTxt)}</div>
+        <div class="bubble bot" style="background:var(--navy);color:#fff">${esc(repTxt)}</div>
       </div>`;
     }
     const userBubble = msgTxt ? `<div class="bubble-wrap user">

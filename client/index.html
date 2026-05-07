@@ -351,6 +351,20 @@ a { text-decoration:none; color:inherit; }
 .top5-fill  { height:100%; border-radius:20px; background:var(--orange); transition:width 0.5s ease; }
 .top5-val   { font-size:11px; color:var(--muted); width:24px; text-align:right; flex-shrink:0; }
 
+.stat-card.clickable { cursor:pointer; }
+.stat-card.clickable:active { transform:scale(0.96); }
+.stat-card.clickable:hover { box-shadow:0 2px 12px rgba(255,107,53,0.15); }
+
+#daily-usage-block { margin:0 14px 6px; padding:9px 12px; background:var(--surface); border-radius:var(--radius-sm); border:1px solid var(--border); }
+.dub-row   { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.dub-plan  { font-size:11px; font-weight:700; color:var(--navy); }
+.dub-count { font-size:11px; color:var(--muted); }
+.dub-track { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.dub-fill  { height:100%; border-radius:3px; background:var(--green); transition:width 0.5s ease, background 0.3s; }
+
+.opt-pending { opacity:0.55; }
+.opt-pending .bubble { border:1.5px dashed var(--border) !important; }
+
 .bar-chart {
   display:flex; align-items:flex-end; gap:5px;
   height:80px; padding-top:4px;
@@ -804,6 +818,14 @@ a { text-decoration:none; color:inherit; }
           <div class="ios-thumb"></div>
         </label>
       </div>
+      <!-- 今日使用量 -->
+      <div id="daily-usage-block">
+        <div class="dub-row">
+          <span class="dub-plan" id="dub-plan">免費試用</span>
+          <span class="dub-count" id="dub-count">今日 — / — 則</span>
+        </div>
+        <div class="dub-track"><div class="dub-fill" id="dub-fill" style="width:0%"></div></div>
+      </div>
       <!-- 平台切換 -->
       <div class="platform-tabs">
         <div class="platform-tab active" data-platform="all">全部<span class="ptab-count" id="ptab-count-all"></span></div>
@@ -824,22 +846,22 @@ a { text-decoration:none; color:inherit; }
       <div class="card" style="margin-top:14px;">
         <div class="card-title">今日摘要</div>
         <div class="stat-row stat-row-4">
-          <div class="stat-card">
+          <div class="stat-card clickable" onclick="showStatDetail('msgs')">
             <div class="stat-icon">💬</div>
             <div class="stat-num" id="s-msgs">—</div>
             <div class="stat-lbl">總訊息</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card clickable" onclick="showStatDetail('sat')">
             <div class="stat-icon">👍</div>
             <div class="stat-num" id="s-sat">—</div>
             <div class="stat-lbl">滿意度</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card clickable" onclick="showStatDetail('rep')">
             <div class="stat-icon">⚡</div>
             <div class="stat-num" id="s-rep">—</div>
             <div class="stat-lbl">回覆率</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card clickable" onclick="showStatDetail('usage')">
             <div class="stat-icon">📊</div>
             <div class="stat-num" id="s-usage">—</div>
             <div class="stat-lbl">本月用量</div>
@@ -1078,11 +1100,15 @@ const S = {
   planDays:    7,
   planUsed:    0,
   planTotal:   700,
-  convUid:     '',
-  latestFile:  '',
-  kbLoaded:    false,
-  uploading:   false,
+  convUid:      '',
+  convPlatform: 'ig',
+  latestFile:   '',
+  reportsData:  null,
+  kbLoaded:     false,
+  uploading:    false,
 };
+
+const seenMsgIds = new Set();
 
 // ── UTILS ──────────────────────────────────────────────────────
 const $  = id => document.getElementById(id);
@@ -1304,7 +1330,8 @@ function enterApp() {
   renderPlanBar();
 
   loadTab('messages');
-  setInterval(() => { if (S.tab === 'messages') loadMessages(); }, 5000);
+  loadUsage();
+  setInterval(() => { if (S.tab === 'messages') pollMessages(); }, 2000);
 
   // dismiss new-msg-bar click
   const dismissBtn = $('new-msg-bar-dismiss');
@@ -1321,7 +1348,7 @@ function initPlatformTabs() {
       S.unread[S.platform] = 0;
       updateUnreadBadges();
       hideNewMsgBar();
-      loadMessages();  // 切換平台時從伺服器重新抓資料
+      pollMessages();  // 切換平台時從伺服器重新抓資料
     };
   });
 }
@@ -1354,6 +1381,28 @@ function renderPlanBar() {
   }
 }
 
+// ── DAILY USAGE ──────────────────────────────────────────────
+async function loadUsage() {
+  if (!S.clientId) return;
+  const res = await apiFetch(`/api/client/usage?client_id=${encodeURIComponent(S.clientId)}`);
+  if (!res) return;
+  S.plan      = res.plan      || 'trial';
+  S.planDays  = res.days_remaining ?? 7;
+  S.planUsed  = res.monthly_used   || 0;
+  S.planTotal = res.monthly_limit  || 700;
+  renderPlanBar();
+  const planEl  = $('dub-plan');
+  const countEl = $('dub-count');
+  const fillEl  = $('dub-fill');
+  if (planEl)  planEl.textContent  = res.plan_name || '免費試用';
+  if (countEl) countEl.textContent = `今日 ${res.daily_used} / ${res.daily_limit} 則`;
+  if (fillEl) {
+    const pct = res.daily_limit > 0 ? Math.min(100, Math.round(res.daily_used / res.daily_limit * 100)) : 0;
+    fillEl.style.width = pct + '%';
+    fillEl.style.background = pct >= 90 ? '#EF4444' : pct >= 70 ? '#FF6B35' : '#22C55E';
+  }
+}
+
 // ── NAV ────────────────────────────────────────────────────────
 function initNav() {
   qsa('.nav-btn').forEach(btn => {
@@ -1372,42 +1421,41 @@ function switchTab(tab) {
 }
 
 function loadTab(tab) {
-  if (tab === 'messages')  loadMessages();
+  if (tab === 'messages')  pollMessages();
   if (tab === 'reports')   loadReports();
   if (tab === 'knowledge') loadKnowledge();
   if (tab === 'settings')  loadClientSettings();
 }
 
 // ── MESSAGES ───────────────────────────────────────────────────
-async function loadMessages() {
+async function pollMessages() {
   if (!S.clientId) return;
-  const res = await apiFetch(`/api/messages?client_id=${encodeURIComponent(S.clientId)}&limit=50`);
-  if (!res) {
-    // show error only if list is still loading
-    const list = $('msg-list');
-    if (list && list.querySelector('.spinner')) {
-      list.innerHTML = '<li><div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">無法連線到伺服器<br><small>請確認伺服器網址設定</small></div></div></li>';
-    }
-    return;
-  }
-  const incoming = res.messages || [];
+  S.api = localStorage.getItem('zhida_api') || DEFAULT_API;
+  try {
+    const r = await fetch(
+      `${S.api}/api/messages?client_id=${encodeURIComponent(S.clientId)}&limit=50`,
+      { headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true',
+                   'X-Client-Token': S.token },
+        signal: AbortSignal.timeout(6000) }
+    );
+    if (!r.ok) { setApiStatus(false); return; }
+    setApiStatus(true);
+    const data = await r.json();
+    const incoming = data.messages || [];
 
-  // 第一次載入：初始化 lastMsgTs，不觸發新訊息提示
-  if (!S.lastMsgTs) {
-    if (incoming.length) {
-      const latest = incoming.reduce((a, b) => (a.timestamp || '') > (b.timestamp || '') ? a : b);
-      S.lastMsgTs = latest.timestamp || '';
+    // 第一次載入：種入 ID 集合，不觸發新訊息提示
+    if (seenMsgIds.size === 0) {
+      incoming.forEach(m => { if (m.id) seenMsgIds.add(m.id); });
+      S.allMsgs = incoming;
+      renderMessages();
+      return;
     }
-    S.allMsgs = incoming;
-    renderMessages();
-    return;
-  }
 
-  // 後續輪詢：偵測新訊息
-  if (incoming.length) {
-    const newOnes = incoming.filter(m => (m.timestamp || '') > S.lastMsgTs);
+    // 找出 ID 不在集合中的新訊息
+    const newOnes = incoming.filter(m => m.id && !seenMsgIds.has(m.id));
     if (newOnes.length) {
       newOnes.forEach(m => {
+        if (m.id) seenMsgIds.add(m.id);
         const plat = m.ig_account_id ? 'instagram' : 'line';
         S.unread.all++;
         if (S.unread[plat] !== undefined) S.unread[plat]++;
@@ -1415,12 +1463,16 @@ async function loadMessages() {
       updateUnreadBadges();
       showNewMsgBar(newOnes.length);
     }
-    const latest = incoming.reduce((a, b) => (a.timestamp || '') > (b.timestamp || '') ? a : b);
-    S.lastMsgTs = latest.timestamp || S.lastMsgTs;
+    S.allMsgs = incoming;
+    renderMessages();
+  } catch (e) {
+    setApiStatus(false);
+    // 若訊息列表還在顯示 spinner，改為錯誤提示
+    const list = $('msg-list');
+    if (list && list.querySelector('.spinner')) {
+      list.innerHTML = '<li><div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">無法連線到伺服器<br><small>請確認伺服器網址設定</small></div></div></li>';
+    }
   }
-
-  S.allMsgs = incoming;
-  renderMessages();
 }
 
 function showNewMsgBar(count) {
@@ -1533,6 +1585,8 @@ function initConvPanel() {
 
 function openConv(uid) {
   S.convUid = uid;
+  const sample = S.allMsgs.find(m => m.sender_id === uid);
+  S.convPlatform = sample?.ig_account_id ? 'ig' : 'line';
   const short = (uid || '').slice(-6);
   $('conv-title').textContent = `對話：…${short}`;
   $('conv-panel').classList.add('open');
@@ -1563,23 +1617,49 @@ async function sendManual() {
   const msg = $('conv-input').value.trim();
   if (!msg || !S.convUid) return;
   $('conv-input').value = '';
+
+  // 樂觀更新：立即顯示在對話框
+  const tempId = 'opt_' + Date.now();
+  appendOptimisticMsg(tempId, msg);
+
   const res = await apiFetch('/api/manual-reply', {
     method: 'POST',
-    body: JSON.stringify({ sender_id: S.convUid, client_name: S.clientName, message: msg }),
+    body: JSON.stringify({ sender_id: S.convUid, client_name: S.clientName,
+                           message: msg, platform: S.convPlatform }),
   });
+
   if (res?.ok) {
     toast('✅ 已發送');
-    await loadMessages();
-    renderConv();
+    // 確認後移除 pending 樣式
+    const optEl = $('conv-msgs').querySelector(`[data-opt-id="${tempId}"]`);
+    if (optEl) optEl.classList.remove('opt-pending');
+    // 背景同步最新訊息
+    setTimeout(() => pollMessages(), 500);
   } else {
+    // 發送失敗：移除樂觀訊息，還原輸入框
+    const optEl = $('conv-msgs').querySelector(`[data-opt-id="${tempId}"]`);
+    if (optEl) optEl.remove();
+    $('conv-input').value = msg;
     toast('❌ 發送失敗：' + (res?.error || '請確認系統已啟動'));
   }
+}
+
+function appendOptimisticMsg(tempId, msg) {
+  const box = $('conv-msgs');
+  const div = document.createElement('div');
+  div.className = 'bubble-wrap bot opt-pending';
+  div.dataset.optId = tempId;
+  div.innerHTML = `<div class="bubble-meta">手動回覆 · 傳送中…</div>
+    <div class="bubble bot">${esc(msg)}</div>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
 }
 
 // ── REPORTS ────────────────────────────────────────────────────
 async function loadReports() {
   const res = await apiFetch(`/api/reports?client_id=${encodeURIComponent(S.clientId)}`);
   if (!res) return;
+  S.reportsData = res;
 
   const st = res.today_stats || {};
   $('s-msgs').textContent = st.messages ?? '—';
@@ -1704,6 +1784,110 @@ function downloadReport(file) {
   Object.assign(document.createElement('a'), { href: url, download: file.split('/').pop() }).click();
 }
 
+function openModalHtml(title, htmlContent) {
+  $('modal-title').textContent = title;
+  $('modal-body').innerHTML    = htmlContent;
+  $('overlay').classList.add('open');
+}
+
+function showStatDetail(type) {
+  const res = S.reportsData;
+  if (!res) { toast('請先開啟報表頁面'); loadReports(); return; }
+  const st = res.today_stats || {};
+  switch (type) {
+    case 'msgs': {
+      if (!S.allMsgs.length) { toast('暫無訊息記錄'); return; }
+      const rows = S.allMsgs.slice(0, 20).map(m =>
+        `<div style="padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="font-weight:600;color:var(--navy);font-size:13px">…${esc((m.sender_id||'').slice(-6))}</div>
+          <div style="color:var(--text2);font-size:12px;margin-top:2px">${esc((m.message||'').slice(0,60))}</div>
+          <div style="color:var(--muted);font-size:11px;margin-top:2px">${relTime(m.timestamp)}</div>
+        </div>`).join('');
+      openModalHtml('近期訊息列表', rows);
+      break;
+    }
+    case 'sat': {
+      const cats = res.feedback_cats || {};
+      const entries = Object.entries(cats);
+      const total = entries.reduce((s, [,v]) => s + v, 0);
+      const colors = { '稱讚': '#22C55E', '客訴': '#EF4444', '建議': '#3B82F6' };
+      const rows = entries.length
+        ? entries.map(([k, v]) => {
+            const pct = total > 0 ? Math.round(v / total * 100) : 0;
+            const c   = colors[k] || '#8898AA';
+            return `<div style="margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+                <span style="color:var(--navy);font-weight:600">${esc(k)}</span>
+                <span style="color:var(--muted)">${v} 則 (${pct}%)</span>
+              </div>
+              <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden">
+                <div style="height:100%;background:${c};width:${pct}%;border-radius:3px"></div>
+              </div>
+            </div>`;
+          }).join('')
+        : '<div style="color:var(--muted);text-align:center;padding:20px 0">暫無回饋資料</div>';
+      openModalHtml('回饋詳細分析', rows);
+      break;
+    }
+    case 'rep': {
+      const total   = st.messages || 0;
+      const replied = st.replies  || 0;
+      const manual  = S.allMsgs.filter(m => m.manual).length;
+      const rate    = total > 0 ? Math.round(replied / total * 100) : 0;
+      const html = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:var(--bg);border-radius:8px;padding:14px;text-align:center">
+          <div style="font-size:26px;font-weight:800;color:var(--orange)">${replied}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">AI 回覆</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:14px;text-align:center">
+          <div style="font-size:26px;font-weight:800;color:var(--navy)">${manual}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">手動回覆</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:14px;text-align:center">
+          <div style="font-size:26px;font-weight:800;color:var(--green)">${rate}%</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">回覆率</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:14px;text-align:center">
+          <div style="font-size:26px;font-weight:800;color:var(--text2)">${total}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">今日訊息</div>
+        </div>
+      </div>`;
+      openModalHtml('回覆時間分析', html);
+      break;
+    }
+    case 'usage': {
+      const bd     = res.bar_data || [];
+      const maxVal = Math.max(...bd.map(d => d.count), 1);
+      const bars   = bd.map(d => {
+        const pct = Math.round(d.count / maxVal * 100);
+        return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+          <div style="font-size:10px;font-weight:600;color:var(--navy)">${d.count}</div>
+          <div style="flex:1;display:flex;align-items:flex-end;width:100%">
+            <div style="width:100%;background:var(--orange);border-radius:3px 3px 0 0;height:${pct}%;min-height:3px"></div>
+          </div>
+          <div style="font-size:9px;color:var(--muted)">${esc(d.label)}</div>
+        </div>`;
+      }).join('');
+      const mPct = S.planTotal > 0 ? Math.min(100, Math.round(S.planUsed / S.planTotal * 100)) : 0;
+      const mColor = mPct >= 90 ? '#EF4444' : mPct >= 70 ? '#FF6B35' : '#22C55E';
+      const html = `
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+            <span style="color:var(--navy);font-weight:600">本月用量</span>
+            <span style="color:var(--muted)">${S.planUsed} / ${S.planTotal} 則</span>
+          </div>
+          <div style="height:8px;background:var(--border);border-radius:4px;overflow:hidden">
+            <div style="height:100%;background:${mColor};border-radius:4px;width:${mPct}%"></div>
+          </div>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px">近 7 天每日用量</div>
+        <div style="display:flex;align-items:flex-end;gap:5px;height:80px">${bars || '<div style="flex:1;font-size:12px;color:var(--muted);text-align:center">暫無數據</div>'}</div>`;
+      openModalHtml('每日使用量圖表', html);
+      break;
+    }
+  }
+}
+
 // ── KNOWLEDGE ──────────────────────────────────────────────────
 async function loadKnowledge() {
   const res = await apiFetch(`/api/knowledge?client_id=${encodeURIComponent(S.clientId)}`);
@@ -1824,7 +2008,7 @@ function initOverlay() {
 }
 function openModal(title, body) {
   $('modal-title').textContent = title;
-  $('modal-body').textContent  = body;
+  $('modal-body').textContent  = body;   // plain text (report preview)
   $('overlay').classList.add('open');
 }
 function closeModal() { $('overlay').classList.remove('open'); }

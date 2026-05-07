@@ -807,60 +807,25 @@ a { text-decoration:none; color:inherit; }
 
 /* ══════════════════════════════════════════════
    DESKTOP RWD — 768px 以上啟用側欄佈局
-   手機版維持原有樣式不變
 ═══════════════════════════════════════════════ */
 @media (min-width: 768px) {
+  /* 整個 root 改橫排 */
+  #root { max-width:100%; overflow:hidden; }
 
-  /* 根容器：手機單欄 → 桌面左側欄 + 右側內容 */
-  #root {
-    max-width: 100%;
-    flex-direction: row;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  /* 頂部 header 變成左側欄 */
-  #app-hdr {
-    width: 220px;
-    height: 100vh;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 28px 20px 20px;
-    gap: 4px;
-    flex-shrink: 0;
-    border-right: 1px solid rgba(255,255,255,0.08);
-    position: relative;
-    z-index: 40;
-  }
-
-  .hdr-logo {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    margin-bottom: 2px;
-  }
-
-  .hdr-client {
-    font-size: 18px;
-    font-weight: 800;
-    white-space: normal;
-    margin-bottom: 16px;
-  }
-
-  .hdr-ai {
-    margin-top: auto;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    width: 100%;
-  }
-
-  /* 主應用：直向 → 橫向 */
+  /* app 橫排：側欄 + 主內容 */
   #app {
     flex-direction: row;
     width: 100%;
     height: 100vh;
   }
 
-  /* 左側欄導覽（手機底部 nav → 桌面左側） */
+  /* 頂部 header 桌面隱藏（資訊移到側欄） */
+  #app-hdr { display: none; }
+
+  /* plan-bar 桌面隱藏（移到側欄底部） */
+  #plan-bar { display: none; }
+
+  /* bot-nav 變左側欄 */
   #bot-nav {
     width: 220px;
     height: 100vh;
@@ -868,118 +833,93 @@ a { text-decoration:none; color:inherit; }
     align-items: stretch;
     border-top: none;
     border-right: 1px solid var(--border);
-    background: var(--surface);
-    padding: 12px 0;
+    background: var(--navy);
+    padding: 0;
     flex-shrink: 0;
-    order: -1;
+    order: 0;
+    position: relative;
   }
 
+  /* nav-btn 桌面樣式 */
   .nav-btn {
     flex-direction: row;
     justify-content: flex-start;
     gap: 12px;
-    padding: 12px 20px;
-    font-size: 13px;
+    padding: 13px 22px;
+    font-size: 14px;
     font-weight: 600;
+    color: rgba(255,255,255,0.6);
     border-radius: 0;
     height: auto;
+    transition: background 0.15s, color 0.15s;
   }
 
-  .nav-btn svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-  }
+  .nav-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
 
   .nav-btn.active {
-    background: var(--orange-bg);
+    background: rgba(255,107,53,0.15);
     color: var(--orange);
-    border-right: 3px solid var(--orange);
+    border-left: 3px solid var(--orange);
+    padding-left: 19px;
   }
 
+  .nav-btn svg { width:20px; height:20px; flex-shrink:0; }
+
+  .nav-label { display: inline; font-size:14px; }
+
+  /* 登出按鈕移到側欄底部 */
   .nav-btn-logout {
-    display: flex;
+    display: flex !important;
     margin-top: auto;
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
-    color: var(--muted);
-  }
-
-  /* 方案列移到側欄底部 */
-  #plan-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 220px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 14px 20px;
-    background: var(--navy3);
     border-top: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.45);
   }
 
-  #plan-bar .plan-badge { font-size: 12px; }
-  #plan-bar .plan-quota-wrap { width: 100%; }
-
-  /* 右側主內容區 */
+  /* 主內容區 */
   #app-content {
     flex: 1;
     height: 100vh;
     overflow-y: auto;
     padding-bottom: 0;
+    background: var(--bg);
   }
 
-  /* 登出按鈕移到側欄（桌面才顯示） */
-  #nav-logout-btn { display: flex !important; }
-
-  /* 對話 panel 桌面版靠右滑入 */
+  /* 對話 panel 桌面：從右側滑入 */
   .conv-panel {
-    max-width: 480px;
+    max-width: 460px;
     right: 0;
     left: auto;
     transform: translateX(100%);
     border-left: 1px solid var(--border);
-    box-shadow: -8px 0 40px rgba(26,43,74,0.12);
+    box-shadow: -8px 0 40px rgba(26,43,74,0.14);
     margin: 0;
   }
   .conv-panel.open { transform: translateX(0); }
 
-  /* 卡片最大寬度，桌面不要拉太寬 */
-  .card { margin: 14px 24px 0; }
+  /* 卡片內距 */
+  .card { margin: 16px 28px 0; }
   .card:last-of-type { margin-bottom: 16px; }
 
-  /* 統計卡片桌面 4 欄 */
+  /* 統計卡片 4 欄 */
   .stat-row-4 .stat-card-lg { min-width: calc(25% - 8px); }
 
-  /* 商品工具列 */
-  .prod-toolbar { padding: 16px 24px 0; }
-
-  /* 訊息頁內距 */
-  .ai-bar { padding: 14px 24px; }
-  #daily-usage-block { margin: 0 24px 8px; }
-  .platform-tabs { padding: 12px 24px 0; }
-  .sec-hdr { padding: 16px 24px 8px; }
-  .msg-item { padding: 14px 24px; }
-
-  /* 報表頁 */
-  .rpt-item { padding: 14px 24px; }
-
-  /* 知識庫、設定頁 */
-  .settings-card { margin: 14px 24px 0; }
+  /* 各頁內距 */
+  .ai-bar           { padding: 16px 28px; }
+  #daily-usage-block { margin: 0 28px 8px; }
+  .platform-tabs    { padding: 12px 28px 0; }
+  .sec-hdr          { padding: 16px 28px 8px; }
+  .msg-item         { padding: 14px 28px; }
+  .rpt-item         { padding: 14px 28px; }
+  .prod-toolbar     { padding: 16px 28px 0; }
+  .settings-card    { margin: 16px 28px 0; }
 }
 
 @media (min-width: 1200px) {
-  #app-hdr, #bot-nav, #plan-bar { width: 260px; }
-  #plan-bar { width: 260px; }
+  #bot-nav { width: 260px; }
 }
 
-/* 手機版隱藏文字，桌面版顯示 */
+/* 手機版隱藏文字 */
 .nav-label { display: none; }
-@media (min-width: 768px) {
-  .nav-label { display: inline; font-size: 13px; font-weight: 600; }
-}
 </style>
 </head>
 <body>
@@ -1433,6 +1373,13 @@ a { text-decoration:none; color:inherit; }
   </div><!-- /app-content -->
 
   <nav id="bot-nav">
+    <div id="sidebar-brand" style="
+      height:70px; display:none; align-items:center;
+      padding:0 22px; font-size:17px; font-weight:800;
+      color:#fff; letter-spacing:-0.3px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      background:var(--navy); flex-shrink:0;
+    ">智答工作室</div>
     <div class="nav-btn active" data-tab="messages">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <span class="nav-label">訊息</span>
@@ -1777,6 +1724,11 @@ function enterApp() {
   $('login-screen').style.display = 'none';
   $('app').classList.add('visible');
   $('hdr-name').textContent = S.clientName;
+  const sidebarBrand = document.getElementById('sidebar-brand');
+  if (sidebarBrand) {
+    sidebarBrand.textContent = S.clientName;
+    if (window.innerWidth >= 768) sidebarBrand.style.display = 'flex';
+  }
 
   initNav();
   initConvPanel();

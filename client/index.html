@@ -552,6 +552,75 @@ a { text-decoration:none; color:inherit; }
   .tab-page { min-height:auto; }
   .card { margin:12px 20px 0; }
 }
+
+/* ════ PLAN STATUS BAR ════════════════════════════════════════ */
+#plan-bar {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 16px; background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.plan-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px; border-radius:20px;
+  font-size:11px; font-weight:700; letter-spacing:.04em;
+  flex-shrink:0;
+}
+.plan-badge.trial  { background:rgba(255,107,53,.14); color:var(--orange); }
+.plan-badge.basic  { background:rgba(79,172,254,.14); color:#2563eb; }
+.plan-badge.pro    { background:rgba(212,168,67,.14); color:#b45309; }
+.plan-quota-wrap { flex:1; }
+.plan-quota-txt { font-size:11px; color:var(--muted); margin-bottom:4px; }
+.plan-quota-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+.plan-quota-fill {
+  height:100%; border-radius:2px;
+  background:linear-gradient(90deg,var(--orange),#FF8C5A);
+  transition:width .5s;
+}
+
+/* ════ PLATFORM TABS ══════════════════════════════════════════ */
+.platform-tabs {
+  display:flex; gap:0; padding:12px 16px 0;
+  border-bottom:1px solid var(--border);
+}
+.platform-tab {
+  padding:8px 16px; font-size:13px; font-weight:600;
+  color:var(--muted); border-bottom:2px solid transparent;
+  cursor:pointer; transition:color .18s, border-color .18s;
+  user-select:none;
+}
+.platform-tab.active { color:var(--orange); border-bottom-color:var(--orange); }
+.platform-tab:hover  { color:var(--navy); }
+
+/* ════ TONE CARDS ═════════════════════════════════════════════ */
+.tone-cards {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px;
+}
+.tone-card {
+  border:2px solid var(--border); border-radius:12px;
+  padding:12px 14px; cursor:pointer;
+  transition:border-color .2s, background .2s;
+  background:var(--bg);
+}
+.tone-card.active {
+  border-color:var(--orange); background:rgba(255,107,53,.06);
+}
+.tone-card-icon { font-size:20px; margin-bottom:4px; }
+.tone-card-name { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:2px; }
+.tone-card-desc { font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:6px; }
+.tone-card-ex {
+  font-size:11px; color:var(--text2); background:var(--surface);
+  border-radius:6px; padding:5px 8px; line-height:1.5;
+  border-left:2px solid var(--border);
+}
+.tone-card.active .tone-card-ex { border-left-color:var(--orange); }
+.tone-custom-input {
+  width:100%; margin-top:8px; padding:8px 10px;
+  border:1.5px solid var(--border); border-radius:8px;
+  font-size:12px; font-family:var(--font);
+  background:var(--bg); resize:none; height:60px;
+  display:none;
+}
+.tone-custom-input.show { display:block; }
 </style>
 </head>
 <body>
@@ -561,7 +630,19 @@ a { text-decoration:none; color:inherit; }
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
-      <div class="login-logo-icon">智</div>
+      <svg width="48" height="40" viewBox="0 0 40 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="16" y="11" width="24" height="17" rx="6" fill="url(#lg2)"/>
+        <path d="M31 28L37 32L29 28Z" fill="url(#lg2)"/>
+        <rect x="0" y="1" width="27" height="20" rx="8" fill="url(#lg1)"/>
+        <path d="M4 21L1 27L12 21Z" fill="url(#lg1)"/>
+        <circle cx="8" cy="11" r="2.2" fill="white" opacity="0.92"/>
+        <circle cx="13.5" cy="11" r="2.2" fill="white" opacity="0.92"/>
+        <circle cx="19" cy="11" r="2.2" fill="white" opacity="0.92"/>
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="1" x2="27" y2="21" gradientUnits="userSpaceOnUse"><stop stop-color="#FF8040"/><stop offset="1" stop-color="#FF5A20"/></linearGradient>
+          <linearGradient id="lg2" x1="16" y1="11" x2="40" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#00E0B5"/><stop offset="1" stop-color="#00C49A"/></linearGradient>
+        </defs>
+      </svg>
       <div>
         <div class="login-logo-name">智答工作室</div>
         <div class="login-logo-sub">Zhida Studio · 客戶儀表板</div>
@@ -654,6 +735,15 @@ a { text-decoration:none; color:inherit; }
     </div>
   </header>
 
+  <!-- 方案狀態列 -->
+  <div id="plan-bar">
+    <div class="plan-badge trial" id="plan-badge">🆓 免費試用</div>
+    <div class="plan-quota-wrap">
+      <div class="plan-quota-txt" id="plan-quota-txt">剩餘 <strong id="plan-remaining">7</strong> 天</div>
+      <div class="plan-quota-bar"><div class="plan-quota-fill" id="plan-quota-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+
   <div id="app-content">
 
     <!-- ── 訊息頁 ───────────────────────────────────────────── -->
@@ -668,6 +758,12 @@ a { text-decoration:none; color:inherit; }
           <div class="ios-track"></div>
           <div class="ios-thumb"></div>
         </label>
+      </div>
+      <!-- 平台切換 -->
+      <div class="platform-tabs">
+        <div class="platform-tab active" data-platform="all">全部</div>
+        <div class="platform-tab" data-platform="instagram">📱 Instagram</div>
+        <div class="platform-tab" data-platform="line">💚 LINE</div>
       </div>
       <div class="sec-hdr">
         <div class="sec-title">最近對話</div>
@@ -746,11 +842,45 @@ a { text-decoration:none; color:inherit; }
         </div>
         <div class="s-row col">
           <div class="s-lbl-main">回覆語氣</div>
-          <div class="tone-btns" id="tone-btns">
-            <button class="tone-btn active" data-tone="親切">😊 親切</button>
-            <button class="tone-btn" data-tone="正式">💼 正式</button>
-            <button class="tone-btn" data-tone="精簡">⚡ 精簡</button>
+          <div class="tone-cards" id="tone-cards">
+            <div class="tone-card active" data-tone="親切活潑">
+              <div class="tone-card-icon">🌟</div>
+              <div class="tone-card-name">親切活潑</div>
+              <div class="tone-card-desc">像朋友般親切，適合年輕品牌</div>
+              <div class="tone-card-ex">「哈囉！當然可以～我們有三種口味嚙！」</div>
+            </div>
+            <div class="tone-card" data-tone="正式專業">
+              <div class="tone-card-icon">💼</div>
+              <div class="tone-card-name">正式專業</div>
+              <div class="tone-card-desc">專業有禮，適合精品或B2B品牌</div>
+              <div class="tone-card-ex">「您好，感謝您的詢問，我們提供以下服務。」</div>
+            </div>
+            <div class="tone-card" data-tone="精簡直接">
+              <div class="tone-card-icon">⚡</div>
+              <div class="tone-card-name">精簡直接</div>
+              <div class="tone-card-desc">簡短有力，快速解答客人問題</div>
+              <div class="tone-card-ex">「有貨！今天下單明天出。」</div>
+            </div>
+            <div class="tone-card" data-tone="溫柔體貼">
+              <div class="tone-card-icon">💝</div>
+              <div class="tone-card-name">溫柔體貼</div>
+              <div class="tone-card-desc">溫暖貼心，適合保養美容品牌</div>
+              <div class="tone-card-ex">「謝謝您的詢問～我們很重視您的需求♥」</div>
+            </div>
+            <div class="tone-card" data-tone="幽默風趣">
+              <div class="tone-card-icon">😄</div>
+              <div class="tone-card-name">幽默風趣</div>
+              <div class="tone-card-desc">輕髄有趣，讓客人留下深刻印象</div>
+              <div class="tone-card-ex">「問到重點了！我們的產品連貓和都愛～」</div>
+            </div>
+            <div class="tone-card" data-tone="客製化">
+              <div class="tone-card-icon">✏️</div>
+              <div class="tone-card-name">客製化</div>
+              <div class="tone-card-desc">自行輸入品牌獨特語氣</div>
+              <div class="tone-card-ex">（請在下方輸入框說明語氣風格）</div>
+            </div>
           </div>
+          <textarea class="tone-custom-input" id="tone-custom-txt" placeholder="描述你的品牌語氣，例如：溫馨但帶點職人感，用詞簡潔，偶爾加 emoji…"></textarea>
         </div>
         <div class="s-row col">
           <div class="s-lbl-main">禁用詞（每行一個）</div>
@@ -863,11 +993,16 @@ const S = {
   clientId:    '',
   clientName:  '',
   tab:         'messages',
-  msgs:        [],          // all messages for this client
-  allMsgs:     [],          // raw from server
+  msgs:        [],
+  allMsgs:     [],
   reports:     [],
   aiEnabled:   true,
-  tone:        '親切',
+  tone:        '親切活潑',
+  platform:    'all',
+  plan:        'trial',
+  planDays:    7,
+  planUsed:    0,
+  planTotal:   700,
   convUid:     '',
   latestFile:  '',
   kbLoaded:    false,
@@ -1065,9 +1200,51 @@ function enterApp() {
   initConvPanel();
   initOverlay();
   initSettings();
+  initPlatformTabs();
+  renderPlanBar();
 
   loadTab('messages');
-  setInterval(() => { if (S.tab === 'messages') loadMessages(); }, 30000);
+  setInterval(() => { if (S.tab === 'messages') loadMessages(); }, 10000);
+}
+
+// ── PLATFORM TABS ────────────────────────────────────────────
+function initPlatformTabs() {
+  qsa('.platform-tab').forEach(tab => {
+    tab.onclick = () => {
+      S.platform = tab.dataset.platform;
+      qsa('.platform-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderMessages();
+    };
+  });
+}
+
+// ── PLAN STATUS BAR ──────────────────────────────────────
+function renderPlanBar() {
+  const badge = $('plan-badge');
+  const qtxt  = $('plan-quota-txt');
+  const qfill = $('plan-quota-fill');
+  if (!badge || !qtxt || !qfill) return;
+  if (S.plan === 'trial') {
+    badge.className = 'plan-badge trial';
+    badge.textContent = '🆓 免費試用';
+    qtxt.innerHTML = '剩餘 <strong>' + S.planDays + '</strong> 天體驗';
+    qfill.style.width = (S.planDays / 7 * 100) + '%';
+    qfill.style.background = 'linear-gradient(90deg,#FF6B35,#FF8C5A)';
+  } else if (S.plan === 'basic') {
+    badge.className = 'plan-badge basic';
+    badge.textContent = '📦 基本版';
+    const rem = Math.max(0, S.planTotal - S.planUsed);
+    qtxt.innerHTML = '本月剩餘 <strong>' + rem.toLocaleString() + '</strong> 則';
+    qfill.style.width = Math.max(2, (rem / S.planTotal * 100)) + '%';
+    qfill.style.background = 'linear-gradient(90deg,#4FACFE,#00F2FE)';
+  } else {
+    badge.className = 'plan-badge pro';
+    badge.textContent = '⭐ 進階版';
+    qtxt.innerHTML = '<strong>無限則</strong> · 本月已用 ' + S.planUsed.toLocaleString() + ' 則';
+    qfill.style.width = '100%';
+    qfill.style.background = 'linear-gradient(90deg,#D4A843,#F5C842)';
+  }
 }
 
 // ── NAV ────────────────────────────────────────────────────────
@@ -1104,7 +1281,10 @@ async function loadMessages() {
 
 function renderMessages() {
   const list = $('msg-list');
-  const msgs = S.allMsgs;
+  let msgs = S.allMsgs;
+  if (S.platform !== 'all') {
+    msgs = msgs.filter(m => (m.platform || 'instagram').toLowerCase() === S.platform);
+  }
   $('msg-count-lbl').textContent = msgs.length ? `${msgs.length} 筆` : '';
 
   if (!msgs.length) {
@@ -1354,8 +1534,13 @@ function initUpload() {
 // ── SETTINGS ───────────────────────────────────────────────────
 function initSettings() {
   initAiToggle();
-  qsa('.tone-btn').forEach(btn => {
-    btn.onclick = () => { S.tone = btn.dataset.tone; updateToneUI(); };
+  qsa('.tone-card').forEach(card => {
+    card.onclick = () => {
+      S.tone = card.dataset.tone;
+      updateToneUI();
+      const cb = $('tone-custom-txt');
+      if (cb) cb.classList.toggle('show', S.tone === '客製化');
+    };
   });
   $('btn-save').onclick        = saveClientSettings;
   $('btn-logout').onclick      = doLogout;
@@ -1368,13 +1553,15 @@ async function loadClientSettings() {
   $('s-ai-name').value    = res.ai_name || '';
   $('s-email').value      = res.email   || '';
   $('s-forbidden').value  = (res.forbidden_words || []).join('\n');
-  S.tone       = res.tone       || '親切';
+  S.tone       = res.tone       || '親切活潑';
   S.aiEnabled  = res.ai_enabled !== false;
   updateToneUI(); updateAiUI();
 }
 
 function updateToneUI() {
-  qsa('.tone-btn').forEach(b => b.classList.toggle('active', b.dataset.tone === S.tone));
+  qsa('.tone-card').forEach(c => c.classList.toggle('active', c.dataset.tone === S.tone));
+  const cb = $('tone-custom-txt');
+  if (cb) cb.classList.toggle('show', S.tone === '客製化');
 }
 
 async function saveClientSettings() {

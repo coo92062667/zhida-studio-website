@@ -438,6 +438,89 @@ a { text-decoration:none; color:inherit; }
 .opt-pending .bubble { border:1.5px dashed var(--border) !important; }
 
 /* ════════════════════════════════════════════════════════════ */
+/* TAB 2.5 — 商品資料庫                                          */
+/* ════════════════════════════════════════════════════════════ */
+.prod-toolbar { display:flex; justify-content:space-between; align-items:center; padding:12px 14px 0; }
+.prod-toolbar-title { font-size:15px; font-weight:800; color:var(--navy); }
+.btn-add-prod {
+  display:flex; align-items:center; gap:5px;
+  padding:8px 14px; border-radius:var(--radius-sm);
+  background:var(--orange); color:#fff;
+  font-size:13px; font-weight:700;
+  transition:opacity 0.15s;
+}
+.btn-add-prod:active { opacity:0.8; }
+
+.prod-list { display:flex; flex-direction:column; }
+.prod-item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px; background:var(--surface);
+  border-bottom:1px solid var(--border); cursor:pointer;
+  transition:background 0.12s;
+}
+.prod-item.active, .prod-item:active { background:var(--orange-bg); }
+.prod-emoji { font-size:28px; flex-shrink:0; width:42px; text-align:center; }
+.prod-info  { flex:1; min-width:0; }
+.prod-name  { font-size:14px; font-weight:700; color:var(--navy); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.prod-price { font-size:12px; color:var(--orange); font-weight:600; margin-top:2px; }
+.prod-status-badge { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:700; flex-shrink:0; }
+.prod-status-badge.available  { background:rgba(34,197,94,.15);  color:#15803D; }
+.prod-status-badge.out_of_stock { background:rgba(239,68,68,.15); color:#B91C1C; }
+.prod-status-badge.pre_order  { background:rgba(59,130,246,.15); color:#1D4ED8; }
+
+.prod-form-wrap { padding:14px; }
+.prod-form-title { font-size:15px; font-weight:800; color:var(--navy); margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; }
+.prod-form-grid { display:flex; flex-direction:column; gap:11px; }
+.pf-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.pf-label { font-size:11px; font-weight:700; color:var(--navy2); text-transform:uppercase; letter-spacing:.05em; margin-bottom:4px; display:block; }
+.pf-input, .pf-textarea, .pf-select {
+  width:100%; padding:10px 12px;
+  border:1.5px solid var(--border); border-radius:var(--radius-sm);
+  font-size:14px; color:var(--text); background:var(--bg);
+  font-family:inherit;
+  transition:border-color 0.2s;
+}
+.pf-input:focus, .pf-textarea:focus, .pf-select:focus { border-color:var(--orange); outline:none; }
+.pf-textarea { resize:vertical; min-height:68px; }
+.pf-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.pf-tag {
+  padding:3px 10px; border-radius:12px; font-size:12px; font-weight:600;
+  background:var(--orange-bg); color:var(--orange); cursor:pointer;
+  border:1.5px solid transparent; transition:all 0.15s;
+}
+.pf-tag.active { background:var(--orange); color:#fff; border-color:var(--orange); }
+.pf-actions { display:flex; gap:8px; margin-top:4px; }
+.btn-save-prod {
+  flex:1; padding:12px; border-radius:var(--radius-sm);
+  background:var(--orange); color:#fff; font-size:14px; font-weight:700;
+  transition:opacity 0.15s;
+}
+.btn-save-prod:active { opacity:0.8; }
+.btn-del-prod {
+  padding:12px 16px; border-radius:var(--radius-sm);
+  background:rgba(239,68,68,.1); color:#EF4444; font-size:14px; font-weight:700;
+  transition:background 0.15s;
+}
+.btn-del-prod:active { background:rgba(239,68,68,.2); }
+.btn-cancel-prod {
+  padding:12px 16px; border-radius:var(--radius-sm);
+  background:var(--border); color:var(--muted); font-size:14px; font-weight:700;
+}
+
+/* 詢問分析 & 意見報表（報表頁）*/
+.demand-list { display:flex; flex-direction:column; gap:9px; }
+.demand-item { cursor:pointer; }
+.demand-label { display:flex; justify-content:space-between; align-items:center; font-size:13px; margin-bottom:4px; }
+.demand-name  { font-weight:600; color:var(--navy); }
+.demand-count { color:var(--muted); font-size:12px; }
+.demand-bar   { height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
+.demand-fill  { height:100%; border-radius:4px; background:linear-gradient(90deg,#4FACFE,#00F2FE); transition:width 0.5s ease; }
+
+.fb-detail-list { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+.fb-detail-item { background:var(--bg); border-radius:var(--radius-sm); padding:9px 11px; font-size:12px; color:var(--text2); }
+.fb-detail-ts   { font-size:10px; color:var(--muted); margin-top:3px; }
+
+/* ════════════════════════════════════════════════════════════ */
 /* TAB 3 — 知識庫                                               */
 /* ════════════════════════════════════════════════════════════ */
 .kb-meta { display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
@@ -950,6 +1033,22 @@ a { text-decoration:none; color:inherit; }
         </div>
       </div>
 
+      <!-- 詢問類別分析 -->
+      <div class="card">
+        <div class="card-title">🔍 詢問分析</div>
+        <div class="demand-list" id="demand-list">
+          <div style="font-size:13px;color:var(--muted);padding:8px 0">暫無數據</div>
+        </div>
+      </div>
+
+      <!-- 意見報表 -->
+      <div class="card">
+        <div class="card-title">💬 客戶意見</div>
+        <div id="feedback-detail-wrap">
+          <div style="font-size:13px;color:var(--muted);padding:8px 0">暫無數據</div>
+        </div>
+      </div>
+
       <!-- TOP 5 活躍用戶 -->
       <div class="card">
         <div class="card-title">🏆 TOP 5 活躍用戶</div>
@@ -974,6 +1073,75 @@ a { text-decoration:none; color:inherit; }
       </div>
       <div class="sec-hdr"><div class="sec-title">報表歷史</div></div>
       <div class="rpt-list" id="rpt-list"></div>
+    </div>
+
+    <!-- ── 商品頁 ──────────────────────────────────────────── -->
+    <div class="tab-page" id="page-products">
+      <div class="prod-toolbar" style="margin-top:14px;">
+        <div class="prod-toolbar-title">🛍️ 商品資料庫</div>
+        <button class="btn-add-prod" onclick="newProduct()">＋ 新增商品</button>
+      </div>
+      <!-- 商品列表 -->
+      <div class="prod-list" id="prod-list" style="margin-top:10px;">
+        <div style="padding:20px 14px;font-size:13px;color:var(--muted)">載入中…</div>
+      </div>
+      <!-- 商品編輯表單（預設隱藏） -->
+      <div id="prod-form-section" style="display:none;">
+        <div class="prod-form-wrap">
+          <div class="prod-form-title">
+            <span id="prod-form-title-txt">新增商品</span>
+            <button class="btn-cancel-prod" onclick="closeProdForm()">✕</button>
+          </div>
+          <div class="prod-form-grid">
+            <div>
+              <label class="pf-label">商品名稱 *</label>
+              <input class="pf-input" id="pf-name" type="text" placeholder="例：招牌蜂蜜餅乾">
+            </div>
+            <div>
+              <label class="pf-label">商品描述</label>
+              <textarea class="pf-textarea" id="pf-desc" placeholder="商品特色、口味、材料…"></textarea>
+            </div>
+            <div class="pf-row">
+              <div>
+                <label class="pf-label">價格 (NT$)</label>
+                <input class="pf-input" id="pf-price" type="number" placeholder="299" min="0">
+              </div>
+              <div>
+                <label class="pf-label">庫存數量</label>
+                <input class="pf-input" id="pf-stock" type="number" placeholder="100" min="0">
+              </div>
+            </div>
+            <div>
+              <label class="pf-label">庫存狀態</label>
+              <select class="pf-select" id="pf-status">
+                <option value="available">✅ 有貨</option>
+                <option value="out_of_stock">❌ 缺貨</option>
+                <option value="pre_order">⏳ 預購</option>
+              </select>
+            </div>
+            <div>
+              <label class="pf-label">商品圖片 URL</label>
+              <input class="pf-input" id="pf-image" type="url" placeholder="https://…">
+            </div>
+            <div>
+              <label class="pf-label">標籤</label>
+              <div class="pf-tags">
+                <div class="pf-tag" data-tag="熱銷">熱銷</div>
+                <div class="pf-tag" data-tag="新品">新品</div>
+                <div class="pf-tag" data-tag="限量">限量</div>
+                <div class="pf-tag" data-tag="推薦">推薦</div>
+                <div class="pf-tag" data-tag="特惠">特惠</div>
+                <div class="pf-tag" data-tag="季節限定">季節限定</div>
+              </div>
+            </div>
+            <input type="hidden" id="pf-id">
+            <div class="pf-actions">
+              <button class="btn-save-prod" onclick="saveProduct()">💾 儲存</button>
+              <button class="btn-del-prod" id="btn-del-prod" style="display:none" onclick="deleteProduct()">🗑</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ── 知識庫頁 ─────────────────────────────────────────── -->
@@ -1082,6 +1250,10 @@ a { text-decoration:none; color:inherit; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       <span>報表</span>
     </div>
+    <div class="nav-btn" data-tab="products">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span>商品</span>
+    </div>
     <div class="nav-btn" data-tab="knowledge">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       <span>知識庫</span>
@@ -1186,6 +1358,9 @@ const S = {
   reportsData:  null,
   kbLoaded:     false,
   uploading:    false,
+  products:     [],
+  editingProdId: null,
+  selectedTags: [],
 };
 
 const seenMsgIds = new Set();
@@ -1511,6 +1686,7 @@ function loadTab(tab) {
   if (tab === 'reports')   loadReports();
   if (tab === 'knowledge') loadKnowledge();
   if (tab === 'settings')  loadClientSettings();
+  if (tab === 'products')  loadProducts();
 }
 
 // ── MESSAGES ───────────────────────────────────────────────────
@@ -1755,6 +1931,164 @@ function appendOptimisticMsg(tempId, msg) {
   box.scrollTop = box.scrollHeight;
 }
 
+// ── PRODUCTS ──────────────────────────────────────────────────
+const PROD_TAGS = ['熱銷','新品','限量','推薦','特惠','季節限定'];
+const STATUS_MAP = { available:'✅ 有貨', out_of_stock:'❌ 缺貨', pre_order:'⏳ 預購' };
+const STATUS_BADGE = { available:'available', out_of_stock:'out_of_stock', pre_order:'pre_order' };
+
+async function loadProducts() {
+  if (!S.clientId) return;
+  const res = await apiFetch(`/api/products?client_id=${encodeURIComponent(S.clientId)}`);
+  if (!res) return;
+  S.products = res.products || [];
+  renderProductList();
+}
+
+function renderProductList() {
+  const el = $('prod-list');
+  if (!el) return;
+  if (!S.products.length) {
+    el.innerHTML = '<div style="padding:20px 14px;font-size:13px;color:var(--muted);text-align:center">尚無商品，點擊「新增商品」開始建立</div>';
+    return;
+  }
+  el.innerHTML = S.products.map(p => {
+    const badge = STATUS_BADGE[p.status] || 'available';
+    const label = STATUS_MAP[p.status]   || '有貨';
+    const emoji = p.image_url ? '' : getProductEmoji(p.name);
+    return `<div class="prod-item${S.editingProdId === p.id ? ' active' : ''}" onclick="openProductEdit('${esc(p.id)}')">
+      <div class="prod-emoji">${p.image_url ? `<img src="${esc(p.image_url)}" style="width:36px;height:36px;object-fit:cover;border-radius:6px">` : emoji}</div>
+      <div class="prod-info">
+        <div class="prod-name">${esc(p.name)}</div>
+        <div class="prod-price">NT$${Number(p.price).toLocaleString()}</div>
+      </div>
+      <div class="prod-status-badge ${badge}">${label}</div>
+    </div>`;
+  }).join('');
+}
+
+function getProductEmoji(name) {
+  const map = [
+    [['餅乾','糖','甜點','蛋糕','點心'], '🍪'],
+    [['咖啡','茶','飲料','果汁','奶'], '☕'],
+    [['衣','褲','裙','外套','服'], '👕'],
+    [['包','袋','皮夾','錢包'], '👜'],
+    [['手機','電腦','耳機','相機','3C'], '📱'],
+    [['書','課程','筆記'], '📚'],
+    [['保養','乳液','面膜','美容'], '💄'],
+  ];
+  for (const [kws, emoji] of map) {
+    if (kws.some(k => (name||'').includes(k))) return emoji;
+  }
+  return '🛍️';
+}
+
+function newProduct() {
+  S.editingProdId = null;
+  S.selectedTags  = [];
+  $('pf-id').value     = '';
+  $('pf-name').value   = '';
+  $('pf-desc').value   = '';
+  $('pf-price').value  = '';
+  $('pf-stock').value  = '';
+  $('pf-status').value = 'available';
+  $('pf-image').value  = '';
+  $('prod-form-title-txt').textContent = '新增商品';
+  $('btn-del-prod').style.display = 'none';
+  updateTagUI();
+  showProdForm();
+}
+
+function openProductEdit(id) {
+  const p = S.products.find(x => x.id === id);
+  if (!p) return;
+  S.editingProdId = id;
+  S.selectedTags  = [...(p.tags || [])];
+  $('pf-id').value     = p.id;
+  $('pf-name').value   = p.name   || '';
+  $('pf-desc').value   = p.description || '';
+  $('pf-price').value  = p.price  || '';
+  $('pf-stock').value  = p.stock  || '';
+  $('pf-status').value = p.status || 'available';
+  $('pf-image').value  = p.image_url || '';
+  $('prod-form-title-txt').textContent = '編輯商品';
+  $('btn-del-prod').style.display = 'inline';
+  updateTagUI();
+  showProdForm();
+  renderProductList();
+}
+
+function showProdForm() {
+  $('prod-form-section').style.display = 'block';
+  $('prod-form-section').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  // tag click handlers
+  qsa('.pf-tag').forEach(el => {
+    el.onclick = () => {
+      const tag = el.dataset.tag;
+      if (S.selectedTags.includes(tag)) {
+        S.selectedTags = S.selectedTags.filter(t => t !== tag);
+      } else {
+        S.selectedTags.push(tag);
+      }
+      updateTagUI();
+    };
+  });
+}
+
+function updateTagUI() {
+  qsa('.pf-tag').forEach(el => {
+    el.classList.toggle('active', S.selectedTags.includes(el.dataset.tag));
+  });
+}
+
+function closeProdForm() {
+  S.editingProdId = null;
+  $('prod-form-section').style.display = 'none';
+  renderProductList();
+}
+
+async function saveProduct() {
+  const name = $('pf-name').value.trim();
+  if (!name) { toast('請填寫商品名稱'); return; }
+  const id = $('pf-id').value;
+  const payload = {
+    client_id:   S.clientId,
+    name,
+    description: $('pf-desc').value.trim(),
+    price:       parseFloat($('pf-price').value) || 0,
+    stock:       parseInt($('pf-stock').value)   || 0,
+    status:      $('pf-status').value,
+    image_url:   $('pf-image').value.trim(),
+    tags:        [...S.selectedTags],
+  };
+  let res;
+  if (id) {
+    res = await apiFetch(`/api/products/${id}`, { method:'PUT', body:JSON.stringify(payload) });
+  } else {
+    res = await apiFetch('/api/products', { method:'POST', body:JSON.stringify(payload) });
+  }
+  if (res?.ok) {
+    toast(id ? '✅ 商品已更新' : '✅ 商品已新增');
+    closeProdForm();
+    await loadProducts();
+  } else {
+    toast('❌ ' + (res?.error || '儲存失敗'));
+  }
+}
+
+async function deleteProduct() {
+  const id = $('pf-id').value;
+  if (!id) return;
+  if (!confirm('確定要刪除這個商品嗎？')) return;
+  const res = await apiFetch(`/api/products/${id}?client_id=${encodeURIComponent(S.clientId)}`, { method:'DELETE' });
+  if (res?.ok) {
+    toast('🗑 商品已刪除');
+    closeProdForm();
+    await loadProducts();
+  } else {
+    toast('❌ 刪除失敗');
+  }
+}
+
 // ── REPORTS ────────────────────────────────────────────────────
 let _rptInterval = null;
 
@@ -1801,6 +2135,8 @@ async function loadReports() {
   renderUsageBar();
   renderBarChart(res.bar_data || []);
   renderFeedbackGrid(cats);
+  renderDemandList(res.demand_cats || {}, res.total_demands || 0);
+  renderFeedbackDetail(cats);
   renderTop5(res.top_senders || S.allMsgs);
   renderRecentMsgs(S.allMsgs.slice(0, 15));
 
@@ -1929,6 +2265,81 @@ function renderRecentMsgs(msgs) {
       <div class="rpt-msg-ts">${relTime(m.timestamp)}</div>
     </div>`;
   }).join('');
+}
+
+function renderDemandList(cats, total) {
+  const el = $('demand-list');
+  if (!el) return;
+  const entries = Object.entries(cats).sort((a,b) => b[1]-a[1]);
+  if (!entries.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">暫無詢問資料</div>';
+    return;
+  }
+  const maxVal = entries[0][1] || 1;
+  el.innerHTML = entries.map(([name, count]) => {
+    const pct    = Math.round(count / (total||1) * 100);
+    const barPct = Math.round(count / maxVal * 100);
+    return `<div class="demand-item" onclick="showStatDetail('msgs')">
+      <div class="demand-label">
+        <span class="demand-name">${esc(name)}</span>
+        <span class="demand-count">${count} 次 (${pct}%)</span>
+      </div>
+      <div class="demand-bar"><div class="demand-fill" style="width:${barPct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderFeedbackDetail(cats) {
+  const el = $('feedback-detail-wrap');
+  if (!el) return;
+  const total = Object.values(cats).reduce((s,v) => s + v, 0);
+  if (!total) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">暫無意見資料</div>';
+    return;
+  }
+  const cfgs = [
+    { key:'稱讚', icon:'👍', color:'#22C55E', bg:'rgba(34,197,94,.1)' },
+    { key:'建議', icon:'💡', color:'#3B82F6', bg:'rgba(59,130,246,.1)' },
+    { key:'客訴', icon:'😠', color:'#EF4444', bg:'rgba(239,68,68,.1)' },
+  ];
+  el.innerHTML = cfgs.map(cfg => {
+    const count = cats[cfg.key] || 0;
+    const pct   = total > 0 ? Math.round(count / total * 100) : 0;
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div style="width:36px;height:36px;border-radius:50%;background:${cfg.bg};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${cfg.icon}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:13px;color:${cfg.color}">${cfg.key} — ${count} 則 (${pct}%)</div>
+          <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:4px">
+            <div style="height:100%;background:${cfg.color};border-radius:3px;width:${pct}%"></div>
+          </div>
+        </div>
+        <button onclick="loadFeedbackDetail('${cfg.key}')" style="font-size:11px;color:var(--orange);font-weight:700;padding:4px 8px;border-radius:6px;background:var(--orange-bg)">展開</button>
+      </div>
+      <div id="fb-items-${cfg.key}" style="display:none" class="fb-detail-list"></div>
+    </div>`;
+  }).join('');
+}
+
+async function loadFeedbackDetail(cat) {
+  const container = $('fb-items-' + cat);
+  if (!container) return;
+  const isOpen = container.style.display !== 'none';
+  // toggle
+  container.style.display = isOpen ? 'none' : 'flex';
+  if (isOpen) return;
+  if (container.children.length) return; // already loaded
+  container.innerHTML = '<div style="font-size:12px;color:var(--muted)">載入中…</div>';
+  const res = await apiFetch(`/api/feedback?client_id=${encodeURIComponent(S.clientId)}`);
+  if (!res) { container.innerHTML = '<div style="font-size:12px;color:var(--muted)">無法載入</div>'; return; }
+  const items = res.categories?.[cat]?.recent || [];
+  if (!items.length) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--muted)">暫無記錄</div>';
+    return;
+  }
+  container.innerHTML = items.map(i =>
+    `<div class="fb-detail-item">${esc(i.text)}<div class="fb-detail-ts">${esc(i.timestamp)}</div></div>`
+  ).join('');
 }
 
 function renderReportList() {

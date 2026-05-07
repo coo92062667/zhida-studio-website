@@ -214,66 +214,59 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 /* ════════════════
    CONTACT FORM — EmailJS
-   設定步驟：
-   1. 前往 https://emailjs.com 免費註冊（每月 200 封免費）
-   2. Add New Service → 選 Gmail → 授權並命名，複製 Service ID
-   3. Email Templates → Create New Template，設定收件人為你的 Gmail
-      Template 參數：{{from_name}} {{from_email}} {{brand_name}} {{message_volume}} {{services}} {{message}}
-   4. Account → General → 複製 Public Key
-   5. 將下方三個 YOUR_... 換成你的實際值
 ════════════════ */
 (function () {
-  // ── EmailJS 設定（填入你的真實值） ──
-  var EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // Account > General > Public Key
-  var EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // Email Services > Service ID
-  var EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // Email Templates > Template ID
+  var EMAILJS_PUBLIC_KEY  = 'wOI-I_iCN_0n7gTV1';
+  var EMAILJS_SERVICE_ID  = 'service_zenbitc';
+  var EMAILJS_TEMPLATE_ID = 'template_kniryza';
 
   var form    = document.getElementById('contact-form');
   var btn     = document.getElementById('form-submit-btn');
   var success = document.getElementById('form-success');
-  var error   = document.getElementById('form-error');
+  var errorEl = document.getElementById('form-error');
   if (!form || !btn || !success) return;
 
   // 初始化 EmailJS
-  if (window.emailjs && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+  if (window.emailjs) {
     emailjs.init(EMAILJS_PUBLIC_KEY);
   }
 
-  // checkbox 視覺回饋
+  // checkbox 勾選視覺回饋
   form.querySelectorAll('.checkbox-item').forEach(function (item) {
     item.addEventListener('change', function () {
       var cb = item.querySelector('input[type="checkbox"]');
-      item.classList.toggle('is-checked', cb && cb.checked);
+      item.classList.toggle('is-checked', !!(cb && cb.checked));
     });
   });
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+
     var submitText    = btn.querySelector('.submit-text');
     var submitLoading = btn.querySelector('.submit-loading');
     btn.disabled = true;
     if (submitText)    submitText.style.display    = 'none';
     if (submitLoading) submitLoading.style.display = 'inline';
 
-    // 收集勾選的服務
+    // 收集勾選的服務（逗號分隔）
     var checkedServices = [];
     form.querySelectorAll('input[name="services"]:checked').forEach(function (cb) {
-      checkedServices.push(cb.parentElement.querySelector('span').textContent.trim());
+      var span = cb.parentElement.querySelector('span');
+      if (span) checkedServices.push(span.textContent.trim());
     });
 
     var params = {
-      from_name:      (form.querySelector('#cf-name')    || {}).value || '',
-      from_email:     (form.querySelector('#cf-email')   || {}).value || '',
-      brand_name:     (form.querySelector('#cf-brand')   || {}).value || '',
-      message_volume: (form.querySelector('#cf-volume')  || {}).value || '未填寫',
+      from_name:      form.querySelector('#cf-name').value    || '',
+      from_email:     form.querySelector('#cf-email').value   || '',
+      brand_name:     form.querySelector('#cf-brand').value   || '',
+      message_volume: form.querySelector('#cf-volume').value  || '未填寫',
       services:       checkedServices.length ? checkedServices.join('、') : '未勾選',
-      message:        (form.querySelector('#cf-message') || {}).value || ''
+      message:        form.querySelector('#cf-message').value || ''
     };
 
-    // EmailJS 尚未設定時，直接顯示成功（開發用）
-    if (!window.emailjs || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-      form.style.display = 'none';
-      success.style.display = 'block';
+    if (!window.emailjs) {
+      resetBtn(submitText, submitLoading);
+      showError();
       return;
     }
 
@@ -282,16 +275,25 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
         form.style.display = 'none';
         success.style.display = 'block';
       })
-      .catch(function () {
-        btn.disabled = false;
-        if (submitText)    submitText.style.display    = 'inline';
-        if (submitLoading) submitLoading.style.display = 'none';
-        if (error) {
-          form.style.display = 'none';
-          error.style.display = 'block';
-        }
+      .catch(function (err) {
+        console.log('EmailJS 錯誤:', err);
+        resetBtn(submitText, submitLoading);
+        showError();
       });
   });
+
+  function resetBtn(submitText, submitLoading) {
+    btn.disabled = false;
+    if (submitText)    submitText.style.display    = 'inline';
+    if (submitLoading) submitLoading.style.display = 'none';
+  }
+
+  function showError() {
+    if (errorEl) {
+      form.style.display = 'none';
+      errorEl.style.display = 'block';
+    }
+  }
 })();
 
 

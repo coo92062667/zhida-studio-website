@@ -1364,7 +1364,7 @@ const S = {
   platform:    'all',
   unread:      { all: 0, instagram: 0, line: 0 },
   lastMsgTs:   '',
-  plan:        'trial',
+  plan:        localStorage.getItem('zhida_plan') || 'trial',
   planDays:    7,
   planUsed:    0,
   planTotal:   700,
@@ -1683,6 +1683,7 @@ async function loadUsage() {
   S.planDays  = res.days_remaining ?? 7;
   S.planUsed  = res.monthly_used  || 0;
   S.planTotal = res.monthly_limit || 700;
+  localStorage.setItem('zhida_plan', S.plan);
   renderPlanBar();
   const planEl  = $('dub-plan');
   const countEl = $('dub-count');
@@ -1864,12 +1865,14 @@ function renderMessages() {
 
   list.innerHTML = sorted.map(m => {
     const sid     = m.sender_id || '';
-    const uid8    = sid.slice(0, 8) || '訪客';
-    const init    = uid8.slice(-2).toUpperCase();
+    if (!sid) return '';   // skip messages without sender_id
+    const uid8    = sid.slice(0, 8);
+    const init    = uid8.slice(-2).toUpperCase() || '?';
     const prev    = (m.message || '').slice(0, 36) || '（無內容）';
     const platIco = isIgMsg(m) ? '📱' : '💚';
     const platLbl = isIgMsg(m) ? 'IG' : 'LINE';
-    return `<li class="msg-item" data-uid="${esc(sid)}">
+    const convCount = msgs.filter(x => x.sender_id === sid).length;
+    return `<li class="msg-item" data-uid="${esc(sid)}" data-platform="${isIgMsg(m)?'ig':'line'}">
       <div class="msg-avatar">${init}</div>
       <div class="msg-body">
         <div class="msg-top">
@@ -1883,9 +1886,10 @@ function renderMessages() {
 
   list.querySelectorAll('.msg-item').forEach(item => {
     item.onclick = () => {
-      const uid = item.dataset.uid;
-      const m   = S.allMsgs.find(x => x.sender_id === uid);
-      openConv(uid, m && isIgMsg(m) ? 'ig' : 'line');
+      const uid  = item.dataset.uid;
+      const plat = item.dataset.platform || 'ig';
+      if (!uid) return;
+      openConv(uid, plat);
     };
   });
 
@@ -1928,7 +1932,9 @@ async function openConv(uid, platform) {
   const short    = (uid || '').slice(0, 8);
   const box      = $('conv-msgs');
 
-  $('conv-title').textContent = `${platIco} ${platLbl} · ${short}…`;
+  const convTitleEl = $('conv-title');
+  convTitleEl.textContent = `${platIco} ${platLbl} · ${short}…`;
+  convTitleEl.title = uid;
   $('conv-panel').classList.add('open');
   box.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">⏳ 載入對話中…</div>';
 
@@ -1957,26 +1963,28 @@ function renderConv() {
     return;
   }
   box.innerHTML = msgs.map(m => {
-    const ts = relTime(m.timestamp);
+    const ts     = relTime(m.timestamp);
+    const msgTxt = m.message  || '';
+    const repTxt = m.reply    || '';
+    const plat   = m.ig_account_id ? 'IG' : 'LINE';
     if (m.manual) {
-      // 手動回覆：右側深藍泡泡
       return `<div class="bubble-wrap bot">
         <div class="bubble-meta" style="color:var(--navy)">✍ 手動回覆 · ${ts}</div>
-        <div class="bubble bot" style="background:var(--navy);color:#fff">${esc(m.reply || m.message || '')}</div>
+        <div class="bubble bot" style="background:var(--navy);color:#fff">${esc(repTxt || msgTxt)}</div>
       </div>`;
     }
-    const userBubble = `<div class="bubble-wrap user">
+    const userBubble = msgTxt ? `<div class="bubble-wrap user">
       <div class="bubble-meta">客人 · ${ts}</div>
-      <div class="bubble user">${esc(m.message || '')}</div>
-    </div>`;
-    const replyBubble = m.reply
+      <div class="bubble user">${esc(msgTxt)}</div>
+    </div>` : '';
+    const replyBubble = repTxt
       ? `<div class="bubble-wrap bot">
-          <div class="bubble-meta">🤖 AI 回覆</div>
-          <div class="bubble bot">${esc(m.reply)}</div>
+          <div class="bubble-meta">🤖 AI 回覆 · ${plat}</div>
+          <div class="bubble bot">${esc(repTxt)}</div>
         </div>`
-      : '<div class="bubble-wrap bot"><div class="bubble-meta" style="color:var(--muted)">（待回覆）</div></div>';
+      : (msgTxt ? '<div class="bubble-wrap bot"><div class="bubble-meta" style="color:var(--muted);font-size:11px">（AI 尚未回覆）</div></div>' : '');
     return userBubble + replyBubble;
-  }).join('');
+  }).filter(Boolean).join('');
   box.scrollTop = box.scrollHeight;
 }
 
@@ -2567,18 +2575,23 @@ async function loadFeedbackDetail(cat) {
   container.innerHTML = '<div style="padding:8px;font-size:12px;color:var(--muted)">⏳ 載入中…</div>';
   const res = await apiFetch(`/api/feedback?client_id=${encodeURIComponent(S.clientId)}`);
   if (!res) {
-    container.innerHTML = '<div style="padding:8px;font-size:12px;color:#EF4444">⚠ 無法載入，請稍後再試</div>';
+    container.innerHTML = '<div style="padding:8px;font-size:12px;color:#EF4444">⚠ 無法連線，請確認伺服器狀態</div>';
     return;
   }
-  const items = res.categories?.[cat]?.recent || [];
+  // API returns {total, categories: {稱讚:{count,pct,recent:[]}, ...}}
+  const catData = res.categories?.[cat] || {};
+  const items   = catData.recent || [];
   if (!items.length) {
-    container.innerHTML = '<div style="padding:8px;font-size:12px;color:var(--muted)">此類別暫無記錄</div>';
+    const fallbackMsg = catData.count > 0
+      ? '資料需要後端匯入，請稍後再試'
+      : '此類別暫無回饋記錄';
+    container.innerHTML = `<div style="padding:8px;font-size:12px;color:var(--muted)">${fallbackMsg}</div>`;
     return;
   }
   container.innerHTML = items.map(i =>
     `<div class="fb-detail-item">
-      <div style="font-size:13px">${esc(i.text)}</div>
-      <div class="fb-detail-ts">${esc(i.timestamp)}</div>
+      <div style="font-size:13px">${esc(i.text || i.content || String(i))}</div>
+      <div class="fb-detail-ts">${esc(i.timestamp || '')}</div>
     </div>`
   ).join('');
 }

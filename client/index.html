@@ -1642,6 +1642,8 @@ function renderPlanBar() {
   const qtxt  = $('plan-quota-txt');
   const qfill = $('plan-quota-fill');
   if (!badge || !qtxt || !qfill) return;
+  const planFromCache = localStorage.getItem('zhida_plan') || '';
+  if (!S.plan && planFromCache) S.plan = planFromCache;
   if (S.plan === 'trial') {
     badge.className = 'plan-badge trial';
     badge.textContent = '🆓 免費試用';
@@ -1968,7 +1970,11 @@ function renderConv() {
     const repTxt = m.reply    || '';
     const plat   = m.ig_account_id ? 'IG' : 'LINE';
     if (m.manual) {
-      return `<div class="bubble-wrap bot">
+      const userPart = msgTxt ? `<div class="bubble-wrap user">
+        <div class="bubble-meta">客人 · ${ts}</div>
+        <div class="bubble user">${esc(msgTxt)}</div>
+      </div>` : '';
+      return userPart + `<div class="bubble-wrap bot">
         <div class="bubble-meta" style="color:var(--navy)">✍ 手動回覆 · ${ts}</div>
         <div class="bubble bot" style="background:var(--navy);color:#fff">${esc(repTxt || msgTxt)}</div>
       </div>`;
@@ -2000,7 +2006,7 @@ async function sendManual() {
   const res = await apiFetch('/api/manual-reply', {
     method: 'POST',
     body: JSON.stringify({ sender_id: S.convUid, client_name: S.clientName,
-                           message: msg, platform: S.convPlatform }),
+                           message: msg, platform: S.convPlatform === 'ig' ? 'instagram' : S.convPlatform }),
   });
 
   if (res?.ok) {

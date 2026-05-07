@@ -920,9 +920,9 @@ a { text-decoration:none; color:inherit; }
 
   <!-- 方案狀態列 -->
   <div id="plan-bar">
-    <div class="plan-badge trial" id="plan-badge">🆓 免費試用</div>
+    <div class="plan-badge" id="plan-badge" style="opacity:0">—</div>
     <div class="plan-quota-wrap">
-      <div class="plan-quota-txt" id="plan-quota-txt">剩餘 <strong id="plan-remaining">7</strong> 天</div>
+      <div class="plan-quota-txt" id="plan-quota-txt" style="opacity:0">載入中…</div>
       <div class="plan-quota-bar"><div class="plan-quota-fill" id="plan-quota-fill" style="width:100%"></div></div>
     </div>
   </div>
@@ -950,7 +950,7 @@ a { text-decoration:none; color:inherit; }
       <!-- 今日使用量 -->
       <div id="daily-usage-block">
         <div class="dub-row">
-          <span class="dub-plan" id="dub-plan">免費試用</span>
+          <span class="dub-plan" id="dub-plan">載入中…</span>
           <span class="dub-count" id="dub-count">今日 — / — 則</span>
         </div>
         <div class="dub-track"><div class="dub-fill" id="dub-fill" style="width:0%"></div></div>
@@ -1669,6 +1669,8 @@ function renderPlanBar() {
     qfill.style.width = '100%';
     qfill.style.background = 'linear-gradient(90deg,#D4A843,#F5C842)';
   }
+  badge.style.opacity = '1';
+  qtxt.style.opacity  = '1';
 }
 
 // ── DAILY USAGE ──────────────────────────────────────────────

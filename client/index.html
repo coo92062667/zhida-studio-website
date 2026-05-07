@@ -1026,17 +1026,17 @@ a { text-decoration:none; color:inherit; }
       <div class="card">
         <div class="card-title">💭 回饋分類</div>
         <div class="fb-grid">
-          <div class="fb-card" style="background:rgba(34,197,94,.1)" onclick="showStatDetail('sat')">
+          <div class="fb-card" style="background:rgba(34,197,94,.1);cursor:pointer" onclick="openFeedbackSection('稱讚')">
             <div class="fb-card-num" style="color:#22C55E" id="fb-praise">0</div>
             <div class="fb-card-lbl" style="color:#15803D">👍 稱讚</div>
             <div class="fb-card-pct" style="color:#22C55E" id="fb-praise-pct">—</div>
           </div>
-          <div class="fb-card" style="background:rgba(59,130,246,.1)" onclick="showStatDetail('sat')">
+          <div class="fb-card" style="background:rgba(59,130,246,.1);cursor:pointer" onclick="openFeedbackSection('建議')">
             <div class="fb-card-num" style="color:#3B82F6" id="fb-suggest">0</div>
             <div class="fb-card-lbl" style="color:#1D4ED8">💡 建議</div>
             <div class="fb-card-pct" style="color:#3B82F6" id="fb-suggest-pct">—</div>
           </div>
-          <div class="fb-card" style="background:rgba(239,68,68,.1)" onclick="showStatDetail('sat')">
+          <div class="fb-card" style="background:rgba(239,68,68,.1);cursor:pointer" onclick="openFeedbackSection('客訴')">
             <div class="fb-card-num" style="color:#EF4444" id="fb-complaint">0</div>
             <div class="fb-card-lbl" style="color:#B91C1C">🔴 客訴</div>
             <div class="fb-card-pct" style="color:#EF4444" id="fb-complaint-pct">—</div>
@@ -1377,6 +1377,7 @@ const S = {
   products:     [],
   editingProdId: null,
   selectedTags: [],
+  convMsgs: [],
 };
 
 const seenMsgIds = new Set();
@@ -1858,15 +1859,17 @@ function renderMessages() {
   const sorted = Object.values(byUid).sort((a, b) => (b.timestamp || '') > (a.timestamp || '') ? 1 : -1);
 
   list.innerHTML = sorted.map(m => {
-    const uid     = (m.sender_id || '').slice(-6) || '訪客';
-    const init    = uid.slice(-2).toUpperCase();
+    const sid     = m.sender_id || '';
+    const uid8    = sid.slice(0, 8) || '訪客';
+    const init    = uid8.slice(-2).toUpperCase();
     const prev    = (m.message || '').slice(0, 36) || '（無內容）';
     const platIco = isIgMsg(m) ? '📱' : '💚';
-    return `<li class="msg-item" data-uid="${esc(m.sender_id || '')}">
+    const platLbl = isIgMsg(m) ? 'IG' : 'LINE';
+    return `<li class="msg-item" data-uid="${esc(sid)}">
       <div class="msg-avatar">${init}</div>
       <div class="msg-body">
         <div class="msg-top">
-          <div class="msg-uid">${platIco} …${esc(uid)}</div>
+          <div class="msg-uid">${platIco} <span style="font-size:10px;background:${isIgMsg(m)?'#E1306C':'#06C755'};color:#fff;padding:1px 5px;border-radius:4px;margin-right:4px">${platLbl}</span>${esc(uid8)}…</div>
           <div class="msg-ts">${relTime(m.timestamp)}</div>
         </div>
         <div class="msg-prev">${esc(prev)}</div>
@@ -1908,20 +1911,32 @@ function initConvPanel() {
   $('conv-input').onkeydown = e => e.key === 'Enter' && sendManual();
 }
 
-function openConv(uid) {
-  S.convUid = uid;
+async function openConv(uid) {
+  S.convUid  = uid;
+  S.convMsgs = [];
   const sample = S.allMsgs.find(m => m.sender_id === uid);
   S.convPlatform = (sample && isIgMsg(sample)) ? 'ig' : 'line';
-  const short = (uid || '').slice(-6);
-  $('conv-title').textContent = `對話：…${short}`;
+  const platIco = S.convPlatform === 'ig' ? '📱' : '💚';
+  const short   = (uid || '').slice(0, 8);
+  $('conv-title').textContent = `${platIco} ${short}…`;
   $('conv-panel').classList.add('open');
+  // Show loading immediately
+  $('conv-msgs').innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">載入對話中…</div></div>';
+  // Fetch full conversation for this user
+  S.convMsgs = S.allMsgs.filter(m => m.sender_id === uid);
   renderConv();
+  try {
+    const res = await apiFetch(`/api/messages?client_id=${encodeURIComponent(S.clientId)}&user_id=${encodeURIComponent(uid)}&limit=100`);
+    if (res?.messages?.length) {
+      S.convMsgs = res.messages;
+      renderConv();
+    }
+  } catch(e) {}
 }
 
 function renderConv() {
   const box  = $('conv-msgs');
-  const msgs = S.allMsgs
-    .filter(m => m.sender_id === S.convUid)
+  const msgs = (S.convMsgs.length ? S.convMsgs : S.allMsgs.filter(m => m.sender_id === S.convUid))
     .sort((a,b) => (a.timestamp||'') > (b.timestamp||'') ? 1 : -1);
   if (!msgs.length) {
     box.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">無對話記錄</div></div>';
@@ -2412,7 +2427,7 @@ function renderTop5(data) {
   const max    = items[0].count || 1;
   const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
   el.innerHTML = items.map((item, i) => {
-    const name = item.name || (item.sender_id || '').slice(-6) || '用戶';
+    const name = item.name || ((item.sender_id || '').slice(0, 8) + '…') || '用戶';
     const pct  = Math.round((item.count / max) * 100);
     return `<div class="top5-item">
       <div class="top5-rank">${medals[i]}</div>
@@ -2433,7 +2448,7 @@ function renderRecentMsgs(msgs) {
   }
   el.innerHTML = valid.slice(0, 15).map(m => {
     const platIco = isIgMsg(m) ? '📱' : '💚';
-    const uid     = (m.sender_id || '').slice(-6) || '訪客';
+    const uid     = (m.sender_id || '').slice(0, 8) || '訪客';
     const badge   = m.reply
       ? '<span class="reply-badge ai">AI</span>'
       : '<span class="reply-badge none">待回</span>';
@@ -2472,6 +2487,21 @@ function renderDemandList(cats, total) {
   }).join('');
 }
 
+function openFeedbackSection(cat) {
+  // Ensure feedback-detail-wrap is populated, then expand
+  const wrap = $('feedback-detail-wrap');
+  if (!wrap) return;
+  // If not yet rendered (just has placeholder text), trigger a load
+  if (!wrap.querySelector('[id^="fb-items-"]')) {
+    const res = S.reportsData;
+    if (res) renderFeedbackDetail(res.feedback_cats || {});
+  }
+  // Scroll to the section
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Expand that category (with a tiny delay to let scroll start)
+  setTimeout(() => loadFeedbackDetail(cat), 100);
+}
+
 function renderFeedbackDetail(cats) {
   const el = $('feedback-detail-wrap');
   if (!el) return;
@@ -2506,22 +2536,33 @@ function renderFeedbackDetail(cats) {
 
 async function loadFeedbackDetail(cat) {
   const container = $('fb-items-' + cat);
-  if (!container) return;
+  if (!container) {
+    // section not rendered yet — render it first, then retry
+    const res = S.reportsData;
+    if (res) renderFeedbackDetail(res.feedback_cats || {});
+    setTimeout(() => loadFeedbackDetail(cat), 150);
+    return;
+  }
   const isOpen = container.style.display !== 'none';
-  // toggle
   container.style.display = isOpen ? 'none' : 'flex';
   if (isOpen) return;
-  if (container.children.length) return; // already loaded
-  container.innerHTML = '<div style="font-size:12px;color:var(--muted)">載入中…</div>';
+  // Always reload to get fresh data
+  container.innerHTML = '<div style="padding:8px;font-size:12px;color:var(--muted)">⏳ 載入中…</div>';
   const res = await apiFetch(`/api/feedback?client_id=${encodeURIComponent(S.clientId)}`);
-  if (!res) { container.innerHTML = '<div style="font-size:12px;color:var(--muted)">無法載入</div>'; return; }
+  if (!res) {
+    container.innerHTML = '<div style="padding:8px;font-size:12px;color:#EF4444">⚠ 無法載入，請稍後再試</div>';
+    return;
+  }
   const items = res.categories?.[cat]?.recent || [];
   if (!items.length) {
-    container.innerHTML = '<div style="font-size:12px;color:var(--muted)">暫無記錄</div>';
+    container.innerHTML = '<div style="padding:8px;font-size:12px;color:var(--muted)">此類別暫無記錄</div>';
     return;
   }
   container.innerHTML = items.map(i =>
-    `<div class="fb-detail-item">${esc(i.text)}<div class="fb-detail-ts">${esc(i.timestamp)}</div></div>`
+    `<div class="fb-detail-item">
+      <div style="font-size:13px">${esc(i.text)}</div>
+      <div class="fb-detail-ts">${esc(i.timestamp)}</div>
+    </div>`
   ).join('');
 }
 
@@ -2571,7 +2612,7 @@ function showStatDetail(type) {
       if (!S.allMsgs.length) { toast('暫無訊息記錄'); return; }
       const rows = S.allMsgs.slice(0, 20).map(m =>
         `<div style="padding:8px 0;border-bottom:1px solid var(--border)">
-          <div style="font-weight:600;color:var(--navy);font-size:13px">…${esc((m.sender_id||'').slice(-6))}</div>
+          <div style="font-weight:600;color:var(--navy);font-size:13px">${esc((m.sender_id||'').slice(0,8))}…</div>
           <div style="color:var(--text2);font-size:12px;margin-top:2px">${esc((m.message||'').slice(0,60))}</div>
           <div style="color:var(--muted);font-size:11px;margin-top:2px">${relTime(m.timestamp)}</div>
         </div>`).join('');

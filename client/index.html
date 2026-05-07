@@ -331,52 +331,76 @@ a { text-decoration:none; color:inherit; }
 /* ════════════════════════════════════════════════════════════ */
 /* TAB 2 — 報表                                                 */
 /* ════════════════════════════════════════════════════════════ */
-.stat-row   { display:flex; gap:8px; flex-wrap:wrap; }
-.stat-row-4 .stat-card { min-width:calc(50% - 4px); }
-.stat-card  { flex:1; background:var(--bg); border-radius:var(--radius-sm); padding:12px 6px; text-align:center; }
-.stat-icon  { font-size:18px; line-height:1; margin-bottom:4px; }
-.stat-num   { font-size:24px; font-weight:800; color:var(--navy); line-height:1; }
-.stat-lbl   { font-size:10px; color:var(--muted); margin-top:3px; }
+.card-title-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.card-sub { font-size:11px; color:var(--muted); }
 
-.usage-bar-wrap { }
+/* ── 統計卡片（大版） ── */
+.stat-row   { display:flex; gap:10px; flex-wrap:wrap; }
+.stat-row-4 .stat-card-lg { min-width:calc(50% - 5px); }
+.stat-card-lg {
+  flex:1; background:var(--surface); border-radius:var(--radius);
+  padding:16px 10px 14px; text-align:center; box-shadow:var(--shadow);
+  cursor:pointer; transition:transform 0.12s, box-shadow 0.15s;
+  min-height:120px; display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+}
+.stat-card-lg:active { transform:scale(0.96); }
+.stat-card-lg:hover  { box-shadow:0 4px 20px rgba(255,107,53,0.15); }
+.stat-icon-lg { font-size:22px; line-height:1; margin-bottom:6px; }
+.stat-num-lg  { font-size:42px; font-weight:900; color:var(--navy); line-height:1.1; }
+.stat-lbl-lg  { font-size:12px; color:var(--muted); margin-top:5px; font-weight:500; }
+.stat-trend   { font-size:10px; margin-top:4px; font-weight:700; padding:2px 7px; border-radius:10px; }
+.stat-trend.up   { background:rgba(34,197,94,0.12);  color:#15803D; }
+.stat-trend.dn   { background:rgba(239,68,68,0.12);  color:#B91C1C; }
+.stat-trend.flat { background:var(--border); color:var(--muted); }
+
+/* ── 用量進度 ── */
+.usage-bar-wrap { margin-top:2px; }
 .usage-bar-track { background:var(--bg); border-radius:20px; height:10px; overflow:hidden; margin-bottom:6px; }
 .usage-bar-fill  { height:100%; border-radius:20px; background:linear-gradient(90deg,var(--orange),#FF9A5C); transition:width 0.6s ease; }
 .usage-bar-lbl   { font-size:12px; color:var(--muted); text-align:right; }
 
-.top5-list  { display:flex; flex-direction:column; gap:7px; }
-.top5-item  { display:flex; align-items:center; gap:8px; }
-.top5-rank  { font-size:11px; font-weight:700; color:var(--muted); width:16px; flex-shrink:0; }
-.top5-name  { font-size:12px; color:var(--text2); width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex-shrink:0; }
-.top5-track { flex:1; background:var(--bg); border-radius:20px; height:8px; overflow:hidden; }
-.top5-fill  { height:100%; border-radius:20px; background:var(--orange); transition:width 0.5s ease; }
-.top5-val   { font-size:11px; color:var(--muted); width:24px; text-align:right; flex-shrink:0; }
-
-.stat-card.clickable { cursor:pointer; }
-.stat-card.clickable:active { transform:scale(0.96); }
-.stat-card.clickable:hover { box-shadow:0 2px 12px rgba(255,107,53,0.15); }
-
-#daily-usage-block { margin:0 14px 6px; padding:9px 12px; background:var(--surface); border-radius:var(--radius-sm); border:1px solid var(--border); }
-.dub-row   { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
-.dub-plan  { font-size:11px; font-weight:700; color:var(--navy); }
-.dub-count { font-size:11px; color:var(--muted); }
-.dub-track { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
-.dub-fill  { height:100%; border-radius:3px; background:var(--green); transition:width 0.5s ease, background 0.3s; }
-
-.opt-pending { opacity:0.55; }
-.opt-pending .bubble { border:1.5px dashed var(--border) !important; }
-
-.bar-chart {
-  display:flex; align-items:flex-end; gap:5px;
-  height:80px; padding-top:4px;
+/* ── 7天柱狀圖 ── */
+.bar-chart-lg {
+  display:flex; align-items:flex-end; gap:6px;
+  height:200px; padding-top:8px;
 }
-.bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; justify-content:flex-end; }
-.bar-fill { width:100%; border-radius:4px 4px 0 0; background:var(--orange); min-height:2px; transition:height 0.45s ease; }
-.bar-lbl  { font-size:9px; color:var(--muted); }
+.bar-col-lg  { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; height:100%; }
+.bar-val-lg  { font-size:10px; font-weight:700; color:var(--navy); }
+.bar-fill-lg { width:100%; border-radius:6px 6px 0 0; background:var(--orange); min-height:3px; transition:height 0.55s ease; }
+.bar-lbl-lg  { font-size:10px; color:var(--muted); }
 
-.pie-wrap { display:flex; flex-wrap:wrap; gap:8px; }
-.pie-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text2); flex:1; min-width:120px; }
-.pie-dot  { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+/* ── 回饋三格 ── */
+.fb-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.fb-card { border-radius:var(--radius-sm); padding:14px 8px; text-align:center; cursor:pointer; }
+.fb-card-num { font-size:30px; font-weight:900; line-height:1; }
+.fb-card-lbl { font-size:11px; font-weight:700; margin-top:5px; }
+.fb-card-pct { font-size:10px; margin-top:3px; }
 
+/* ── TOP5 ── */
+.top5-list { display:flex; flex-direction:column; gap:9px; }
+.top5-item { display:flex; align-items:center; gap:8px; }
+.top5-rank { font-size:16px; width:22px; flex-shrink:0; text-align:center; }
+.top5-name { font-size:12px; color:var(--text2); width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex-shrink:0; }
+.top5-track{ flex:1; background:var(--bg); border-radius:20px; height:8px; overflow:hidden; }
+.top5-fill { height:100%; border-radius:20px; background:var(--orange); transition:width 0.5s ease; }
+.top5-val  { font-size:12px; font-weight:700; color:var(--navy); width:26px; text-align:right; flex-shrink:0; }
+
+/* ── 近期訊息（報表頁） ── */
+.rpt-msg-item { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+.rpt-msg-item:last-child { border-bottom:none; }
+.rpt-msg-plat { font-size:18px; flex-shrink:0; margin-top:2px; }
+.rpt-msg-body { flex:1; min-width:0; }
+.rpt-msg-user { font-size:12px; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:6px; }
+.rpt-msg-text { font-size:12px; color:var(--text2); margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rpt-msg-reply{ font-size:11px; color:var(--muted); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rpt-msg-ts   { font-size:10px; color:var(--muted); white-space:nowrap; flex-shrink:0; padding-top:3px; }
+.reply-badge  { font-size:9px; padding:1px 6px; border-radius:10px; font-weight:700; }
+.reply-badge.ai     { background:rgba(255,107,53,0.12); color:var(--orange); }
+.reply-badge.manual { background:rgba(26,43,74,0.12);   color:var(--navy); }
+.reply-badge.none   { background:var(--border);          color:var(--muted); }
+
+/* ── 報表列表 ── */
 .rpt-list { border-radius:var(--radius); overflow:hidden; }
 .rpt-item {
   display:flex; align-items:center; gap:12px;
@@ -401,6 +425,17 @@ a { text-decoration:none; color:inherit; }
   padding:12px; white-space:pre-wrap; max-height:150px;
   overflow-y:auto; color:var(--text2); line-height:1.65;
 }
+
+/* ── 訊息頁用量條 ── */
+#daily-usage-block { margin:0 14px 6px; padding:9px 12px; background:var(--surface); border-radius:var(--radius-sm); border:1px solid var(--border); }
+.dub-row   { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.dub-plan  { font-size:11px; font-weight:700; color:var(--navy); }
+.dub-count { font-size:11px; color:var(--muted); }
+.dub-track { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.dub-fill  { height:100%; border-radius:3px; background:var(--green); transition:width 0.5s ease, background 0.3s; }
+
+.opt-pending { opacity:0.55; }
+.opt-pending .bubble { border:1.5px dashed var(--border) !important; }
 
 /* ════════════════════════════════════════════════════════════ */
 /* TAB 3 — 知識庫                                               */
@@ -843,52 +878,97 @@ a { text-decoration:none; color:inherit; }
 
     <!-- ── 報表頁 ───────────────────────────────────────────── -->
     <div class="tab-page" id="page-reports">
+
+      <!-- 統計卡片 -->
       <div class="card" style="margin-top:14px;">
-        <div class="card-title">今日摘要</div>
+        <div class="card-title-row">
+          <div class="card-title">📊 數據總覽</div>
+          <div class="card-sub" id="rpt-updated">載入中…</div>
+        </div>
         <div class="stat-row stat-row-4">
-          <div class="stat-card clickable" onclick="showStatDetail('msgs')">
-            <div class="stat-icon">💬</div>
-            <div class="stat-num" id="s-msgs">—</div>
-            <div class="stat-lbl">總訊息</div>
+          <div class="stat-card-lg" onclick="showStatDetail('msgs')">
+            <div class="stat-icon-lg">💬</div>
+            <div class="stat-num-lg" id="s-msgs">—</div>
+            <div class="stat-lbl-lg">本月總訊息</div>
+            <div class="stat-trend flat" id="s-msgs-trend">—</div>
           </div>
-          <div class="stat-card clickable" onclick="showStatDetail('sat')">
-            <div class="stat-icon">👍</div>
-            <div class="stat-num" id="s-sat">—</div>
-            <div class="stat-lbl">滿意度</div>
+          <div class="stat-card-lg" onclick="showStatDetail('sat')">
+            <div class="stat-icon-lg">👍</div>
+            <div class="stat-num-lg" id="s-sat">—</div>
+            <div class="stat-lbl-lg">好評滿意度</div>
+            <div class="stat-trend flat" id="s-sat-trend">—</div>
           </div>
-          <div class="stat-card clickable" onclick="showStatDetail('rep')">
-            <div class="stat-icon">⚡</div>
-            <div class="stat-num" id="s-rep">—</div>
-            <div class="stat-lbl">回覆率</div>
+          <div class="stat-card-lg" onclick="showStatDetail('rep')">
+            <div class="stat-icon-lg">⚡</div>
+            <div class="stat-num-lg" id="s-rep">—</div>
+            <div class="stat-lbl-lg">AI 回覆率</div>
+            <div class="stat-trend flat" id="s-rep-trend">—</div>
           </div>
-          <div class="stat-card clickable" onclick="showStatDetail('usage')">
-            <div class="stat-icon">📊</div>
-            <div class="stat-num" id="s-usage">—</div>
-            <div class="stat-lbl">本月用量</div>
+          <div class="stat-card-lg" onclick="showStatDetail('usage')">
+            <div class="stat-icon-lg">📈</div>
+            <div class="stat-num-lg" id="s-usage">—</div>
+            <div class="stat-lbl-lg">本月用量</div>
+            <div class="stat-trend flat" id="s-usage-trend">—</div>
           </div>
         </div>
       </div>
+
+      <!-- 本月用量進度 -->
       <div class="card">
-        <div class="card-title">本月用量進度</div>
+        <div class="card-title">📦 本月用量進度</div>
         <div class="usage-bar-wrap">
           <div class="usage-bar-track"><div class="usage-bar-fill" id="usage-bar-fill"></div></div>
           <div class="usage-bar-lbl"><span id="usage-bar-used">0</span> / <span id="usage-bar-total">—</span> 則</div>
         </div>
       </div>
+
+      <!-- 7天柱狀圖 -->
       <div class="card">
-        <div class="card-title">近 7 天訊息量</div>
-        <div class="bar-chart" id="bar-chart"></div>
+        <div class="card-title">📅 近 7 天訊息量</div>
+        <div class="bar-chart-lg" id="bar-chart"></div>
       </div>
+
+      <!-- 回饋三色格 -->
       <div class="card">
-        <div class="card-title">TOP 5 活躍用戶</div>
-        <div class="top5-list" id="top5-list"><div style="font-size:13px;color:var(--muted);padding:8px 0">暫無數據</div></div>
+        <div class="card-title">💭 回饋分類</div>
+        <div class="fb-grid">
+          <div class="fb-card" style="background:rgba(34,197,94,.1)" onclick="showStatDetail('sat')">
+            <div class="fb-card-num" style="color:#22C55E" id="fb-praise">0</div>
+            <div class="fb-card-lbl" style="color:#15803D">👍 稱讚</div>
+            <div class="fb-card-pct" style="color:#22C55E" id="fb-praise-pct">—</div>
+          </div>
+          <div class="fb-card" style="background:rgba(59,130,246,.1)" onclick="showStatDetail('sat')">
+            <div class="fb-card-num" style="color:#3B82F6" id="fb-suggest">0</div>
+            <div class="fb-card-lbl" style="color:#1D4ED8">💡 建議</div>
+            <div class="fb-card-pct" style="color:#3B82F6" id="fb-suggest-pct">—</div>
+          </div>
+          <div class="fb-card" style="background:rgba(239,68,68,.1)" onclick="showStatDetail('sat')">
+            <div class="fb-card-num" style="color:#EF4444" id="fb-complaint">0</div>
+            <div class="fb-card-lbl" style="color:#B91C1C">🔴 客訴</div>
+            <div class="fb-card-pct" style="color:#EF4444" id="fb-complaint-pct">—</div>
+          </div>
+        </div>
       </div>
+
+      <!-- TOP 5 活躍用戶 -->
       <div class="card">
-        <div class="card-title">回饋分類</div>
-        <div class="pie-wrap" id="pie-wrap"></div>
+        <div class="card-title">🏆 TOP 5 活躍用戶</div>
+        <div class="top5-list" id="top5-list">
+          <div style="font-size:13px;color:var(--muted);padding:8px 0">暫無數據</div>
+        </div>
       </div>
+
+      <!-- 近期訊息 -->
       <div class="card">
-        <div class="card-title" style="margin-bottom:8px;">最新報表預覽</div>
+        <div class="card-title">📋 近期訊息記錄</div>
+        <div id="rpt-msgs-list">
+          <div style="font-size:13px;color:var(--muted);padding:8px 0">暫無訊息</div>
+        </div>
+      </div>
+
+      <!-- 最新報表 -->
+      <div class="card">
+        <div class="card-title" style="margin-bottom:8px;">📄 最新報表</div>
         <div class="rpt-preview" id="rpt-preview">（尚無報表）</div>
         <button class="btn-dl" id="btn-dl-latest" style="width:100%;padding:11px;margin-top:10px;text-align:center;border-radius:var(--radius-sm);">⬇ 下載報表</button>
       </div>
@@ -1109,6 +1189,12 @@ const S = {
 };
 
 const seenMsgIds = new Set();
+
+// ── PLATFORM HELPER ──────────────────────────────────────────
+function isIgMsg(m) {
+  if (m.platform) return ['ig','instagram'].includes(m.platform.toLowerCase());
+  return !!(m.ig_account_id);
+}
 
 // ── UTILS ──────────────────────────────────────────────────────
 const $  = id => document.getElementById(id);
@@ -1456,7 +1542,7 @@ async function pollMessages() {
     if (newOnes.length) {
       newOnes.forEach(m => {
         if (m.id) seenMsgIds.add(m.id);
-        const plat = m.ig_account_id ? 'instagram' : 'line';
+        const plat = isIgMsg(m) ? 'instagram' : 'line';
         S.unread.all++;
         if (S.unread[plat] !== undefined) S.unread[plat]++;
       });
@@ -1516,7 +1602,7 @@ function renderMessages() {
   const list = $('msg-list');
   let msgs = S.allMsgs;
   if (S.platform !== 'all') {
-    msgs = msgs.filter(m => S.platform === 'instagram' ? !!m.ig_account_id : !m.ig_account_id);
+    msgs = msgs.filter(m => S.platform === 'instagram' ? isIgMsg(m) : !isIgMsg(m));
   }
   $('msg-count-lbl').textContent = msgs.length ? `${msgs.length} 筆` : '';
 
@@ -1534,14 +1620,15 @@ function renderMessages() {
   const sorted = Object.values(byUid).sort((a, b) => (b.timestamp || '') > (a.timestamp || '') ? 1 : -1);
 
   list.innerHTML = sorted.map(m => {
-    const uid  = (m.sender_id || '').slice(-6) || '訪客';
-    const init = uid.slice(-2).toUpperCase();
-    const prev = (m.message || '').slice(0, 36) || '（無內容）';
+    const uid     = (m.sender_id || '').slice(-6) || '訪客';
+    const init    = uid.slice(-2).toUpperCase();
+    const prev    = (m.message || '').slice(0, 36) || '（無內容）';
+    const platIco = isIgMsg(m) ? '📱' : '💚';
     return `<li class="msg-item" data-uid="${esc(m.sender_id || '')}">
       <div class="msg-avatar">${init}</div>
       <div class="msg-body">
         <div class="msg-top">
-          <div class="msg-uid">…${esc(uid)}</div>
+          <div class="msg-uid">${platIco} …${esc(uid)}</div>
           <div class="msg-ts">${relTime(m.timestamp)}</div>
         </div>
         <div class="msg-prev">${esc(prev)}</div>
@@ -1586,7 +1673,7 @@ function initConvPanel() {
 function openConv(uid) {
   S.convUid = uid;
   const sample = S.allMsgs.find(m => m.sender_id === uid);
-  S.convPlatform = sample?.ig_account_id ? 'ig' : 'line';
+  S.convPlatform = (sample && isIgMsg(sample)) ? 'ig' : 'line';
   const short = (uid || '').slice(-6);
   $('conv-title').textContent = `對話：…${short}`;
   $('conv-panel').classList.add('open');
@@ -1595,21 +1682,34 @@ function openConv(uid) {
 
 function renderConv() {
   const box  = $('conv-msgs');
-  const msgs = S.allMsgs.filter(m => m.sender_id === S.convUid);
+  const msgs = S.allMsgs
+    .filter(m => m.sender_id === S.convUid)
+    .sort((a,b) => (a.timestamp||'') > (b.timestamp||'') ? 1 : -1);
   if (!msgs.length) {
     box.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">無對話記錄</div></div>';
     return;
   }
-  box.innerHTML = msgs.map(m => `
-    <div class="bubble-wrap user">
-      <div class="bubble-meta">客人 · ${relTime(m.timestamp)}</div>
+  box.innerHTML = msgs.map(m => {
+    const ts = relTime(m.timestamp);
+    if (m.manual) {
+      // 手動回覆：右側深藍泡泡
+      return `<div class="bubble-wrap bot">
+        <div class="bubble-meta" style="color:var(--navy)">✍ 手動回覆 · ${ts}</div>
+        <div class="bubble bot" style="background:var(--navy);color:#fff">${esc(m.reply || m.message || '')}</div>
+      </div>`;
+    }
+    const userBubble = `<div class="bubble-wrap user">
+      <div class="bubble-meta">客人 · ${ts}</div>
       <div class="bubble user">${esc(m.message || '')}</div>
-    </div>
-    ${m.reply ? `<div class="bubble-wrap bot">
-      <div class="bubble-meta">AI 回覆</div>
-      <div class="bubble bot">${esc(m.reply)}</div>
-    </div>` : ''}
-  `).join('');
+    </div>`;
+    const replyBubble = m.reply
+      ? `<div class="bubble-wrap bot">
+          <div class="bubble-meta">🤖 AI 回覆</div>
+          <div class="bubble bot">${esc(m.reply)}</div>
+        </div>`
+      : '<div class="bubble-wrap bot"><div class="bubble-meta" style="color:var(--muted)">（待回覆）</div></div>';
+    return userBubble + replyBubble;
+  }).join('');
   box.scrollTop = box.scrollHeight;
 }
 
@@ -1656,35 +1756,72 @@ function appendOptimisticMsg(tempId, msg) {
 }
 
 // ── REPORTS ────────────────────────────────────────────────────
+let _rptInterval = null;
+
 async function loadReports() {
   const res = await apiFetch(`/api/reports?client_id=${encodeURIComponent(S.clientId)}`);
   if (!res) return;
   S.reportsData = res;
 
-  const st = res.today_stats || {};
-  $('s-msgs').textContent = st.messages ?? '—';
-  // 回覆率：replies / messages * 100
-  const replyRate = (st.messages && st.replies != null)
-    ? Math.round(st.replies / st.messages * 100) + '%' : '—';
-  $('s-rep').textContent = replyRate;
-  // 滿意度：來自 res.satisfaction_pct 或 feedback_cats 正面比例
-  const sat = res.satisfaction_pct != null ? res.satisfaction_pct + '%'
-    : (st.feedback ? Math.min(100, Math.round((st.feedback / (st.messages || 1)) * 100)) + '%' : '—');
-  $('s-sat').textContent = sat;
-  // 本月用量
-  $('s-usage').textContent = S.planUsed != null ? S.planUsed : '—';
+  // 更新時間戳
+  const now = new Date();
+  const updEl = $('rpt-updated');
+  if (updEl) updEl.textContent =
+    now.getHours().toString().padStart(2,'0') + ':' +
+    now.getMinutes().toString().padStart(2,'0') + ' 更新';
+
+  const st   = res.today_stats   || {};
+  const cats = res.feedback_cats || {};
+
+  // ── 本月總訊息 ──
+  const totalMsgs = S.allMsgs.length || st.messages || 0;
+  $('s-msgs').textContent = totalMsgs.toLocaleString();
+  setTrend('s-msgs-trend', 0, '今日 ' + (st.messages || 0) + ' 則');
+
+  // ── 好評滿意度 ──
+  const totalFb = Object.values(cats).reduce((s,v) => s + v, 0);
+  const praise  = cats['稱讚'] || 0;
+  const satPct  = totalFb > 0 ? Math.round(praise / totalFb * 100) : 0;
+  $('s-sat').textContent = satPct + '%';
+  setTrend('s-sat-trend', satPct >= 60 ? 1 : -1, '好評 ' + praise + ' 則');
+
+  // ── AI 回覆率 ──
+  const replied  = st.replies || 0;
+  const repRate  = totalMsgs > 0 ? Math.round(replied / totalMsgs * 100) : 0;
+  $('s-rep').textContent = repRate + '%';
+  setTrend('s-rep-trend', repRate >= 80 ? 1 : 0, replied + ' / ' + totalMsgs);
+
+  // ── 本月用量 ──
+  $('s-usage').textContent = (S.planUsed || 0).toLocaleString();
+  const usagePct = S.planTotal > 0 ? Math.round((S.planUsed || 0) / S.planTotal * 100) : 0;
+  setTrend('s-usage-trend',
+    usagePct <= 70 ? 1 : (usagePct >= 90 ? -1 : 0),
+    usagePct + '% 已使用');
 
   renderUsageBar();
   renderBarChart(res.bar_data || []);
+  renderFeedbackGrid(cats);
   renderTop5(res.top_senders || S.allMsgs);
-  renderPie(res.feedback_cats || {});
+  renderRecentMsgs(S.allMsgs.slice(0, 15));
 
   S.reports    = res.reports || [];
   S.latestFile = res.latest_file || '';
   renderReportList();
-
   if (res.latest_preview) $('rpt-preview').textContent = res.latest_preview;
   $('btn-dl-latest').onclick = () => downloadReport(S.latestFile);
+
+  // 30 秒自動更新
+  clearInterval(_rptInterval);
+  _rptInterval = setInterval(() => {
+    if (S.tab === 'reports') loadReports();
+  }, 30000);
+}
+
+function setTrend(id, dir, label) {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = label;
+  el.className = 'stat-trend ' + (dir > 0 ? 'up' : dir < 0 ? 'dn' : 'flat');
 }
 
 function renderUsageBar() {
@@ -1692,37 +1829,74 @@ function renderUsageBar() {
   const total = S.planTotal || 700;
   const pct   = Math.min(100, Math.round(used / total * 100));
   const fill  = $('usage-bar-fill');
-  if (fill) fill.style.width = pct + '%';
-  const usedEl = $('usage-bar-used');
-  const totEl  = $('usage-bar-total');
-  if (usedEl) usedEl.textContent = used;
-  if (totEl)  totEl.textContent  = total;
-  // turn red when >85%
-  if (fill) fill.style.background = pct > 85 ? '#EF4444' : '';
+  if (fill) {
+    fill.style.width      = pct + '%';
+    fill.style.background = pct > 85 ? '#EF4444' : pct > 70 ? '#FF6B35' : '';
+  }
+  const usedEl = $('usage-bar-used'), totEl = $('usage-bar-total');
+  if (usedEl) usedEl.textContent = used.toLocaleString();
+  if (totEl)  totEl.textContent  = total.toLocaleString();
+}
+
+function renderBarChart(data) {
+  const el = $('bar-chart');
+  if (!el) return;
+  if (!data.length) {
+    el.innerHTML = '<div style="flex:1;font-size:12px;color:var(--muted);text-align:center;padding-top:80px">暫無數據</div>';
+    return;
+  }
+  const max = Math.max(...data.map(d => d.count), 1);
+  el.innerHTML = data.map(d => {
+    const pct = Math.round((d.count / max) * 88);
+    return `<div class="bar-col-lg">
+      <div class="bar-val-lg">${d.count || ''}</div>
+      <div style="flex:1;display:flex;align-items:flex-end;width:100%">
+        <div class="bar-fill-lg" style="height:${pct}%;min-height:${d.count ? 3 : 0}px"></div>
+      </div>
+      <div class="bar-lbl-lg">${esc(d.label)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderFeedbackGrid(cats) {
+  const total    = Object.values(cats).reduce((s,v) => s + v, 0);
+  const praise   = cats['稱讚']  || 0;
+  const suggest  = cats['建議']  || 0;
+  const complaint= cats['客訴']  || 0;
+  const pct = v => total > 0 ? Math.round(v / total * 100) + '%' : '0%';
+  const set = (numId, pctId, val) => {
+    const n = $(numId), p = $(pctId);
+    if (n) n.textContent = val;
+    if (p) p.textContent = total > 0 ? pct(val) : '—';
+  };
+  set('fb-praise',    'fb-praise-pct',    praise);
+  set('fb-suggest',   'fb-suggest-pct',   suggest);
+  set('fb-complaint', 'fb-complaint-pct', complaint);
 }
 
 function renderTop5(data) {
   const el = $('top5-list');
   if (!el) return;
-  // data can be array of {sender_id, count, name} or raw message array
   let items = [];
-  if (Array.isArray(data) && data.length && data[0].sender_id && data[0].count != null) {
+  if (Array.isArray(data) && data.length && data[0].count != null) {
     items = data.slice(0, 5);
   } else if (Array.isArray(data) && data.length) {
-    // build from message array
     const counts = {};
     data.forEach(m => { const k = m.sender_id || '未知'; counts[k] = (counts[k] || 0) + 1; });
-    items = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5)
-      .map(([id, cnt]) => ({ sender_id: id, count: cnt }));
+    items = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 5)
+      .map(([id,cnt]) => ({ sender_id:id, count:cnt }));
   }
-  if (!items.length) { el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">暫無數據</div>'; return; }
-  const max = items[0].count || 1;
+  if (!items.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">暫無數據</div>';
+    return;
+  }
+  const max    = items[0].count || 1;
+  const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
   el.innerHTML = items.map((item, i) => {
-    const name  = item.name || (item.sender_id || '').slice(-6) || '用戶';
-    const pct   = Math.round((item.count / max) * 100);
-    const medals = ['🥇','🥈','🥉'];
+    const name = item.name || (item.sender_id || '').slice(-6) || '用戶';
+    const pct  = Math.round((item.count / max) * 100);
     return `<div class="top5-item">
-      <div class="top5-rank">${medals[i] || (i + 1)}</div>
+      <div class="top5-rank">${medals[i]}</div>
       <div class="top5-name" title="${esc(item.sender_id || '')}">${esc(name)}</div>
       <div class="top5-track"><div class="top5-fill" style="width:${pct}%"></div></div>
       <div class="top5-val">${item.count}</div>
@@ -1730,27 +1904,31 @@ function renderTop5(data) {
   }).join('');
 }
 
-function renderBarChart(data) {
-  const el = $('bar-chart');
-  if (!data.length) { el.innerHTML = '<div style="flex:1;font-size:12px;color:var(--muted);padding-top:28px;text-align:center">暫無數據</div>'; return; }
-  const max = Math.max(...data.map(d => d.count), 1);
-  el.innerHTML = data.map(d => {
-    const pct = Math.round((d.count / max) * 92);
-    return `<div class="bar-col">
-      <div class="bar-fill" style="height:${pct}%;"></div>
-      <div class="bar-lbl">${esc(d.label)}</div>
+function renderRecentMsgs(msgs) {
+  const el = $('rpt-msgs-list');
+  if (!el) return;
+  const valid = msgs.filter(m => !m.manual && m.message);
+  if (!valid.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:8px 0">暫無訊息</div>';
+    return;
+  }
+  el.innerHTML = valid.slice(0, 15).map(m => {
+    const platIco = isIgMsg(m) ? '📱' : '💚';
+    const uid     = (m.sender_id || '').slice(-6) || '訪客';
+    const badge   = m.reply
+      ? '<span class="reply-badge ai">AI</span>'
+      : '<span class="reply-badge none">待回</span>';
+    const replyTxt = m.reply ? '🤖 ' + m.reply.slice(0, 40) + (m.reply.length > 40 ? '…' : '') : '';
+    return `<div class="rpt-msg-item">
+      <div class="rpt-msg-plat">${platIco}</div>
+      <div class="rpt-msg-body">
+        <div class="rpt-msg-user">…${esc(uid)} ${badge}</div>
+        <div class="rpt-msg-text">${esc((m.message || '').slice(0, 60))}</div>
+        ${replyTxt ? `<div class="rpt-msg-reply">${esc(replyTxt)}</div>` : ''}
+      </div>
+      <div class="rpt-msg-ts">${relTime(m.timestamp)}</div>
     </div>`;
   }).join('');
-}
-
-function renderPie(cats) {
-  const colors = ['#FF6B35','#1A2B4A','#22C55E','#3B82F6','#8B5CF6','#EC4899'];
-  const el = $('pie-wrap');
-  const entries = Object.entries(cats);
-  if (!entries.length) { el.innerHTML = '<div style="font-size:13px;color:var(--muted)">暫無回饋資料</div>'; return; }
-  el.innerHTML = entries.map(([k, v], i) =>
-    `<div class="pie-item"><div class="pie-dot" style="background:${colors[i % colors.length]}"></div>${esc(k)}：${v} 則</div>`
-  ).join('');
 }
 
 function renderReportList() {

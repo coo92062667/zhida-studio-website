@@ -714,7 +714,18 @@ a { text-decoration:none; color:inherit; }
 }
 .plan-badge.trial  { background:rgba(255,107,53,.14); color:var(--orange); }
 .plan-badge.basic  { background:rgba(79,172,254,.14); color:#2563eb; }
-.plan-badge.pro    { background:rgba(212,168,67,.14); color:#b45309; }
+.plan-badge.pro        { background:rgba(212,168,67,.14); color:#b45309; }
+.plan-badge.enterprise { background:rgba(212,168,67,.22); color:#92400e; border:1.5px solid #D4A843; }
+/* import modal */
+.import-modal-backdrop { position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:900;display:flex;align-items:flex-end; }
+.import-modal { background:#fff;width:100%;max-width:430px;margin:0 auto;border-radius:18px 18px 0 0;padding:20px 18px 36px;max-height:85vh;overflow-y:auto; }
+.import-modal h3 { font-size:16px;font-weight:700;margin:0 0 14px; }
+.import-tab-row { display:flex;gap:6px;margin-bottom:14px; }
+.import-tab { flex:1;padding:7px 0;border:1.5px solid var(--border);border-radius:8px;font-size:12px;font-weight:600;background:#fff;cursor:pointer;transition:.15s; }
+.import-tab.active { background:var(--navy);color:#fff;border-color:var(--navy); }
+.import-preview-table { width:100%;border-collapse:collapse;font-size:12px;margin:8px 0; }
+.import-preview-table th,.import-preview-table td { border:1px solid var(--border);padding:4px 6px;text-align:left; }
+.import-preview-table th { background:var(--bg);font-weight:600; }
 .plan-quota-wrap { flex:1; }
 .plan-quota-txt { font-size:11px; color:var(--muted); margin-bottom:4px; }
 .plan-quota-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
@@ -1079,7 +1090,12 @@ a { text-decoration:none; color:inherit; }
     <div class="tab-page" id="page-products">
       <div class="prod-toolbar" style="margin-top:14px;">
         <div class="prod-toolbar-title">🛍️ 商品資料庫</div>
-        <button class="btn-add-prod" onclick="newProduct()">＋ 新增商品</button>
+        <div style="display:flex;gap:7px;">
+          <button class="btn-cancel-prod" style="font-size:12px;padding:6px 10px;" onclick="exportProducts('csv')">⬇ CSV</button>
+          <button class="btn-cancel-prod" style="font-size:12px;padding:6px 10px;" onclick="exportProducts('json')">⬇ JSON</button>
+          <button class="btn-cancel-prod" style="font-size:12px;padding:6px 10px;background:var(--navy);color:#fff;border-color:var(--navy);" onclick="openImportModal()">⬆ 匯入</button>
+          <button class="btn-add-prod" onclick="newProduct()">＋ 新增</button>
+        </div>
       </div>
       <!-- 商品列表 -->
       <div class="prod-list" id="prod-list" style="margin-top:10px;">
@@ -1364,6 +1380,8 @@ const S = {
 };
 
 const seenMsgIds = new Set();
+let _sseConn   = null;
+let _sseActive = false;
 
 // ── PLATFORM HELPER ──────────────────────────────────────────
 function isIgMsg(m) {
@@ -1592,7 +1610,10 @@ function enterApp() {
 
   loadTab('messages');
   loadUsage();
-  setInterval(() => { if (S.tab === 'messages') pollMessages(); }, 2000);
+  // SSE 即時連線（降低輪詢頻率）
+  initSSE();
+  // fallback 輪詢：SSE 觸發後也補一次，確保資料同步
+  setInterval(() => { if (S.tab === 'messages' && !_sseActive) pollMessages(); }, 3000);
 
   // dismiss new-msg-bar click
   const dismissBtn = $('new-msg-bar-dismiss');
@@ -1633,10 +1654,16 @@ function renderPlanBar() {
     qtxt.innerHTML = '本月剩餘 <strong>' + rem.toLocaleString() + '</strong> 則';
     qfill.style.width = Math.max(2, (rem / S.planTotal * 100)) + '%';
     qfill.style.background = 'linear-gradient(90deg,#4FACFE,#00F2FE)';
-  } else {
+  } else if (S.plan === 'pro') {
     badge.className = 'plan-badge pro';
-    badge.textContent = '⭐ 進階版';
+    badge.textContent = '💎 進階版';
     qtxt.innerHTML = '<strong>無限則</strong> · 本月已用 ' + S.planUsed.toLocaleString() + ' 則';
+    qfill.style.width = '100%';
+    qfill.style.background = 'linear-gradient(90deg,#D4A843,#F5C842)';
+  } else {
+    badge.className = 'plan-badge enterprise';
+    badge.textContent = '⭐ 企業版';
+    qtxt.innerHTML = '<strong>無限制</strong> · 尊榮服務';
     qfill.style.width = '100%';
     qfill.style.background = 'linear-gradient(90deg,#D4A843,#F5C842)';
   }
@@ -1690,6 +1717,41 @@ function loadTab(tab) {
 }
 
 // ── MESSAGES ───────────────────────────────────────────────────
+function initSSE() {
+  if (!S.clientId) return;
+  if (_sseConn) { _sseConn.close(); _sseConn = null; _sseActive = false; }
+  S.api = localStorage.getItem('zhida_api') || DEFAULT_API;
+  const url = S.api + '/api/events?client_id=' + encodeURIComponent(S.clientId) + '&ngrok-skip-browser-warning=true';
+  try {
+    _sseConn = new EventSource(url);
+    _sseConn.onopen = () => { _sseActive = true; setApiStatus(true); };
+    _sseConn.onerror = () => {
+      _sseActive = false;
+      // auto-reconnect handled by browser; keep polling as safety net
+    };
+    _sseConn.onmessage = (e) => {
+      try {
+        const ev = JSON.parse(e.data);
+        if (ev.type === 'connected') return;
+        if (ev.type === 'new_message') {
+          // trigger full poll to get authoritative message list
+          pollMessages();
+          if (S.tab === 'messages') {
+            const m = ev.message || {};
+            const plat = (m.platform === 'line') ? 'line' : 'instagram';
+            S.unread.all++;
+            if (S.unread[plat] !== undefined) S.unread[plat]++;
+            updateUnreadBadges();
+            showNewMsgBar(1);
+          }
+        }
+      } catch(ex) {}
+    };
+  } catch(err) {
+    console.warn('[SSE] not available, using polling only');
+  }
+}
+
 async function pollMessages() {
   if (!S.clientId) return;
   S.api = localStorage.getItem('zhida_api') || DEFAULT_API;
@@ -1936,6 +1998,126 @@ const PROD_TAGS = ['熱銷','新品','限量','推薦','特惠','季節限定'];
 const STATUS_MAP = { available:'✅ 有貨', out_of_stock:'❌ 缺貨', pre_order:'⏳ 預購' };
 const STATUS_BADGE = { available:'available', out_of_stock:'out_of_stock', pre_order:'pre_order' };
 
+async function exportProducts(fmt) {
+  if (!S.clientId) return;
+  S.api = localStorage.getItem('zhida_api') || DEFAULT_API;
+  const url = S.api + '/api/products/export?client_id=' + encodeURIComponent(S.clientId) + '&fmt=' + fmt;
+  if (fmt === 'csv') {
+    const a = document.createElement('a');
+    a.href = url; a.download = 'products.csv'; a.click();
+  } else {
+    const res = await apiFetch('/api/products/export?client_id=' + encodeURIComponent(S.clientId) + '&fmt=json');
+    if (!res) return;
+    const blob = new Blob([JSON.stringify(res.products, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'products.json'; a.click();
+  }
+}
+
+let _importFmt  = 'csv';
+let _importRows = [];
+
+function openImportModal() {
+  // Remove existing modal if any
+  const old = document.getElementById('import-modal');
+  if (old) old.remove();
+  const el = document.createElement('div');
+  el.className = 'import-modal-backdrop';
+  el.id = 'import-modal';
+  el.innerHTML = `
+    <div class="import-modal">
+      <h3>📥 批量匯入商品</h3>
+      <div class="import-tab-row">
+        <button class="import-tab active" onclick="switchImportTab('csv',this)">CSV</button>
+        <button class="import-tab" onclick="switchImportTab('json',this)">JSON</button>
+        <button class="import-tab" onclick="switchImportTab('template',this)">範本</button>
+      </div>
+      <div id="imp-body-csv">
+        <p style="font-size:12px;color:var(--muted);margin:0 0 8px">上傳 CSV 檔（欄位：name,price,stock,status,description）</p>
+        <input type="file" id="imp-file" accept=".csv" style="font-size:13px;margin-bottom:10px;" onchange="previewCSV(this)">
+        <div id="imp-preview"></div>
+      </div>
+      <div id="imp-body-json" style="display:none">
+        <p style="font-size:12px;color:var(--muted);margin:0 0 8px">貼上 JSON 陣列</p>
+        <textarea id="imp-json-txt" style="width:100%;height:120px;font-size:12px;border:1px solid var(--border);border-radius:8px;padding:8px;" placeholder='[{"name":"商品名","price":100,"stock":50}]'></textarea>
+      </div>
+      <div id="imp-body-template" style="display:none">
+        <p style="font-size:12px;margin:0 0 8px">下載 CSV 範本，填寫後匯入：</p>
+        <button class="btn-add-prod" style="font-size:13px;" onclick="downloadTemplate()">⬇ 下載範本</button>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:#999" id="imp-mode-row">
+        匯入模式：
+        <label><input type="radio" name="imp-mode" value="append" checked> 附加</label>
+        <label style="margin-left:10px;"><input type="radio" name="imp-mode" value="replace"> 覆蓋全部</label>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn-cancel-prod" style="flex:1;" onclick="document.getElementById('import-modal').remove()">取消</button>
+        <button class="btn-add-prod" style="flex:2;" onclick="confirmImport()">確認匯入</button>
+      </div>
+    </div>`;
+  document.body.appendChild(el);
+  el.addEventListener('click', e => { if (e.target === el) el.remove(); });
+}
+
+function switchImportTab(fmt, btn) {
+  _importFmt = fmt;
+  document.querySelectorAll('.import-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['csv','json','template'].forEach(f => {
+    const el = document.getElementById('imp-body-' + f);
+    if (el) el.style.display = f === fmt ? '' : 'none';
+  });
+}
+
+function previewCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    const lines = text.trim().split('\n').slice(0, 6);
+    let html = '<table class="import-preview-table"><tr>' +
+      lines[0].split(',').map(h => '<th>' + h.trim() + '</th>').join('') + '</tr>';
+    lines.slice(1).forEach(l => {
+      html += '<tr>' + l.split(',').map(c => '<td>' + c.trim() + '</td>').join('') + '</tr>';
+    });
+    html += '</table><p style="font-size:11px;color:var(--muted);margin:4px 0 0">' + (lines.length-1) + ' 列資料（預覽前5列）</p>';
+    document.getElementById('imp-preview').innerHTML = html;
+    input._csvText = text;
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function downloadTemplate() {
+  const csv = 'name,price,stock,status,description,tags\n範例商品A,299,100,available,商品描述,熱銷\n範例商品B,499,50,pre_order,另一個商品,新品';
+  const blob = new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'products_template.csv'; a.click();
+}
+
+async function confirmImport() {
+  const mode = document.querySelector('input[name="imp-mode"]:checked')?.value || 'append';
+  let payload;
+  if (_importFmt === 'json') {
+    try { payload = {format:'json', data: JSON.parse(document.getElementById('imp-json-txt').value), mode}; }
+    catch { toast('JSON 格式錯誤'); return; }
+  } else if (_importFmt === 'csv') {
+    const fileInput = document.getElementById('imp-file');
+    const csvText = fileInput?._csvText || '';
+    if (!csvText) { toast('請先選擇 CSV 檔案'); return; }
+    payload = {format:'csv', data: csvText, mode};
+  } else { return; }
+  payload.client_id = S.clientId;
+  const res = await apiFetch('/api/products/import', {method:'POST', body: JSON.stringify(payload)});
+  if (res?.ok) {
+    toast('匯入成功！共 ' + res.imported + ' 件商品，總計 ' + res.total + ' 件');
+    document.getElementById('import-modal')?.remove();
+    loadProducts();
+  } else {
+    toast('匯入失敗：' + (res?.error || '請檢查格式'));
+  }
+}
+
 async function loadProducts() {
   if (!S.clientId) return;
   const res = await apiFetch(`/api/products?client_id=${encodeURIComponent(S.clientId)}`);
@@ -2119,9 +2301,10 @@ async function loadReports() {
   $('s-sat').textContent = satPct + '%';
   setTrend('s-sat-trend', satPct >= 60 ? 1 : -1, '好評 ' + praise + ' 則');
 
-  // ── AI 回覆率 ──
-  const replied  = st.replies || 0;
-  const repRate  = totalMsgs > 0 ? Math.round(replied / totalMsgs * 100) : 0;
+  // ── AI 回覆率（使用後端計算好的值，上限 100%）──
+  const replied  = st.replies  || 0;
+  const repRate  = st.reply_rate != null ? Math.min(st.reply_rate, 100)
+                   : (totalMsgs > 0 ? Math.min(Math.round(replied / totalMsgs * 100), 100) : 0);
   $('s-rep').textContent = repRate + '%';
   setTrend('s-rep-trend', repRate >= 80 ? 1 : 0, replied + ' / ' + totalMsgs);
 

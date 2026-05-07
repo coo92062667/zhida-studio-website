@@ -1604,7 +1604,7 @@ function initLogin() {
         { headers: { 'ngrok-skip-browser-warning': 'true' }, signal: AbortSignal.timeout(4000) });
       if (r.ok) {
         const d = await r.json();
-        const url = d.ngrok_url || d.current_url || '';
+        const url = d.url || d.ngrok_url || d.current_url || '';
         if (url && url.startsWith('http')) {
           localStorage.setItem('zhida_api', url);
           S.api = url;

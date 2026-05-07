@@ -1444,6 +1444,7 @@ a { text-decoration:none; color:inherit; }
 'use strict';
 // ── CONFIG ─────────────────────────────────────────────────────
 const DEFAULT_API = 'http://localhost:8000';
+const CLOUD_ORIGIN = 'https://zhidastudio.com';
 
 // ── Auto-detect server URL ──────────────────────────────────────
 async function autoDetectServerUrl() {
@@ -1595,6 +1596,26 @@ function switchAuthTab(tab) {
 }
 
 function initLogin() {
+  // 自動偵測 API 網址（手機/外部裝置使用）
+  (async () => {
+    if (localStorage.getItem('zhida_api')) return; // 已手動設定則跳過
+    try {
+      const r = await fetch(CLOUD_ORIGIN + '/api/server-info',
+        { headers: { 'ngrok-skip-browser-warning': 'true' }, signal: AbortSignal.timeout(4000) });
+      if (r.ok) {
+        const d = await r.json();
+        const url = d.ngrok_url || d.current_url || '';
+        if (url && url.startsWith('http')) {
+          localStorage.setItem('zhida_api', url);
+          S.api = url;
+          console.log('[API] 自動偵測:', url);
+        }
+      }
+    } catch(e) {
+      console.warn('[API] 自動偵測失敗，使用預設');
+    }
+  })();
+
   // Auto-detect server URL in background
   autoDetectServerUrl().then(() => {
     $('inp-api').value = S.api;

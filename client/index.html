@@ -1674,11 +1674,15 @@ function renderPlanBar() {
 async function loadUsage() {
   if (!S.clientId) return;
   const res = await apiFetch(`/api/client/usage?client_id=${encodeURIComponent(S.clientId)}`);
-  if (!res) return;
-  S.plan      = res.plan      || 'trial';
+  if (!res) {
+    // retry once after 2s (server may still be starting)
+    setTimeout(loadUsage, 2000);
+    return;
+  }
+  S.plan      = res.plan          || 'trial';
   S.planDays  = res.days_remaining ?? 7;
-  S.planUsed  = res.monthly_used   || 0;
-  S.planTotal = res.monthly_limit  || 700;
+  S.planUsed  = res.monthly_used  || 0;
+  S.planTotal = res.monthly_limit || 700;
   renderPlanBar();
   const planEl  = $('dub-plan');
   const countEl = $('dub-count');
@@ -1878,7 +1882,11 @@ function renderMessages() {
   }).join('');
 
   list.querySelectorAll('.msg-item').forEach(item => {
-    item.onclick = () => openConv(item.dataset.uid);
+    item.onclick = () => {
+      const uid = item.dataset.uid;
+      const m   = S.allMsgs.find(x => x.sender_id === uid);
+      openConv(uid, m && isIgMsg(m) ? 'ig' : 'line');
+    };
   });
 
   $('nav-badge').classList.remove('show');
@@ -1911,27 +1919,33 @@ function initConvPanel() {
   $('conv-input').onkeydown = e => e.key === 'Enter' && sendManual();
 }
 
-async function openConv(uid) {
-  S.convUid  = uid;
-  S.convMsgs = [];
-  const sample = S.allMsgs.find(m => m.sender_id === uid);
-  S.convPlatform = (sample && isIgMsg(sample)) ? 'ig' : 'line';
-  const platIco = S.convPlatform === 'ig' ? '📱' : '💚';
-  const short   = (uid || '').slice(0, 8);
-  $('conv-title').textContent = `${platIco} ${short}…`;
+async function openConv(uid, platform) {
+  S.convUid      = uid;
+  S.convMsgs     = [];
+  S.convPlatform = platform || 'ig';
+  const platIco  = S.convPlatform === 'ig' ? '📱' : '💚';
+  const platLbl  = S.convPlatform === 'ig' ? 'Instagram' : 'LINE';
+  const short    = (uid || '').slice(0, 8);
+  const box      = $('conv-msgs');
+
+  $('conv-title').textContent = `${platIco} ${platLbl} · ${short}…`;
   $('conv-panel').classList.add('open');
-  // Show loading immediately
-  $('conv-msgs').innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">載入對話中…</div></div>';
-  // Fetch full conversation for this user
-  S.convMsgs = S.allMsgs.filter(m => m.sender_id === uid);
-  renderConv();
-  try {
-    const res = await apiFetch(`/api/messages?client_id=${encodeURIComponent(S.clientId)}&user_id=${encodeURIComponent(uid)}&limit=100`);
-    if (res?.messages?.length) {
-      S.convMsgs = res.messages;
-      renderConv();
-    }
-  } catch(e) {}
+  box.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);font-size:13px">⏳ 載入對話中…</div>';
+
+  // Show cached messages immediately while API loads
+  const cached = S.allMsgs.filter(m => m.sender_id === uid);
+  if (cached.length) { S.convMsgs = cached; renderConv(); }
+
+  // Fetch full history from API
+  const res = await apiFetch(
+    `/api/messages?client_id=${encodeURIComponent(S.clientId)}&user_id=${encodeURIComponent(uid)}&limit=100`
+  );
+  if (res?.messages?.length) {
+    S.convMsgs = res.messages;
+    renderConv();
+  } else if (!cached.length) {
+    box.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">無對話記錄</div></div>';
+  }
 }
 
 function renderConv() {
@@ -2487,19 +2501,20 @@ function renderDemandList(cats, total) {
   }).join('');
 }
 
-function openFeedbackSection(cat) {
-  // Ensure feedback-detail-wrap is populated, then expand
+async function openFeedbackSection(cat) {
+  // If reports not loaded yet, fetch them first
+  if (!S.reportsData) {
+    toast('載入意見資料中…');
+    await loadReports();
+  }
   const wrap = $('feedback-detail-wrap');
   if (!wrap) return;
-  // If not yet rendered (just has placeholder text), trigger a load
-  if (!wrap.querySelector('[id^="fb-items-"]')) {
-    const res = S.reportsData;
-    if (res) renderFeedbackDetail(res.feedback_cats || {});
+  // Ensure sections are rendered
+  if (!wrap.querySelector('[data-fbcat]')) { // rebuild if empty
+    renderFeedbackDetail(S.reportsData?.feedback_cats || {});
   }
-  // Scroll to the section
   wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  // Expand that category (with a tiny delay to let scroll start)
-  setTimeout(() => loadFeedbackDetail(cat), 100);
+  setTimeout(() => loadFeedbackDetail(cat), 120);
 }
 
 function renderFeedbackDetail(cats) {
@@ -2518,6 +2533,7 @@ function renderFeedbackDetail(cats) {
   el.innerHTML = cfgs.map(cfg => {
     const count = cats[cfg.key] || 0;
     const pct   = total > 0 ? Math.round(count / total * 100) : 0;
+    const safeKey = encodeURIComponent(cfg.key);
     return `<div style="margin-bottom:12px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
         <div style="width:36px;height:36px;border-radius:50%;background:${cfg.bg};display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${cfg.icon}</div>
@@ -2529,22 +2545,23 @@ function renderFeedbackDetail(cats) {
         </div>
         <button onclick="loadFeedbackDetail('${cfg.key}')" style="font-size:11px;color:var(--orange);font-weight:700;padding:4px 8px;border-radius:6px;background:var(--orange-bg)">展開</button>
       </div>
-      <div id="fb-items-${cfg.key}" style="display:none" class="fb-detail-list"></div>
+      <div data-fbcat="${safeKey}" id="fb-items-${safeKey}" style="display:none" class="fb-detail-list"></div>
     </div>`;
   }).join('');
 }
 
 async function loadFeedbackDetail(cat) {
-  const container = $('fb-items-' + cat);
+  const safeKey   = encodeURIComponent(cat);
+  const container = $('fb-items-' + safeKey);
   if (!container) {
     // section not rendered yet — render it first, then retry
     const res = S.reportsData;
     if (res) renderFeedbackDetail(res.feedback_cats || {});
-    setTimeout(() => loadFeedbackDetail(cat), 150);
+    setTimeout(() => loadFeedbackDetail(cat), 200);
     return;
   }
   const isOpen = container.style.display !== 'none';
-  container.style.display = isOpen ? 'none' : 'flex';
+  container.style.display = isOpen ? 'none' : '';
   if (isOpen) return;
   // Always reload to get fresh data
   container.innerHTML = '<div style="padding:8px;font-size:12px;color:var(--muted)">⏳ 載入中…</div>';

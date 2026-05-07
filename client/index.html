@@ -2079,7 +2079,7 @@ async function openConv(uid, platform) {
   const res = await apiFetch(
     `/api/messages?client_id=${encodeURIComponent(S.clientId)}&user_id=${encodeURIComponent(uid)}&limit=100`
   );
-  if (res?.messages?.length) {
+  if (res?.messages?.length && S.convUid === uid) {
     S.convMsgs = res.messages;
     renderConv();
   } else if (!cached.length) {

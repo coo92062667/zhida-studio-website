@@ -805,8 +805,13 @@
       </form>
       <div class="form-success" id="form-success" style="display:none">
         <div class="form-success-icon">✅</div>
-        <h3>已收到您的訊息！</h3>
-        <p>感謝您的諮詢，我們的顧問將在 24 小時內與您聯絡。</p>
+        <h3>已收到您的諮詢！</h3>
+        <p>我們將在 24 小時內回覆您。</p>
+      </div>
+      <div class="form-error" id="form-error" style="display:none">
+        <div class="form-success-icon">❌</div>
+        <h3>送出失敗</h3>
+        <p>請直接 Email 至 <a href="mailto:coo92062667@gmail.com">coo92062667@gmail.com</a></p>
       </div>
     </div>
   </div>
@@ -903,6 +908,9 @@
     </div>
   </div>
 </div>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <!-- Scripts -->
 <script src="js/main.js" defer></script>

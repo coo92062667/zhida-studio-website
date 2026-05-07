@@ -1015,9 +1015,14 @@ a { text-decoration:none; color:inherit; }
       <div class="login-err" id="reg-err"></div>
     </div>
 
-    <div class="api-cfg-toggle" id="api-toggle-btn">⚙ 進階：伺服器網址</div>
-    <div class="api-cfg" id="api-cfg">
-      <input id="inp-api" type="url" placeholder="http://localhost:8000">
+    <div class="api-cfg-toggle" id="api-toggle-btn" style="color:var(--orange);font-weight:600;">⚙ 伺服器網址設定</div>
+    <div class="api-cfg open" id="api-cfg">
+      <input id="inp-api" type="url"
+        placeholder="https://your-ngrok-url.ngrok-free.dev"
+        value="https://retying-astrology-moonlit.ngrok-free.dev">
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">
+        手機用戶請確認此網址為目前的 ngrok 網址
+      </div>
     </div>
   </div>
 </div>
@@ -1443,7 +1448,8 @@ a { text-decoration:none; color:inherit; }
 <script>
 'use strict';
 // ── CONFIG ─────────────────────────────────────────────────────
-const DEFAULT_API = 'http://localhost:8000';
+const DEFAULT_API = localStorage.getItem('zhida_api')
+  || 'https://retying-astrology-moonlit.ngrok-free.dev';
 const CLOUD_ORIGIN = 'https://zhidastudio.com';
 
 // ── Auto-detect server URL ──────────────────────────────────────

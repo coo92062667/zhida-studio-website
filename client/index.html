@@ -1072,6 +1072,8 @@ function relTime(ts) {
 }
 
 async function apiFetch(path, opts = {}) {
+  // 每次都從 localStorage 讀取最新 API URL（使用者可能中途更新）
+  S.api = localStorage.getItem('zhida_api') || DEFAULT_API;
   const url = S.api + path;
   const headers = {
     'Content-Type': 'application/json',
@@ -1079,11 +1081,34 @@ async function apiFetch(path, opts = {}) {
   };
   if (S.token) headers['X-Client-Token'] = S.token;
   try {
-    const r = await fetch(url, { headers, ...opts });
+    const r = await fetch(url, { headers, signal: AbortSignal.timeout(8000), ...opts });
+    setApiStatus(true);
+    if (!r.ok) {
+      console.warn('[API]', r.status, path);
+      return null;
+    }
     return await r.json();
   } catch (e) {
     console.warn('[API]', path, e.message);
+    setApiStatus(false);
     return null;
+  }
+}
+
+let _apiOnline = null;
+function setApiStatus(online) {
+  if (_apiOnline === online) return;
+  _apiOnline = online;
+  const dot  = $('hdr-dot');
+  const txt  = $('hdr-ai-txt');
+  if (!dot || !txt) return;
+  if (!online) {
+    dot.className = 'status-dot off';
+    txt.textContent = '連線中斷';
+  } else {
+    // restore actual AI status
+    dot.className = 'status-dot' + (S.aiEnabled ? '' : ' off');
+    txt.textContent = S.aiEnabled ? 'AI 運行中' : 'AI 已暫停';
   }
 }
 
@@ -1250,11 +1275,10 @@ function initPlatformTabs() {
       S.platform = tab.dataset.platform;
       qsa('.platform-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      // clear unread for this platform
       S.unread[S.platform] = 0;
       updateUnreadBadges();
       hideNewMsgBar();
-      renderMessages();
+      loadMessages();  // 切換平台時從伺服器重新抓資料
     };
   });
 }
@@ -1313,15 +1337,33 @@ function loadTab(tab) {
 
 // ── MESSAGES ───────────────────────────────────────────────────
 async function loadMessages() {
+  if (!S.clientId) return;
   const res = await apiFetch(`/api/messages?client_id=${encodeURIComponent(S.clientId)}&limit=50`);
-  if (!res) return;
+  if (!res) {
+    // show error only if list is still loading
+    const list = $('msg-list');
+    if (list && list.querySelector('.spinner')) {
+      list.innerHTML = '<li><div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-text">無法連線到伺服器<br><small>請確認伺服器網址設定</small></div></div></li>';
+    }
+    return;
+  }
   const incoming = res.messages || [];
 
-  // detect new messages
-  if (S.lastMsgTs && incoming.length) {
+  // 第一次載入：初始化 lastMsgTs，不觸發新訊息提示
+  if (!S.lastMsgTs) {
+    if (incoming.length) {
+      const latest = incoming.reduce((a, b) => (a.timestamp || '') > (b.timestamp || '') ? a : b);
+      S.lastMsgTs = latest.timestamp || '';
+    }
+    S.allMsgs = incoming;
+    renderMessages();
+    return;
+  }
+
+  // 後續輪詢：偵測新訊息
+  if (incoming.length) {
     const newOnes = incoming.filter(m => (m.timestamp || '') > S.lastMsgTs);
     if (newOnes.length) {
-      // per-platform unread counts
       newOnes.forEach(m => {
         const plat = (m.platform || 'instagram').toLowerCase();
         S.unread.all++;
@@ -1330,10 +1372,6 @@ async function loadMessages() {
       updateUnreadBadges();
       showNewMsgBar(newOnes.length);
     }
-  }
-
-  // update last timestamp
-  if (incoming.length) {
     const latest = incoming.reduce((a, b) => (a.timestamp || '') > (b.timestamp || '') ? a : b);
     S.lastMsgTs = latest.timestamp || S.lastMsgTs;
   }
@@ -1348,6 +1386,8 @@ function showNewMsgBar(count) {
   if (!bar) return;
   if (txt) txt.textContent = `🔔 收到 ${count} 則新訊息！點擊查看`;
   bar.classList.add('show');
+  clearTimeout(showNewMsgBar._t);
+  showNewMsgBar._t = setTimeout(hideNewMsgBar, 3000);
 }
 
 function hideNewMsgBar() {

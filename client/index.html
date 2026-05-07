@@ -621,6 +621,31 @@ a { text-decoration:none; color:inherit; }
   display:none;
 }
 .tone-custom-input.show { display:block; }
+
+/* ════ NEW MESSAGE NOTIFICATION BAR ══════════════════════════ */
+#new-msg-bar {
+  position: sticky; top: 0; z-index: 50;
+  background: #FF6B35; color: #fff;
+  padding: 10px 16px; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transform: translateY(-100%);
+  transition: transform .3s cubic-bezier(.32,.72,0,1);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 20px rgba(255,107,53,.4);
+}
+#new-msg-bar.show { transform: translateY(0); }
+#new-msg-bar-dismiss { font-size: 16px; opacity: .8; flex-shrink: 0; }
+
+/* ── per-platform unread count ── */
+.platform-tab .ptab-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; background: #FF6B35; color: #fff;
+  font-size: 10px; font-weight: 800; border-radius: 9px; padding: 0 5px;
+  margin-left: 5px; vertical-align: middle;
+  opacity: 0; transform: scale(.6);
+  transition: opacity .2s, transform .2s;
+}
+.platform-tab .ptab-count.show { opacity: 1; transform: scale(1); }
 </style>
 </head>
 <body>
@@ -748,6 +773,11 @@ a { text-decoration:none; color:inherit; }
 
     <!-- ── 訊息頁 ───────────────────────────────────────────── -->
     <div class="tab-page active" id="page-messages">
+      <!-- 新訊息通知條 -->
+      <div id="new-msg-bar" onclick="scrollToLatest()">
+        <span id="new-msg-bar-txt">🔔 收到新訊息！點擊查看</span>
+        <span id="new-msg-bar-dismiss">✕</span>
+      </div>
       <div class="ai-bar">
         <div>
           <div class="ai-bar-label">🤖 AI 自動回覆</div>
@@ -761,9 +791,9 @@ a { text-decoration:none; color:inherit; }
       </div>
       <!-- 平台切換 -->
       <div class="platform-tabs">
-        <div class="platform-tab active" data-platform="all">全部</div>
-        <div class="platform-tab" data-platform="instagram">📱 Instagram</div>
-        <div class="platform-tab" data-platform="line">💚 LINE</div>
+        <div class="platform-tab active" data-platform="all">全部<span class="ptab-count" id="ptab-count-all"></span></div>
+        <div class="platform-tab" data-platform="instagram">📱 Instagram<span class="ptab-count" id="ptab-count-instagram"></span></div>
+        <div class="platform-tab" data-platform="line">💚 LINE<span class="ptab-count" id="ptab-count-line"></span></div>
       </div>
       <div class="sec-hdr">
         <div class="sec-title">最近對話</div>
@@ -999,6 +1029,8 @@ const S = {
   aiEnabled:   true,
   tone:        '親切活潑',
   platform:    'all',
+  unread:      { all: 0, instagram: 0, line: 0 },
+  lastMsgTs:   '',
   plan:        'trial',
   planDays:    7,
   planUsed:    0,
@@ -1204,7 +1236,11 @@ function enterApp() {
   renderPlanBar();
 
   loadTab('messages');
-  setInterval(() => { if (S.tab === 'messages') loadMessages(); }, 10000);
+  setInterval(() => { if (S.tab === 'messages') loadMessages(); }, 5000);
+
+  // dismiss new-msg-bar click
+  const dismissBtn = $('new-msg-bar-dismiss');
+  if (dismissBtn) dismissBtn.onclick = e => { e.stopPropagation(); hideNewMsgBar(); };
 }
 
 // ── PLATFORM TABS ────────────────────────────────────────────
@@ -1214,6 +1250,10 @@ function initPlatformTabs() {
       S.platform = tab.dataset.platform;
       qsa('.platform-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
+      // clear unread for this platform
+      S.unread[S.platform] = 0;
+      updateUnreadBadges();
+      hideNewMsgBar();
       renderMessages();
     };
   });
@@ -1275,8 +1315,66 @@ function loadTab(tab) {
 async function loadMessages() {
   const res = await apiFetch(`/api/messages?client_id=${encodeURIComponent(S.clientId)}&limit=50`);
   if (!res) return;
-  S.allMsgs = res.messages || [];
+  const incoming = res.messages || [];
+
+  // detect new messages
+  if (S.lastMsgTs && incoming.length) {
+    const newOnes = incoming.filter(m => (m.timestamp || '') > S.lastMsgTs);
+    if (newOnes.length) {
+      // per-platform unread counts
+      newOnes.forEach(m => {
+        const plat = (m.platform || 'instagram').toLowerCase();
+        S.unread.all++;
+        if (S.unread[plat] !== undefined) S.unread[plat]++;
+      });
+      updateUnreadBadges();
+      showNewMsgBar(newOnes.length);
+    }
+  }
+
+  // update last timestamp
+  if (incoming.length) {
+    const latest = incoming.reduce((a, b) => (a.timestamp || '') > (b.timestamp || '') ? a : b);
+    S.lastMsgTs = latest.timestamp || S.lastMsgTs;
+  }
+
+  S.allMsgs = incoming;
   renderMessages();
+}
+
+function showNewMsgBar(count) {
+  const bar = $('new-msg-bar');
+  const txt = $('new-msg-bar-txt');
+  if (!bar) return;
+  if (txt) txt.textContent = `🔔 收到 ${count} 則新訊息！點擊查看`;
+  bar.classList.add('show');
+}
+
+function hideNewMsgBar() {
+  const bar = $('new-msg-bar');
+  if (bar) bar.classList.remove('show');
+}
+
+function scrollToLatest() {
+  const list = $('msg-list');
+  if (list && list.firstElementChild) {
+    list.firstElementChild.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  // clear current platform unread
+  S.unread[S.platform] = 0;
+  if (S.platform !== 'all') S.unread.all = Math.max(0, S.unread.all - (S.unread[S.platform] || 0));
+  updateUnreadBadges();
+  hideNewMsgBar();
+}
+
+function updateUnreadBadges() {
+  ['all', 'instagram', 'line'].forEach(key => {
+    const el = $('ptab-count-' + key);
+    if (!el) return;
+    const n = S.unread[key] || 0;
+    el.textContent = n > 99 ? '99+' : String(n);
+    el.classList.toggle('show', n > 0);
+  });
 }
 
 function renderMessages() {

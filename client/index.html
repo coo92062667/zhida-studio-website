@@ -1607,7 +1607,6 @@ function enterApp() {
   initOverlay();
   initSettings();
   initPlatformTabs();
-  renderPlanBar();
 
   loadTab('messages');
   loadUsage();
@@ -1687,10 +1686,12 @@ async function loadUsage() {
   S.planTotal = res.monthly_limit || 700;
   localStorage.setItem('zhida_plan', S.plan);
   renderPlanBar();
-  const planEl  = $('dub-plan');
+  // 同步更新左下角 dub-plan 顯示
+  const planNames = { trial:'免費試用', basic:'基本版', pro:'進階版', enterprise:'企業版' };
+  const planEl = $('dub-plan');
+  if (planEl) planEl.textContent = planNames[S.plan] || res.plan_name || '免費試用';
   const countEl = $('dub-count');
   const fillEl  = $('dub-fill');
-  if (planEl)  planEl.textContent  = res.plan_name || '免費試用';
   if (countEl) countEl.textContent = `今日 ${res.daily_used} / ${res.daily_limit} 則`;
   if (fillEl) {
     const pct = res.daily_limit > 0 ? Math.min(100, Math.round(res.daily_used / res.daily_limit * 100)) : 0;

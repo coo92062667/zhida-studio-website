@@ -804,6 +804,176 @@ a { text-decoration:none; color:inherit; }
   transition: opacity .2s, transform .2s;
 }
 .platform-tab .ptab-count.show { opacity: 1; transform: scale(1); }
+
+/* ══════════════════════════════════════════════
+   DESKTOP RWD — 768px 以上啟用側欄佈局
+   手機版維持原有樣式不變
+═══════════════════════════════════════════════ */
+@media (min-width: 768px) {
+
+  /* 根容器：手機單欄 → 桌面左側欄 + 右側內容 */
+  #root {
+    max-width: 100%;
+    flex-direction: row;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* 頂部 header 變成左側欄 */
+  #app-hdr {
+    width: 220px;
+    height: 100vh;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 20px 20px;
+    gap: 4px;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    z-index: 40;
+  }
+
+  .hdr-logo {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    margin-bottom: 2px;
+  }
+
+  .hdr-client {
+    font-size: 18px;
+    font-weight: 800;
+    white-space: normal;
+    margin-bottom: 16px;
+  }
+
+  .hdr-ai {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+  }
+
+  /* 主應用：直向 → 橫向 */
+  #app {
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+  }
+
+  /* 左側欄導覽（手機底部 nav → 桌面左側） */
+  #bot-nav {
+    width: 220px;
+    height: 100vh;
+    flex-direction: column;
+    align-items: stretch;
+    border-top: none;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    padding: 12px 0;
+    flex-shrink: 0;
+    order: -1;
+  }
+
+  .nav-btn {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 0;
+    height: auto;
+  }
+
+  .nav-btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .nav-btn.active {
+    background: var(--orange-bg);
+    color: var(--orange);
+    border-right: 3px solid var(--orange);
+  }
+
+  .nav-btn-logout {
+    display: flex;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    color: var(--muted);
+  }
+
+  /* 方案列移到側欄底部 */
+  #plan-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 220px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 20px;
+    background: var(--navy3);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  #plan-bar .plan-badge { font-size: 12px; }
+  #plan-bar .plan-quota-wrap { width: 100%; }
+
+  /* 右側主內容區 */
+  #app-content {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 0;
+  }
+
+  /* 登出按鈕移到側欄（桌面才顯示） */
+  #nav-logout-btn { display: flex !important; }
+
+  /* 對話 panel 桌面版靠右滑入 */
+  .conv-panel {
+    max-width: 480px;
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
+    border-left: 1px solid var(--border);
+    box-shadow: -8px 0 40px rgba(26,43,74,0.12);
+    margin: 0;
+  }
+  .conv-panel.open { transform: translateX(0); }
+
+  /* 卡片最大寬度，桌面不要拉太寬 */
+  .card { margin: 14px 24px 0; }
+  .card:last-of-type { margin-bottom: 16px; }
+
+  /* 統計卡片桌面 4 欄 */
+  .stat-row-4 .stat-card-lg { min-width: calc(25% - 8px); }
+
+  /* 商品工具列 */
+  .prod-toolbar { padding: 16px 24px 0; }
+
+  /* 訊息頁內距 */
+  .ai-bar { padding: 14px 24px; }
+  #daily-usage-block { margin: 0 24px 8px; }
+  .platform-tabs { padding: 12px 24px 0; }
+  .sec-hdr { padding: 16px 24px 8px; }
+  .msg-item { padding: 14px 24px; }
+
+  /* 報表頁 */
+  .rpt-item { padding: 14px 24px; }
+
+  /* 知識庫、設定頁 */
+  .settings-card { margin: 14px 24px 0; }
+}
+
+@media (min-width: 1200px) {
+  #app-hdr, #bot-nav, #plan-bar { width: 260px; }
+  #plan-bar { width: 260px; }
+}
 </style>
 </head>
 <body>
